@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Created by steve on 28/01/2016.
  */
-public class Eksternal {
+public class EksternalFile {
     public static String getRawFileContent(String path) {
         StringBuffer rawFileContent = new StringBuffer();
         String  thisLine;

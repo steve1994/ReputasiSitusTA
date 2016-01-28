@@ -1,13 +1,10 @@
 package loader;
 
 import Utils.Converter;
-import Utils.Eksternal;
+import Utils.EksternalFile;
 import data_structure.DomainNameIPAddressMapping;
 import data_structure.IPAddressASNMapping;
 
-import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 
 /**
@@ -49,7 +46,7 @@ public class DomainIPASNLoader {
 
     private void loadDomainNameIPAddressMapping() {
         // Get list of domain from raw content
-        StringTokenizer domainName = new StringTokenizer(Eksternal.getRawFileContent(pathListURL),"\n");
+        StringTokenizer domainName = new StringTokenizer(EksternalFile.getRawFileContent(pathListURL),"\n");
         while (domainName.hasMoreTokens()) {
             String domain = domainName.nextToken();
             String IPAddress = Converter.convertHostNameIntoIPAddress(domain);

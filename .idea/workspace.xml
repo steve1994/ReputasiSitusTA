@@ -77,19 +77,47 @@
       <file leaf-file-name="DomainIPASNLoader.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/loader/DomainIPASNLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="1530">
-              <caret line="30" column="49" selection-start-line="30" selection-start-column="49" selection-end-line="30" selection-end-column="49" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="1479">
+              <caret line="27" column="49" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
+              <folding>
+                <marker date="1453993900756" expanded="true" signature="184:226" placeholder="/**...*/" />
+                <marker date="1453993900756" expanded="true" signature="497:508" placeholder=" { " />
+                <marker date="1453993900756" expanded="true" signature="528:534" placeholder=" }" />
+                <marker date="1453993900756" expanded="true" signature="594:605" placeholder=" { " />
+                <marker date="1453993900756" expanded="true" signature="628:634" placeholder=" }" />
+                <marker date="1453993900756" expanded="true" signature="667:784" placeholder="{...}" />
+                <marker date="1453993900756" expanded="true" signature="829:1459" placeholder="{...}" />
+                <marker date="1453993900756" expanded="true" signature="935:943" placeholder="&lt;~&gt;" />
+                <marker date="1453993900756" expanded="true" signature="1511:1940" placeholder="{...}" />
+                <marker date="1453993900756" expanded="true" signature="1986:2162" placeholder="{...}" />
+                <marker date="1453993900756" expanded="true" signature="2207:3129" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Eksternal.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utils/Eksternal.java">
+      <file leaf-file-name="EksternalFile.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Utils/EksternalFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="65" max-vertical-offset="612">
-              <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="185" max-vertical-offset="612">
+              <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="APILoader.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Utils/APILoader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.39440203" vertical-offset="355" max-vertical-offset="1292">
+              <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2508#2509#0" expanded="true" />
+                <element signature="e#2566#2567#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -97,7 +125,7 @@
       <file leaf-file-name="ContentExtractor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/ContentExtractor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1047" max-vertical-offset="1768">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1098" max-vertical-offset="1768">
               <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -107,22 +135,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.086513996" vertical-offset="0" max-vertical-offset="393">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Converter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/Converter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="575" max-vertical-offset="1020">
+            <state vertical-scroll-proportion="0.0" vertical-offset="14" max-vertical-offset="1020">
               <caret line="46" column="53" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -179,10 +199,11 @@
         <option value="$PROJECT_DIR$/src/loader/DomainNameDatabaseLoader.java" />
         <option value="$PROJECT_DIR$/src/Utils/Feature.java" />
         <option value="$PROJECT_DIR$/src/Utils/Converter.java" />
-        <option value="$PROJECT_DIR$/src/Utils/Eksternal.java" />
         <option value="$PROJECT_DIR$/src/loader/DomainIPASNLoader.java" />
         <option value="$PROJECT_DIR$/src/Utils/ContentExtractor.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/Utils/Eksternal.java" />
+        <option value="$PROJECT_DIR$/src/Utils/APILoader.java" />
       </list>
     </option>
   </component>
@@ -366,12 +387,12 @@
     <property name="options.lastSelected" value="reference.settings.project.osgi.library.bundling" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../API dan Library/jsoup/jsoup-1.8.3.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../API dan Library/java-json.jar/java-json.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager" selected="Application.ContentExtractor">
+  <component name="RunManager" selected="Application.APILoader">
     <configuration default="false" name="IPDatabaseLoader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -424,6 +445,28 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="Utils.ContentExtractor" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="TA_Project" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="APILoader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="Utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="Utils.APILoader" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -702,17 +745,19 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.Main" />
       <item index="1" class="java.lang.String" itemvalue="Application.IPDatabaseLoader" />
       <item index="2" class="java.lang.String" itemvalue="Application.DomainIPASNLoader" />
       <item index="3" class="java.lang.String" itemvalue="Application.ContentExtractor" />
+      <item index="4" class="java.lang.String" itemvalue="Application.APILoader" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Application.ContentExtractor" />
-        <item index="1" class="java.lang.String" itemvalue="Application.DomainIPASNLoader" />
-        <item index="2" class="java.lang.String" itemvalue="Application.IPDatabaseLoader" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Application.APILoader" />
+        <item index="1" class="java.lang.String" itemvalue="Application.ContentExtractor" />
+        <item index="2" class="java.lang.String" itemvalue="Application.DomainIPASNLoader" />
+        <item index="3" class="java.lang.String" itemvalue="Application.IPDatabaseLoader" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -732,15 +777,15 @@
       <updated>1359379246138</updated>
       <workItem from="1359379250712" duration="1302000" />
       <workItem from="1453873017766" duration="31989000" />
-      <workItem from="1453974120072" duration="6477000" />
+      <workItem from="1453974120072" duration="12901000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39768000" />
+    <option name="totallyTimeSpent" value="46192000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -757,7 +802,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33700788" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2672035" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21229868" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -812,15 +857,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="1530">
           <caret line="30" column="49" selection-start-line="30" selection-start-column="49" selection-end-line="30" selection-end-column="49" />
-          <folding />
+          <folding>
+            <marker date="1453993900756" expanded="true" signature="184:226" placeholder="/**...*/" />
+            <marker date="1453993900756" expanded="true" signature="497:508" placeholder=" { " />
+            <marker date="1453993900756" expanded="true" signature="528:534" placeholder=" }" />
+            <marker date="1453993900756" expanded="true" signature="594:605" placeholder=" { " />
+            <marker date="1453993900756" expanded="true" signature="628:634" placeholder=" }" />
+            <marker date="1453993900756" expanded="true" signature="667:784" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="829:1459" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="935:943" placeholder="&lt;~&gt;" />
+            <marker date="1453993900756" expanded="true" signature="1511:1940" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="1986:2162" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="2207:3129" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Eksternal.java">
+    <entry file="file://$PROJECT_DIR$/src/Utils/EksternalFile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="65" max-vertical-offset="612">
           <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -839,7 +898,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="575" max-vertical-offset="1020">
           <caret line="46" column="53" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -973,37 +1034,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Converter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="575" max-vertical-offset="1020">
-          <caret line="46" column="53" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/loader/DomainIPASNLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="1530">
-          <caret line="30" column="49" selection-start-line="30" selection-start-column="49" selection-end-line="30" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Eksternal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="65" max-vertical-offset="612">
-          <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/ContentExtractor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1047" max-vertical-offset="1768">
-          <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="1479">
+          <caret line="27" column="49" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#515#523#0" expanded="true" />
+            <marker date="1453993900756" expanded="true" signature="184:226" placeholder="/**...*/" />
+            <marker date="1453993900756" expanded="true" signature="497:508" placeholder=" { " />
+            <marker date="1453993900756" expanded="true" signature="528:534" placeholder=" }" />
+            <marker date="1453993900756" expanded="true" signature="594:605" placeholder=" { " />
+            <marker date="1453993900756" expanded="true" signature="628:634" placeholder=" }" />
+            <marker date="1453993900756" expanded="true" signature="667:784" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="829:1459" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="935:943" placeholder="&lt;~&gt;" />
+            <marker date="1453993900756" expanded="true" signature="1511:1940" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="1986:2162" placeholder="{...}" />
+            <marker date="1453993900756" expanded="true" signature="2207:3129" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1013,6 +1059,49 @@
         <state vertical-scroll-proportion="0.086513996" vertical-offset="0" max-vertical-offset="393">
           <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/Converter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="575" max-vertical-offset="1020">
+          <caret line="46" column="53" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/EksternalFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="185" max-vertical-offset="612">
+          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/ContentExtractor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="129" max-vertical-offset="1768">
+          <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#515#523#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/APILoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39440203" vertical-offset="355" max-vertical-offset="1292">
+          <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2508#2509#0" expanded="true" />
+            <element signature="e#2566#2567#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
