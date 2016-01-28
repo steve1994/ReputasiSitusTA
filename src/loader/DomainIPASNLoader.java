@@ -1,5 +1,7 @@
 package loader;
 
+import Utils.Converter;
+import Utils.Eksternal;
 import data_structure.DomainNameIPAddressMapping;
 import data_structure.IPAddressASNMapping;
 
@@ -29,24 +31,6 @@ public class DomainIPASNLoader {
         mappingIPASN = new IPAddressASNMapping();
     }
 
-    private String convertDomainNameIntoIPAddress(String domainName) {
-        String IPAddressResult = "";
-        try {
-            InetAddress domain = InetAddress.getByName(domainName);
-            IPAddressResult = domain.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return IPAddressResult;
-    }
-
-    private int getASNNumberFromCurlExec(String execOutput) {
-        int ASNNumber;
-        String[] token = execOutput.split(" ");
-        ASNNumber = Integer.parseInt(token[0].replace("AS",""));
-        return ASNNumber;
-    }
-
     private void loadIPAddressASNMapping() {
         // Store list IP Address from DomainIPMapping
         List<String> listIPAddress = new ArrayList<String>();
@@ -58,47 +42,17 @@ public class DomainIPASNLoader {
         // For each IP Address, execute curl ipinfo.io/[ip address]/org to get asn number
         for (String ip : listIPAddress) {
             Runtime rt = Runtime.getRuntime();
-            String commandExec = "curl ipinfo.io/" + ip + "/org";
-            try {
-                Process pr = rt.exec(commandExec);
-                BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                StringBuffer outputCommand = new StringBuffer();
-                String line = "";
-                while ((line = commandReader.readLine()) != null) {
-                    outputCommand.append(line + "\n");
-                }
-                int ASNNumber = getASNNumberFromCurlExec(outputCommand.toString());
-                // Put result in IP-ASN mapping
-                mappingIPASN.insertASNNumberRelated(ip,ASNNumber);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            int ASN = Converter.convertIPAddressIntoASN(ip);
+            mappingIPASN.insertASNNumberRelated(ip,ASN);
         }
     }
 
     private void loadDomainNameIPAddressMapping() {
-        // Get raw file content
-        StringBuffer rawFileContent = new StringBuffer();
-        String  thisLine;
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(pathListURL));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            while ((thisLine = br.readLine()) != null) {
-                rawFileContent.append(thisLine + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         // Get list of domain from raw content
-        StringTokenizer domainName = new StringTokenizer(rawFileContent.toString(),"\n");
+        StringTokenizer domainName = new StringTokenizer(Eksternal.getRawFileContent(pathListURL),"\n");
         while (domainName.hasMoreTokens()) {
             String domain = domainName.nextToken();
-            String IPAddress = convertDomainNameIntoIPAddress(domain);
+            String IPAddress = Converter.convertHostNameIntoIPAddress(domain);
             mappingDomainIP.insertIPAddressRelatedDomainName(IPAddress,domain);
         }
     }
