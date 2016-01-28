@@ -16,11 +16,7 @@ public class IPAddressASNMapping {
         mappingIPAddressIntoASN = new HashMap<String, Integer>();
     }
 
-    public void insertNewIPAddress(String IPAddress) {
-        mappingIPAddressIntoASN.put(IPAddress,-9999);
-    }
-
     public void insertASNNumberRelated(String IPAddress, int ASNNumber) {
-        mappingIPAddressIntoASN.replace(IPAddress,ASNNumber);
+        mappingIPAddressIntoASN.put(IPAddress,ASNNumber);
     }
 }
