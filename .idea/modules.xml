@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TA_Project.iml" filepath="$PROJECT_DIR$/TA_Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../IF4033 - Keamanan dan Penjaminan Informasi/Tugas/EksplorasiWebgoat/WebGoat/webgoat-container/webgoat-container.iml" filepath="$PROJECT_DIR$/../../../IF4033 - Keamanan dan Penjaminan Informasi/Tugas/EksplorasiWebgoat/WebGoat/webgoat-container/webgoat-container.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../IF4033 - Keamanan dan Penjaminan Informasi/Tugas/EksplorasiWebgoat/WebGoat/webgoat-parent.iml" filepath="$PROJECT_DIR$/../../../IF4033 - Keamanan dan Penjaminan Informasi/Tugas/EksplorasiWebgoat/WebGoat/webgoat-parent.iml" />
     </modules>
   </component>
 </project>
