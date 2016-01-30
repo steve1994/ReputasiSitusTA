@@ -9,6 +9,7 @@ public class WOTModel {
     private Pair<Integer,Integer> trustWorthinessPairValues;
     private Pair<Integer,Integer> childSafetyPairValues;
     private Integer[] categoryEstimateValues; // negative, questionable, neutral, positive
+    private Boolean[] blacklistIncluded; // malware, phishing, scam, spam
 
     public WOTModel() {
         trustWorthinessPairValues = new Pair<Integer,Integer>(0,0);
@@ -17,6 +18,18 @@ public class WOTModel {
         for (int i=0;i<4;i++) {
             categoryEstimateValues[i] = 0;
         }
+        blacklistIncluded = new Boolean[4];
+        for (int i=0;i<4;i++) {
+            blacklistIncluded[i] = false;
+        }
+    }
+
+    public Boolean[] getBlacklistIncluded() {
+        return blacklistIncluded;
+    }
+
+    public void setBlacklistIncluded(Boolean[] blacklistIncluded) {
+        this.blacklistIncluded = blacklistIncluded;
     }
 
     public Pair<Integer, Integer> getTrustWorthinessPairValues() {

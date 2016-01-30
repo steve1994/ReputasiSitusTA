@@ -1,8 +1,7 @@
-package Utils;
+package Utils.API;
 
 import data_structure.WOTModel;
 import javafx.util.Pair;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,13 +12,14 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Created by steve on 28/01/2016.
  */
-public class APILoader {
+public class WOT_API_Loader {
     private static final String wotAPIKey = "ec2210fe8584a03dc89a9dd05e3c7c1754fa3510";
 
     private static Integer[] valueOfCategoryEstimateWOT(HashMap<String,Integer> mappingKeyValueCategories) {
@@ -50,6 +50,25 @@ public class APILoader {
             }
         }
         return categoryValueEstimate;
+    }
+
+    private static Boolean[] valueOfBlacklistBooleanWOT(HashSet<String> listTypes) {
+        Boolean[] listTypeBlacklists = new Boolean[4];
+        for (int i=0;i<4;i++) {
+            listTypeBlacklists[i] = false;
+        }
+        for (String type : listTypes) {
+            if (type.equals("malware")) {
+                listTypeBlacklists[0] = true;
+            } else if (type.equals("phishing")) {
+                listTypeBlacklists[1] = true;
+            } else if (type.equals("scam")) {
+                listTypeBlacklists[2] = true;
+            } else if (type.equals("spam")) {
+                listTypeBlacklists[3] = true;
+            }
+        }
+        return listTypeBlacklists;
     }
 
     private static WOTModel wotResultArgument(String jsonResponse, String hostName) {
@@ -91,6 +110,18 @@ public class APILoader {
                 }
                 wotModel.setCategoryEstimateValues(valueOfCategoryEstimateWOT(keyEstimatePair));
             }
+            // Get blacklist
+            if (!detail.isNull("blacklists")) {
+                JSONObject blacklists = detail.getJSONObject("blacklists");
+                HashSet<String> listTypes = new HashSet<String>();
+                Iterator typeBlacklists = blacklists.keys();
+                while (typeBlacklists.hasNext())
+                {
+                    String key = (String) typeBlacklists.next();
+                    listTypes.add(key);
+                }
+                wotModel.setBlacklistIncluded(valueOfBlacklistBooleanWOT(listTypes));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -121,10 +152,14 @@ public class APILoader {
     }
 
     public static void main(String[] args) {
-        WOTModel model = APILoader.loadAPIWOTForSite("example.com");
+        WOTModel model = WOT_API_Loader.loadAPIWOTForSite("example.net");
         System.out.println("CATEGORIES");
         for (int i=0;i<4;i++) {
             System.out.println(model.getCategoryEstimateValues()[i]);
+        }
+        System.out.println("BLACKLISTS");
+        for (int i=0;i<4;i++) {
+            System.out.println(model.getBlacklistIncluded()[i]);
         }
         System.out.println("TRUST");
         System.out.println(model.getTrustWorthinessPairValues().getKey());
