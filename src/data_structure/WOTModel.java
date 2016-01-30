@@ -1,90 +1,45 @@
 package data_structure;
 
+import javafx.util.Pair;
+
 /**
  * Created by steve on 29/01/2016.
  */
 public class WOTModel {
-    private int TrustWorthinessEstimate;
-    private int TrustWorthinessConfidence;
-    private int ChildSafetyEstimate;
-    private int ChildSafetyConfidence;
-    private int NegativeCategoryConfidence;
-    private int QuestionableCategoryConfidence;
-    private int NeutralCategoryConfidence;
-    private int PositiveCategoryConfidence;
+    private Pair<Integer,Integer> trustWorthinessPairValues;
+    private Pair<Integer,Integer> childSafetyPairValues;
+    private Integer[] categoryEstimateValues; // negative, questionable, neutral, positive
 
     public WOTModel() {
-        TrustWorthinessEstimate = 0;
-        TrustWorthinessConfidence = 0;
-        ChildSafetyEstimate = 0;
-        ChildSafetyConfidence = 0;
-        NegativeCategoryConfidence = 0;
-        QuestionableCategoryConfidence = 0;
-        NeutralCategoryConfidence = 0;
-        PositiveCategoryConfidence = 0;
+        trustWorthinessPairValues = new Pair<Integer,Integer>(0,0);
+        childSafetyPairValues = new Pair<Integer,Integer>(0,0);
+        categoryEstimateValues = new Integer[4];
+        for (int i=0;i<4;i++) {
+            categoryEstimateValues[i] = 0;
+        }
     }
 
-    public int getTrustWorthinessEstimate() {
-        return TrustWorthinessEstimate;
+    public Pair<Integer, Integer> getTrustWorthinessPairValues() {
+        return trustWorthinessPairValues;
     }
 
-    public void setTrustWorthinessEstimate(int trustWorthinessEstimate) {
-        TrustWorthinessEstimate = trustWorthinessEstimate;
+    public Pair<Integer, Integer> getChildSafetyPairValues() {
+        return childSafetyPairValues;
     }
 
-    public int getTrustWorthinessConfidence() {
-        return TrustWorthinessConfidence;
+    public Integer[] getCategoryEstimateValues() {
+        return categoryEstimateValues;
     }
 
-    public void setTrustWorthinessConfidence(int trustWorthinessConfidence) {
-        TrustWorthinessConfidence = trustWorthinessConfidence;
+    public void setTrustWorthinessPairValues(Pair<Integer, Integer> trustWorthinessPairValues) {
+        this.trustWorthinessPairValues = trustWorthinessPairValues;
     }
 
-    public int getChildSafetyEstimate() {
-        return ChildSafetyEstimate;
+    public void setChildSafetyPairValues(Pair<Integer, Integer> childSafetyPairValues) {
+        this.childSafetyPairValues = childSafetyPairValues;
     }
 
-    public void setChildSafetyEstimate(int childSafetyEstimate) {
-        ChildSafetyEstimate = childSafetyEstimate;
-    }
-
-    public int getChildSafetyConfidence() {
-        return ChildSafetyConfidence;
-    }
-
-    public void setChildSafetyConfidence(int childSafetyConfidence) {
-        ChildSafetyConfidence = childSafetyConfidence;
-    }
-
-    public int getNegativeCategoryConfidence() {
-        return NegativeCategoryConfidence;
-    }
-
-    public void setNegativeCategoryConfidence(int negativeCategoryConfidence) {
-        NegativeCategoryConfidence = negativeCategoryConfidence;
-    }
-
-    public int getQuestionableCategoryConfidence() {
-        return QuestionableCategoryConfidence;
-    }
-
-    public void setQuestionableCategoryConfidence(int questionableCategoryConfidence) {
-        QuestionableCategoryConfidence = questionableCategoryConfidence;
-    }
-
-    public int getNeutralCategoryConfidence() {
-        return NeutralCategoryConfidence;
-    }
-
-    public void setNeutralCategoryConfidence(int neutralCategoryConfidence) {
-        NeutralCategoryConfidence = neutralCategoryConfidence;
-    }
-
-    public int getPositiveCategoryConfidence() {
-        return PositiveCategoryConfidence;
-    }
-
-    public void setPositiveCategoryConfidence(int positiveCategoryConfidence) {
-        PositiveCategoryConfidence = positiveCategoryConfidence;
+    public void setCategoryEstimateValues(Integer[] categoryEstimateValues) {
+        this.categoryEstimateValues = categoryEstimateValues;
     }
 }

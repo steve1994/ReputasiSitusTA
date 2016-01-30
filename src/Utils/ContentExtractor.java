@@ -85,14 +85,14 @@ public class ContentExtractor {
        /* List<String> link = ContentExtractor.getListLinksContainInURL("ligaindonesia.co.id");
         for (String l : link) {
             System.out.println(l);
-        }
+        }*/
         System.out.println(ContentExtractor.getInboundLinkFromSearchResults("www.owasp.org"));
-        */
-        try {
+
+       /* try {
             String host = new URL("http://facebook.com/").getHost();
             System.out.println(host);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
