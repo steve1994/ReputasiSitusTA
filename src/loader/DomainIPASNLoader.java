@@ -1,7 +1,7 @@
 package loader;
 
 import Utils.Converter;
-import Utils.EksternalFile;
+import Utils.Database.EksternalFile;
 import data_structure.DomainNameIPAddressMapping;
 import data_structure.IPAddressASNMapping;
 
@@ -38,7 +38,6 @@ public class DomainIPASNLoader {
 
         // For each IP Address, execute curl ipinfo.io/[ip address]/org to get asn number
         for (String ip : listIPAddress) {
-            Runtime rt = Runtime.getRuntime();
             int ASN = Converter.convertIPAddressIntoASN(ip);
             mappingIPASN.insertASNNumberRelated(ip,ASN);
         }
