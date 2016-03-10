@@ -58,27 +58,58 @@ public class ContentExtractor {
         return (link.contains(".pdf") || link.contains(".jpg") || link.contains(".mpeg"));
     }
 
-    public static int getInboundLinkFromSearchResults(String domainNameURL) {
+    /**
+     * Get inbound link approximation from 5 search engine (1 : Google, 2 : Yahoo, 3 : Ask!, 4 : Bing, 5 : Duckduckgo)
+     * @param domainNameURL
+     * @param type
+     * @return
+     */
+    public static int getInboundLinkFromSearchResults(String domainNameURL, int type) {
+        String queryURL = null;
+        switch (type) {
+            default :
+            case 1  :   queryURL = "https://www.google.com/search?q=" + domainNameURL; break;
+            case 2  :   queryURL = "https://id.search.yahoo.com/search?p=" + domainNameURL; break;
+            case 3  :   queryURL = "http://id.ask.com/web?q=" + domainNameURL; break;
+            case 4  :   queryURL = "http://www.bing.com/search?q=" + domainNameURL; break;
+            case 5  :   queryURL = "https://duckduckgo.com/?q=" + domainNameURL; break;
+        }
+
         int inboundLink = 0;
-        String queryURL = "https://www.google.com/search?q=" + domainNameURL;
         try {
             Document doc = Jsoup
                     .connect(queryURL)
                     .userAgent("Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)")
                     .get();
-            Element numResults = doc.getElementById("resultStats");
-            String[] tokenResults = numResults.text().split(" ");
-            inboundLink = Integer.parseInt(tokenResults[1].replace(",", ""));
+
+            switch (type) {
+                default:
+                case 1:
+                    Element numResults1 = doc.getElementById("resultStats");
+                    String[] tokenResults1 = numResults1.text().split(" ");
+                    inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
+                    break;
+                case 2:
+                    Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
+                    inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya","").replace(" hasil","").replace(",",""));
+                    break;
+                case 4:
+                    Elements numResults4 = doc.getElementsByClass("sb_count");
+                    String[] tokenResults4 = numResults4.text().split(" ");
+                    inboundLink = Integer.parseInt(tokenResults4[0].replace(".",""));
+                    break;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return inboundLink;
     }
 
     public static double getAverageDomainTokenLengthURL(String url) {
         int domainTokenCount = 0;
         int domainTokenLengthSum = 0;
-        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_");
+        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
         while (tokenDomain.hasMoreTokens()) {
             String token = tokenDomain.nextToken();
             domainTokenLengthSum += token.length();
@@ -89,7 +120,7 @@ public class ContentExtractor {
 
     public static int getDomainTokenCountURL(String url) {
         int domainTokenCount = 0;
-        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_");
+        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
         while (tokenDomain.hasMoreTokens()) {
             domainTokenCount++;
         }
@@ -114,7 +145,7 @@ public class ContentExtractor {
         for (String l : link) {
             System.out.println(l);
         }*/
-       // System.out.println(ContentExtractor.getInboundLinkFromSearchResults("www.owasp.org"));
+        System.out.println(ContentExtractor.getInboundLinkFromSearchResults("nasibungkus",4));
        // System.out.println(ContentExtractor.getOutboundLinkFromJSOUP("ligaindonesia.co.id"));
        /* try {
             String host = new URL("http://facebook.com/").getHost();

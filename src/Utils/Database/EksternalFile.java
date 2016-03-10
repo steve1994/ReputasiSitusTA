@@ -12,6 +12,12 @@ import java.util.StringTokenizer;
  * Created by steve on 28/01/2016.
  */
 public class EksternalFile {
+    private static final String malwarePath = "database/malware_websites/hosts.txt";
+    private static final String phishingPath = "database/phishing_websites/phishing.txt";
+    private static final String spammingPath = "database/spamming_websites/spamming.txt";
+    private static final String popularPath = "database/top_popular_websites/top-1m.csv";
+    private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
+
     public static String getRawFileContent(String path) {
         StringBuffer rawFileContent = new StringBuffer();
         String  thisLine;
@@ -32,7 +38,7 @@ public class EksternalFile {
     }
 
     /**
-     * Load List of Training Websites Based on Type (1 : Malware, 2 : Phishing, 3 : Spamming, 4 : Populer)
+     * Load List of Training Websites Based on Type (1 : Malware, 2 : Phishing, 3 : Spamming, 4 : Populer, 5 : Tidak Populer)
      * @param type
      * @return
      */
@@ -40,10 +46,11 @@ public class EksternalFile {
         List<String> SitesTrainingList = new ArrayList<String>();
         String rawTrainingList = null;
         switch (type) {
-            case 1  :   rawTrainingList = getRawFileContent("database/malware_websites/hosts.txt"); break;
-            case 2  :   rawTrainingList = getRawFileContent("database/phishing_websites/phishing.txt"); break;
-            case 3  :   rawTrainingList = getRawFileContent("database/spamming_websites/spamming.txt"); break;
-            case 4  :   rawTrainingList = getRawFileContent("database/top_popular_websites/top-1m.csv"); break;
+            case 1  :   rawTrainingList = getRawFileContent(malwarePath); break;
+            case 2  :   rawTrainingList = getRawFileContent(phishingPath); break;
+            case 3  :   rawTrainingList = getRawFileContent(spammingPath); break;
+            case 4  :   rawTrainingList = getRawFileContent(popularPath); break;
+            case 5  :   rawTrainingList = getRawFileContent(nonPopularPath); break;
         }
         StringTokenizer token = new StringTokenizer(rawTrainingList.toString(),"\n");
         while (token.hasMoreTokens()) {
@@ -54,7 +61,7 @@ public class EksternalFile {
     }
 
     public static void main(String[] args) {
-        List<String> sites = EksternalFile.loadSitesTrainingList(3);
+        List<String> sites = EksternalFile.loadSitesTrainingList(4);
         for (String site : sites) {
             System.out.println(site);
         }
