@@ -1,13 +1,17 @@
 package Utils.Spesific;
 
+import Utils.Converter;
+import Utils.Database.EksternalFile;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,10 +58,6 @@ public class ContentExtractor {
         return outboundLink;
     }
 
-    private static boolean isPathURLFileOrNot(String link) {
-        return (link.contains(".pdf") || link.contains(".jpg") || link.contains(".mpeg"));
-    }
-
     /**
      * Get inbound link approximation from 5 search engine (1 : Google, 2 : Yahoo, 3 : Ask!, 4 : Bing, 5 : Duckduckgo)
      * @param domainNameURL
@@ -96,7 +96,7 @@ public class ContentExtractor {
                 case 4:
                     Elements numResults4 = doc.getElementsByClass("sb_count");
                     String[] tokenResults4 = numResults4.text().split(" ");
-                    inboundLink = Integer.parseInt(tokenResults4[0].replace(".",""));
+                    inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
                     break;
             }
         } catch (IOException e) {
@@ -106,6 +106,11 @@ public class ContentExtractor {
         return inboundLink;
     }
 
+    /**
+     * Calculate average token length from URL sites
+     * @param url
+     * @return
+     */
     public static double getAverageDomainTokenLengthURL(String url) {
         int domainTokenCount = 0;
         int domainTokenLengthSum = 0;
@@ -118,6 +123,11 @@ public class ContentExtractor {
         return ((double) domainTokenLengthSum / (double) domainTokenCount);
     }
 
+    /**
+     * Calculate the amount of token in URL sites
+     * @param url
+     * @return
+     */
     public static int getDomainTokenCountURL(String url) {
         int domainTokenCount = 0;
         StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
@@ -127,7 +137,30 @@ public class ContentExtractor {
         return domainTokenCount;
     }
 
-    public static String getBaseHostURL(String url) {
+    /**
+     * Get domain lookup time from URL sites
+     * @param url
+     * @return
+     */
+    public static long getDomainLookupTimeSite(String url) {
+        long before = System.currentTimeMillis();
+        try {
+            InetAddress addr = InetAddress.getByName(getBaseHostURL(url));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        long after = System.currentTimeMillis();
+        long lookupTime = after-before;
+
+        return lookupTime;
+    }
+
+    /**
+     * Convert URL sites into its base host name
+     * @param url
+     * @return
+     */
+    private static String getBaseHostURL(String url) {
         if (!url.contains("http://") && !url.contains("https://")) {
             url = "http://" + url;
         }
@@ -145,7 +178,7 @@ public class ContentExtractor {
         for (String l : link) {
             System.out.println(l);
         }*/
-        System.out.println(ContentExtractor.getInboundLinkFromSearchResults("nasibungkus",4));
+       // System.out.println(ContentExtractor.getInboundLinkFromSearchResults("nasibungkus",4));
        // System.out.println(ContentExtractor.getOutboundLinkFromJSOUP("ligaindonesia.co.id"));
        /* try {
             String host = new URL("http://facebook.com/").getHost();
@@ -153,5 +186,6 @@ public class ContentExtractor {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }*/
+        System.out.println(ContentExtractor.getDomainLookupTimeSite("cutscenes.net"));
     }
 }
