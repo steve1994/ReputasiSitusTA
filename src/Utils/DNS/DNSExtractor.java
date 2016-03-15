@@ -19,6 +19,10 @@ import java.util.Properties;
  * Created by steve on 11/03/2016.
  */
 public class DNSExtractor {
+    // CARI NAME SERVER HOST DARI BGP PREFIX
+    // nmap -sL 167.205.3.0/24
+    // nmap --script asn-query.nse 192.168.1.111/24
+
     private static final String A_ATTRIB = "A";
     private static final String[] A_ATTRIBS = {A_ATTRIB};
 

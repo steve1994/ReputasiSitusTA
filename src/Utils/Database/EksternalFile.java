@@ -1,9 +1,12 @@
 package Utils.Database;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import Utils.Spesific.ContentExtractor;
+import javafx.util.Pair;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -18,6 +21,29 @@ public class EksternalFile {
     private static final String popularPath = "database/top_popular_websites/top-1m.csv";
     private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
 
+    /**
+     * Convert URL sites into its base host name
+     * @param url
+     * @return
+     */
+    private static String getBaseHostURL(String url) {
+        if (!url.contains("http://") && !url.contains("https://")) {
+            url = "http://" + url;
+        }
+        String host = "";
+        try {
+            host = new URL(url).getHost();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return host;
+    }
+
+    /**
+     * Get raw content of string from external file
+     * @param path
+     * @return
+     */
     public static String getRawFileContent(String path) {
         StringBuffer rawFileContent = new StringBuffer();
         String  thisLine;
@@ -38,12 +64,14 @@ public class EksternalFile {
     }
 
     /**
-     * Load List of Training Websites Based on Type (1 : Malware, 2 : Phishing, 3 : Spamming, 4 : Populer, 5 : Tidak Populer)
+     * Load List of Training Websites Based on Type and its amount(1 : Malware, 2 : Phishing, 3 : Spamming, 4 : Populer, 5 : Tidak Populer)
      * @param type
      * @return
      */
-    public static List<String> loadSitesTrainingList(int type) {
+    public static Pair<List<String>,Integer> loadSitesTrainingList(int type) {
         List<String> SitesTrainingList = new ArrayList<String>();
+        int numSitesReturn = 0;
+
         String rawTrainingList = null;
         switch (type) {
             case 1  :   rawTrainingList = getRawFileContent(malwarePath); break;
@@ -55,15 +83,22 @@ public class EksternalFile {
         StringTokenizer token = new StringTokenizer(rawTrainingList.toString(),"\n");
         while (token.hasMoreTokens()) {
             String oneRow = (String) token.nextToken();
-            SitesTrainingList.add(oneRow);
+            SitesTrainingList.add(getBaseHostURL(oneRow));
+            numSitesReturn++;
         }
-        return SitesTrainingList;
+
+        Pair<List<String>,Integer> SitesListandAmount = new Pair<List<String>, Integer>(SitesTrainingList,numSitesReturn);
+        return SitesListandAmount;
     }
 
     public static void main(String[] args) {
-        List<String> sites = EksternalFile.loadSitesTrainingList(4);
-        for (String site : sites) {
-            System.out.println(site);
+        Pair<List<String>,Integer> sites = EksternalFile.loadSitesTrainingList(2);
+        List<String> listSites = sites.getKey();
+        int numSites = sites.getValue();
+
+        for (int i=0;i<listSites.size();i++) {
+            System.out.println(listSites.get(i));
         }
+        System.out.println("Total Sites : " + numSites);
     }
 }

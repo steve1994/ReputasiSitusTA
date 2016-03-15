@@ -2,16 +2,16 @@ package Utils.Spesific;
 
 import Utils.Converter;
 import Utils.Database.EksternalFile;
+import com.google.common.net.InternetDomainName;
+import javafx.util.Pair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -138,7 +138,7 @@ public class ContentExtractor {
     }
 
     /**
-     * Get domain lookup time from URL sites
+     * Get domain lookup time from URL sites (five consecutive trials)
      * @param url
      * @return
      */
@@ -150,9 +150,62 @@ public class ContentExtractor {
             e.printStackTrace();
         }
         long after = System.currentTimeMillis();
-        long lookupTime = after-before;
+        long lookupTime = after - before;
 
         return lookupTime;
+    }
+
+    /**
+     * Parsing URL to get SLD domain of it
+     * @param url
+     * @return
+     */
+    public static String getSLDFromURL(String url) {
+        String SLD = null;
+        url = getBaseHostURL(url);
+
+        if (InternetDomainName.isValid(url)) {
+            InternetDomainName idn = InternetDomainName.from(url);
+            if (idn.hasPublicSuffix()) {
+                List<String> parts = idn.parts();
+                if (idn.isUnderPublicSuffix()) {
+                    SLD = parts.get(parts.size()-1);
+                } else if (idn.hasParent()) {
+                    SLD = parts.get(parts.size()-2).concat(".").concat(parts.get(parts.size()-1));
+                }
+            }
+        }
+        return SLD;
+    }
+
+    /**
+     * Calculate SLD Hit Ratio by Checking Malware (1), Phishing (2), Spamming (3), Popular (4) List
+     * @param url
+     * @param type
+     * @return
+     */
+    public static double getSLDHitRatio(String url, int type) {
+        Pair<List<String>,Integer> listSitesAndTotal;
+        switch (type) {
+            default :
+            case 1  :   listSitesAndTotal = EksternalFile.loadSitesTrainingList(1); break;
+            case 2  :   listSitesAndTotal = EksternalFile.loadSitesTrainingList(2); break;
+            case 3  :   listSitesAndTotal = EksternalFile.loadSitesTrainingList(3); break;
+            case 4  :   listSitesAndTotal = EksternalFile.loadSitesTrainingList(4); break;
+        }
+        List<String> listSites = listSitesAndTotal.getKey();
+        double totalSites = listSitesAndTotal.getValue();
+
+        double totalSitesSLDMatch = 0.0;
+        for (int i=0;i<listSites.size();i++) {
+            String SLDCheckList = getSLDFromURL(listSites.get(i));
+            String SLDThisURL = getSLDFromURL(url);
+            if (SLDThisURL.equals(SLDCheckList)) {
+                totalSitesSLDMatch++;
+            }
+        }
+
+        return totalSitesSLDMatch / totalSites;
     }
 
     /**
@@ -186,6 +239,10 @@ public class ContentExtractor {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }*/
-        System.out.println(ContentExtractor.getDomainLookupTimeSite("cutscenes.net"));
+        /*for (int i=0;i<20;i++) {
+            System.out.println(ContentExtractor.getDomainLookupTimeSite("pornhub.com"));
+        }*/
+
+        System.out.println(ContentExtractor.getSLDHitRatio("ligaindonesia.co.id", 3));
     }
 }
