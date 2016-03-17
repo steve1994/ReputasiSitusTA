@@ -22,10 +22,29 @@ import java.util.List;
  */
 public class RIPE_API_loader {
 
+    private static String getRawJsonResponse(String urlRequest) {
+        StringBuffer response = new StringBuffer();
+        try {
+            URL url = new URL(urlRequest);
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line + "\n");
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return response.toString();
+    }
+
     private static List<String> ripePrefixResultArgument(String jsonString) {
-        // Struktur data penampung daftar IP Prefix
         List<String> ASPrefixesList = new ArrayList<String>();
-        // Parsing parameter pada json response
         try {
             JSONObject mainResponse = new JSONObject(jsonString);
             if (!mainResponse.isNull("data")) {
@@ -48,34 +67,100 @@ public class RIPE_API_loader {
         return ASPrefixesList;
     }
 
-    public static List<String> loadASNFromRIPEAPI(int ASNumber) {
-        // URL Ripe API for Load IP Prefixes from AS number
-        String urlRequestPrefixes = "https://stat.ripe.net/data/as-routing-consistency/data.json?resource=AS" + ASNumber;
-        // Load Json Response from URL API Above
-        StringBuffer response = new StringBuffer();
+    private static List<String> ripeNameserversResultArguments(String jsonString) {
+        List<String> nameServerList = new ArrayList<String>();
         try {
-            URL url = new URL(urlRequestPrefixes);
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line + "\n");
+            JSONObject mainResponse = new JSONObject(jsonString);
+            if (!mainResponse.isNull("data")) {
+                JSONObject NSDataArg = mainResponse.getJSONObject("data");
+                if (!NSDataArg.isNull("authoritative_nameservers")) {
+                    JSONArray listNS = NSDataArg.getJSONArray("authoritative_nameservers");
+                    for (int i=0;i<listNS.length();i++) {
+                        nameServerList.add(listNS.getString(i));
+                    }
                 }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        } catch (MalformedURLException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        return ripePrefixResultArgument(response.toString());
+        return nameServerList;
+    }
+
+    private static List<String> ripeNameServersPrefixArgument(String jsonString) {
+        List<String> listResolvedNameServers = new ArrayList<String>();
+        try {
+            JSONObject mainResponse = new JSONObject(jsonString);
+            if (!mainResponse.isNull("data")) {
+                JSONObject NSDataArg = mainResponse.getJSONObject("data");
+                if (!NSDataArg.isNull("delegations")) {
+                    JSONArray arrayOfDelegation = NSDataArg.getJSONArray("delegations");
+                    for (int i=0;i<arrayOfDelegation.length();i++) {
+                        JSONArray Delegation = arrayOfDelegation.getJSONArray(i);
+                        for (int j=0;j<Delegation.length();j++) {
+                            JSONObject keyValuePair = Delegation.getJSONObject(j);
+                            String key = keyValuePair.getString("key");
+                            String value = keyValuePair.getString("value");
+                            if (key.equals("nserver")) {
+                                listResolvedNameServers.add(value);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return listResolvedNameServers;
+    }
+
+    /**
+     * Load IP Prefixes Found from AS Number
+     * @param ASNumber
+     * @return
+     */
+    public static List<String> loadASNFromRIPEAPI(int ASNumber) {
+        String urlRequestPrefixes = "https://stat.ripe.net/data/as-routing-consistency/data.json?resource=AS" + ASNumber;
+        String rawResponseJson = getRawJsonResponse(urlRequestPrefixes);
+        return ripePrefixResultArgument(rawResponseJson);
+    }
+
+    /**
+     * Return list of (authoritative) name servers from a domain / host
+     * @param host
+     * @return
+     */
+    public static List<String> loadNameServersFromHost(String host) {
+        String urlRequest = "https://stat.ripe.net/data/dns-chain/data.json?resource=" + host;
+        String rawResponseJson = getRawJsonResponse(urlRequest);
+        return ripeNameserversResultArguments(rawResponseJson);
+    }
+
+    /**
+     * Return list of name servers from IP Prefix
+     * @param IPPrefix
+     * @return
+     */
+    public static List<String> loadNameServersFromIPPrefix(String IPPrefix) {
+        String urlRequest = "https://stat.ripe.net/data/reverse-dns/data.json?resource=" + IPPrefix;
+        String rawResponseJson = getRawJsonResponse(urlRequest);
+        return ripeNameServersPrefixArgument(rawResponseJson);
     }
 
     public static void main(String[] args) {
-        List<String> prefixesList = RIPE_API_loader.loadASNFromRIPEAPI(Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("nordiccountry.cz")));
+        // List BGP Prefixes from AS number
+       /* List<String> prefixesList = RIPE_API_loader.loadASNFromRIPEAPI(Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("nordiccountry.cz")));
         for (String prefix : prefixesList) {
             System.out.println(prefix);
+        }*/
+        // List Name servers from Domain / Host
+       /* List<String> nameServers = RIPE_API_loader.loadNameServersFromHost("www.ripe.net");
+        for (String ns : nameServers) {
+            System.out.println(ns);
+        }*/
+        // List Name Servers from Reverse IP Prefix
+        List<String> nsList = RIPE_API_loader.loadNameServersFromIPPrefix("193.0.0.0/21");
+        for (String ns : nsList) {
+            System.out.println(ns);
         }
     }
 }
