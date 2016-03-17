@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by steve on 28/01/2016.
@@ -32,6 +34,28 @@ public class Converter {
         return IPAddress;
     }
 
+    public static List<String> convertPrefixIntoResolvedIPAddress(String IPPrefix) {
+        List<String> IPAddressResolved = new ArrayList<String>();
+
+        Runtime rt = Runtime.getRuntime();
+        String commandExec = "nmap -sL " + IPPrefix;
+        try {
+            Process pr = rt.exec(commandExec);
+            BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            String line = "";
+            while ((line = commandReader.readLine()) != null) {
+                if (line.contains("Nmap scan report for ")) {
+                    String IPAddress = line.replace("Nmap scan report for ","");
+                    IPAddressResolved.add(IPAddress);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return IPAddressResolved;
+    }
+
     public static int convertIPAddressIntoASN(String IPAddress) {
         int ASNNumber = -9999;
         Runtime rt = Runtime.getRuntime();
@@ -50,5 +74,12 @@ public class Converter {
             e.printStackTrace();
         }
         return ASNNumber;
+    }
+
+    public static void main(String[] args) {
+        List<String> ipAddress = Converter.convertPrefixIntoResolvedIPAddress("217.16.179.17/32");
+        for (String ip : ipAddress) {
+            System.out.println(Converter.convertIPAddressIntoHostName(ip));
+        }
     }
 }

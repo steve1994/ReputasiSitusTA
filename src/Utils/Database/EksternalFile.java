@@ -4,9 +4,7 @@ import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -64,6 +62,24 @@ public class EksternalFile {
     }
 
     /**
+     * Checking (before load list of URL) if domain can be resolved)
+     * @param url
+     * @return
+     */
+   /* private static Boolean checkDomainResolved(String url) {
+        Boolean isDomainResolved = false;
+        int timeOut = 3000;
+        try {
+            if (InetAddress.getByName(getBaseHostURL(url)).isReachable(timeOut)) {
+                isDomainResolved = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isDomainResolved;
+    }*/
+
+    /**
      * Load List of Training Websites Based on Type and its amount(1 : Malware, 2 : Phishing, 3 : Spamming, 4 : Populer, 5 : Tidak Populer)
      * @param type
      * @return
@@ -92,7 +108,7 @@ public class EksternalFile {
     }
 
     public static void main(String[] args) {
-        Pair<List<String>,Integer> sites = EksternalFile.loadSitesTrainingList(2);
+        Pair<List<String>,Integer> sites = EksternalFile.loadSitesTrainingList(4);
         List<String> listSites = sites.getKey();
         int numSites = sites.getValue();
 
