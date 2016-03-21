@@ -1,12 +1,11 @@
 package Utils.DNS;
 
 
-import Utils.API.RIPE_API_loader;
+import Utils.API.RIPE_API_Loader;
 import Utils.Converter;
-import Utils.Spesific.ContentExtractor;
+import Utils.Database.EksternalFile;
 import com.google.common.net.InternetDomainName;
 import org.apache.commons.validator.routines.InetAddressValidator;
-import org.javatuples.Quintet;
 import org.javatuples.Sextet;
 
 import javax.naming.Context;
@@ -14,7 +13,6 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.InitialDirContext;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -94,6 +92,35 @@ public class DNSExtractor {
     }
 
     /**
+     * Return number of name servers used by domain
+     * @param url
+     * @return
+     */
+    public static int getNumNameServers(String url) {
+        return RIPE_API_Loader.loadNameServersFromHost(url).size();
+    }
+
+    /**
+     * Return hit AS ratio from certain malicious type (1 : malware, 2 : Phishing, 3 : Spamming)
+     * Assumption : AS ratio is measured up to only first 100 certain sites list
+     * @param url
+     * @param type
+     * @return
+     */
+    public static float getHitASRatio(String url, int type) {
+        int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
+        List<String> listSites = EksternalFile.loadSitesTrainingList(type).getKey();
+        int hitASCounter = 0;
+        for (int i=0;i<100;i++) {
+            int siteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(listSites.get(i)));
+            if (siteASN == thisURLASN) {
+                hitASCounter++;
+            }
+        }
+        return (float) hitASCounter / (float) 100;
+    }
+
+    /**
      * Return distribution top level domain from Site's Autonomous System (.com, .org, .edu, .gov., .uk)
      * @param url
      * @return
@@ -108,9 +135,9 @@ public class DNSExtractor {
         int numNameServersTotal = 0;
 
         int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
-        List<String> listIPPrefixes = RIPE_API_loader.loadASNFromRIPEAPI(ASNumberThisURL);
+        List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
         for (String IPPrefix : listIPPrefixes) {
-            List<String> resolvedIPAddress = RIPE_API_loader.loadNameServersFromIPPrefix(IPPrefix);
+            List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
             for (String ip : resolvedIPAddress) {
                 String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
                 // Cek apakah bisa dikonversi ke canonical name
@@ -156,11 +183,11 @@ public class DNSExtractor {
      */
     public static float getDistributionNSFromAS(String url) {
         int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
-        List<String> listIPPrefixes = RIPE_API_loader.loadASNFromRIPEAPI(ASNumberThisURL);
+        List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
         HashSet<String> uniqueHostNameRetrieved = new HashSet<String>();
         int numNameServersTotal = 0;
         for (String IPPrefix : listIPPrefixes) {
-            List<String> resolvedIPAddress = RIPE_API_loader.loadNameServersFromIPPrefix(IPPrefix);
+            List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
             for (String ip : resolvedIPAddress) {
                 String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
                 // Cek apakah bisa dikonversi ke canonical name
@@ -183,7 +210,9 @@ public class DNSExtractor {
         // Rasio Distribusi NS dari AS
         //System.out.println(DNSExtractor.getDistributionNSFromAS("cutscenes.net"));
         // Rasio Distribusi TLD dari AS
-        Sextet<Float,Float,Float,Float,Float,Float> sixRatio = DNSExtractor.getTLDDistributionFromAS("cutscenes.net");
-        System.out.println("The six ratio : " + sixRatio.getValue0() + " ; " + sixRatio.getValue1() + " ; " + sixRatio.getValue2() + " ; " + sixRatio.getValue3() + " ; " + sixRatio.getValue4() + " ; " + sixRatio.getValue5());
+       /* Sextet<Float,Float,Float,Float,Float,Float> sixRatio = DNSExtractor.getTLDDistributionFromAS("cutscenes.net");
+        System.out.println("The six ratio : " + sixRatio.getValue0() + " ; " + sixRatio.getValue1() + " ; " + sixRatio.getValue2() + " ; " + sixRatio.getValue3() + " ; " + sixRatio.getValue4() + " ; " + sixRatio.getValue5());*/
+        // Rasio Hit AS certain list
+        System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
     }
 }

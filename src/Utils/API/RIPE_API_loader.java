@@ -1,7 +1,5 @@
 package Utils.API;
 
-import Utils.Converter;
-import data_structure.ASNIPAddressList;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,8 +8,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,7 +16,7 @@ import java.util.List;
 /**
  * Created by steve on 17/03/2016.
  */
-public class RIPE_API_loader {
+public class RIPE_API_Loader {
 
     private static String getRawJsonResponse(String urlRequest) {
         StringBuffer response = new StringBuffer();
@@ -148,17 +144,17 @@ public class RIPE_API_loader {
 
     public static void main(String[] args) {
         // List BGP Prefixes from AS number
-       /* List<String> prefixesList = RIPE_API_loader.loadASNFromRIPEAPI(Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("nordiccountry.cz")));
+       /* List<String> prefixesList = RIPE_API_Loader.loadASNFromRIPEAPI(Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("nordiccountry.cz")));
         for (String prefix : prefixesList) {
             System.out.println(prefix);
         }*/
         // List Name servers from Domain / Host
-       /* List<String> nameServers = RIPE_API_loader.loadNameServersFromHost("www.ripe.net");
+       /* List<String> nameServers = RIPE_API_Loader.loadNameServersFromHost("www.ripe.net");
         for (String ns : nameServers) {
             System.out.println(ns);
         }*/
         // List Name Servers from Reverse IP Prefix
-        List<String> nsList = RIPE_API_loader.loadNameServersFromIPPrefix("193.0.0.0/21");
+        List<String> nsList = RIPE_API_Loader.loadNameServersFromIPPrefix("193.0.0.0/21");
         for (String ns : nsList) {
             System.out.println(ns);
         }
