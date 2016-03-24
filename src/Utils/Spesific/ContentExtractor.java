@@ -168,7 +168,8 @@ public class ContentExtractor {
             InternetDomainName idn = InternetDomainName.from(url);
             if (idn.hasPublicSuffix()) {
                 List<String> parts = idn.parts();
-                SLD = parts.get(parts.size()-2).concat(".").concat(parts.get(parts.size()-1));
+                String pureHost = parts.get(0);
+                SLD = url.replace(pureHost + ".","");
             }
         }
         return SLD;
@@ -239,6 +240,6 @@ public class ContentExtractor {
             System.out.println(ContentExtractor.getDomainLookupTimeSite("pornhub.com"));
         }*/
 
-        System.out.println(ContentExtractor.getSLDHitRatio("ligaindonesia.co.id",2));
+        System.out.println(ContentExtractor.getSLDFromURL("facebook.com"));
     }
 }
