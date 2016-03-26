@@ -2,6 +2,8 @@ package Utils.Database;
 
 import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils;
 
 import java.io.*;
 import java.net.*;
@@ -105,6 +107,33 @@ public class EksternalFile {
 
         Pair<List<String>,Integer> SitesListandAmount = new Pair<List<String>, Integer>(SitesTrainingList,numSitesReturn);
         return SitesListandAmount;
+    }
+
+    /**
+     * Save weka instances to external file
+     * @param instances
+     */
+    public static void saveInstanceWekaToExternalARFF(Instances instances) {
+        try {
+            ConverterUtils.DataSink.write("database/weka/siteReputation.arff",instances);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load instances weka from external file (arff)
+     * @param path
+     * @return
+     */
+    public static Instances loadInstanceWekaFromExternalARFF(String path) {
+        Instances instances = null;
+        try {
+            instances = ConverterUtils.DataSource.read(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return instances;
     }
 
     public static void main(String[] args) {
