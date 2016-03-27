@@ -14,11 +14,52 @@ import java.util.List;
 public class SitesClusterer {
     private int numCluster = 0;
     private Instances siteReputationRecord;
-    SiteRecordReputation recordSiteData;
+    List<SiteRecordReputation> recordSiteData;
+    private Boolean[] listCombinationRecordType;
 
-    public SitesClusterer(int numCluster, SiteRecordReputation recordSiteData) {
+    /**
+     * Konstruktor struktur data record reputasi situs terdiri dari 7 kombinasi :
+     * 1 (T,F,F) 2 (F,T,F) 3 (F,F,T) 4 (T,T,F) 5 (T,F,T) 6 (F,T,T) 7 (T,T,T)
+     * @param typeReputation
+     * @param numCluster
+     */
+    public SitesClusterer(int numCluster, int typeReputation) {
         this.numCluster = numCluster;
-        this.recordSiteData = recordSiteData;
+        recordSiteData = new ArrayList<SiteRecordReputation>();
+
+        listCombinationRecordType = new Boolean[3];         // DNS, Spesific, Trust
+        for (int i=0;i<3;i++) {
+            listCombinationRecordType[i] = false;
+        }
+        switch (typeReputation) {
+            default:
+            case 1:                 // DNS
+                listCombinationRecordType[0] = true;
+                break;
+            case 2:                 // Spesific
+                listCombinationRecordType[1] = true;
+                break;
+            case 3:                 // Trust
+                listCombinationRecordType[2] = true;
+                break;
+            case 4:                 // DNS + Spesific
+                listCombinationRecordType[0] = true;
+                listCombinationRecordType[1] = true;
+                break;
+            case 5:                 // DNS + Trust
+                listCombinationRecordType[0] = true;
+                listCombinationRecordType[2] = true;
+                break;
+            case 6:                 // Spesific + Trust
+                listCombinationRecordType[1] = true;
+                listCombinationRecordType[2] = true;
+                break;
+            case 7:                 // DNS + Spesific + Trust
+                listCombinationRecordType[0] = true;
+                listCombinationRecordType[1] = true;
+                listCombinationRecordType[2] = true;
+                break;
+        }
     }
 
     /**
@@ -27,7 +68,7 @@ public class SitesClusterer {
     public void configARFFInstance() {
         List<Attribute> overallInstanceVector = new ArrayList<Attribute>();
         // DNS
-        if (recordSiteData.getListCombinationRecordType()[0] == true) {
+        if (listCombinationRecordType[0] == true) {
             // Popular TLD ratio in AS
             Attribute ratioTLDAsCom = new Attribute("TLD_AS_com"); overallInstanceVector.add(ratioTLDAsCom);
             Attribute ratioTLDAsOrg = new Attribute("TLD_AS_org"); overallInstanceVector.add(ratioTLDAsOrg);
@@ -49,7 +90,7 @@ public class SitesClusterer {
             Attribute TTLDNSRecord = new Attribute("TTL_DNS_Record"); overallInstanceVector.add(TTLDNSRecord);
         }
         // Spesific
-        if (recordSiteData.getListCombinationRecordType()[1] == true) {
+        if (listCombinationRecordType[1] == true) {
             // Token count in site URL (path excluded)
             Attribute tokenCount = new Attribute("token_count"); overallInstanceVector.add(tokenCount);
             // Average token length in site URL (path excluded)
@@ -66,7 +107,7 @@ public class SitesClusterer {
             Attribute lookupTime = new Attribute("lookup_time"); overallInstanceVector.add(lookupTime);
         }
         // Trust
-        if (recordSiteData.getListCombinationRecordType()[2] == true) {
+        if (listCombinationRecordType[2] == true) {
             // Trustworthy Score
             Attribute trustWorthy1 = new Attribute("trust_score_1"); overallInstanceVector.add(trustWorthy1);
             Attribute trustWorthy2 = new Attribute("trust_score_2"); overallInstanceVector.add(trustWorthy2);
@@ -92,27 +133,15 @@ public class SitesClusterer {
         siteReputationRecord = new Instances("Reputation Site Dataset",attributeInstanceRecord,0);
     }
 
-    public void fillDataIntoInstanceRecord() {
-        List<List<List<Object>>> rawRecordsSiteReputation = recordSiteData.getListRecordDataCombination();
-        for (List<List<Object>> oneTuple : rawRecordsSiteReputation) {
-            List<Object> DNSRecord = oneTuple.get(0);
-            List<Object> SpesificRecord = oneTuple.get(1);
-            List<Object> TrustRecord = oneTuple.get(2);
-            if (recordSiteData.getListCombinationRecordType()[0] == true) {
-//                Instances dataRel = new Instances(data.attribute(4).relation(),0);
-//                valuesRel = new double[dataRel.numAttributes()];
-//                valuesRel[0] = 2.34;
-//                valuesRel[1] = dataRel.attribute(1).indexOf("val_C");
-//                dataRel.add(new Instance(1.0, valuesRel));
-//                values[4] = data.attribute(4).addRelation(dataRel);
-                // Rasio 5 tld terpopuler
-//                Instances ratioTLDFromAS = new Instances(siteReputationRecord.attribute(0).relation(),0);
-//                double[] valuesRatioTLD = new double[ratioTLDFromAS.numAttributes()];
-//                for (int i=0;i<valuesRatioTLD.length;i++) {
-//                    valuesRatioTLD[i] = (Double) DNSRecord.get(i);
-//                }
+    public void fillDataIntoInstanceRecord(SiteRecordReputation recordReputation) {
+        if (listCombinationRecordType[0] == true) {
+            
+        }
+        if (listCombinationRecordType[1] == true) {
 
-            }
+        }
+        if (listCombinationRecordType[2] == true) {
+
         }
     }
 }
