@@ -1,4 +1,8 @@
-package data_structure;
+package data_structure.instance_ML;
+
+import data_structure.feature.DNS_Feature;
+import data_structure.feature.Spesific_Feature;
+import data_structure.feature.Trust_Feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,16 +74,52 @@ public class SiteRecordReputation {
      * @param recordElementSpesific : may null
      * @param recordElementTrust : may null
      */
-    public void insertSiteRecordReputation(List<Object> recordElementDNS, List<Object> recordElementSpesific, List<Object> recordElementTrust) {
+    public void insertSiteRecordReputation(DNS_Feature recordElementDNS, Spesific_Feature recordElementSpesific, Trust_Feature recordElementTrust) {
         List<List<Object>> tupleRecord = new ArrayList<List<Object>>();
         if (listCombinationRecordType[0] == true) {
-            tupleRecord.add(0,recordElementDNS);
+            List<Object> DNSFeatureCollection = new ArrayList<Object>();
+
+            // Five popular TLD ratio in AS
+            Float[] TLDratio = recordElementDNS.getPopularTLDRatio();
+            for (Float TLD : TLDratio) {
+                DNSFeatureCollection.add(TLD);
+            }
+            // Hit AS ratio in AS
+            Integer[] hitASRatio = recordElementDNS.getHitASRatio();
+            for (Integer hit : hitASRatio) {
+                DNSFeatureCollection.add(hit);
+            }
+            // Distribution Name Server AS
+            DNSFeatureCollection.add(recordElementDNS.getDistributionNSAS());
+            // Name server count
+            DNSFeatureCollection.add(recordElementDNS.getNumNameServer());
+            // List TTL name servers
+            List<Integer> listTTLNS = recordElementDNS.getListNSTTL();
+            for (Integer ttl : listTTLNS) {
+                DNSFeatureCollection.add(ttl);
+            }
+            // List TTL DNS A Records
+            List<Integer> listTTLDNSRecord = recordElementDNS.getListDNSRecordTTL();
+            for (Integer ttl : listTTLDNSRecord) {
+                DNSFeatureCollection.add(ttl);
+            }
+
+            tupleRecord.add(0,DNSFeatureCollection);
         }
         if (listCombinationRecordType[1] == true) {
-            tupleRecord.add(1,recordElementSpesific);
+            List<Object> SpesificFeatureCollection = new ArrayList<Object>();
+
+            // Token count URL
+            SpesificFeatureCollection.add(recordElementSpesific.getTokenCountURL());
+            // Average Token Length URL
+            SpesificFeatureCollection.add(recordElementSpesific.getAverageTokenLengthURL());
+            // SLD ratio from URL (malware, phishing, spamming)
+            SpesificFeatureCollection.add(recordElementSpesific.getSLDRatio());
+
+            tupleRecord.add(1,SpesificFeatureCollection);
         }
         if (listCombinationRecordType[2] == true) {
-            tupleRecord.add(2,recordElementTrust);
+            //tupleRecord.add(2,recordElementTrust);
         }
         listRecordDataCombination.add(tupleRecord);
     }

@@ -1,6 +1,7 @@
 package Utils.DNS;
 
 
+import Utils.API.MXToolbox_API_Loader;
 import Utils.API.RIPE_API_Loader;
 import Utils.Converter;
 import Utils.Database.EksternalFile;
@@ -24,12 +25,6 @@ import java.util.Properties;
  * Created by steve on 11/03/2016.
  */
 public class DNSExtractor {
-    // CARI NAME SERVER HOST DARI BGP PREFIX
-    // nmap -sL 167.205.3.0/24
-    // nmap --script asn-query.nse 192.168.1.111/24
-    // nmap --script targets-asn --script-args targets-asn.asn=32
-    // https://stat.ripe.net/data/as-routing-consistency/data.json?resource=AS3333
-
     private static final String A_ATTRIB = "A";
     private static final String[] A_ATTRIBS = {A_ATTRIB};
 
@@ -198,6 +193,24 @@ public class DNSExtractor {
             }
         }
         return ((float) uniqueHostNameRetrieved.size() / (float) numNameServersTotal);
+    }
+
+    /**
+     * Return list time to live for each name server owned by url
+     * @param url
+     * @return
+     */
+    public static List<Integer> getNameServerTimeToLive(String url) {
+        return MXToolbox_API_Loader.listNameServerTimeToLive(url);
+    }
+
+    /**
+     * Return list time to live for DNS A record retrieved from its corresponding name server
+     * @param url
+     * @return
+     */
+    public static List<Integer> getDNSRecordTimeToLive(String url) {
+        return MXToolbox_API_Loader.listIPAddressTimeToLive(url);
     }
 
     public static void main(String[] args) {

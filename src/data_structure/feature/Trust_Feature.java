@@ -1,17 +1,17 @@
-package data_structure;
+package data_structure.feature;
 
 import javafx.util.Pair;
 
 /**
  * Created by steve on 29/01/2016.
  */
-public class WOTModel {
+public class Trust_Feature {
     private Pair<Integer,Integer> trustWorthinessPairValues;
     private Pair<Integer,Integer> childSafetyPairValues;
     private Integer[] categoryEstimateValues; // negative, questionable, neutral, positive
     private Boolean[] blacklistIncluded; // malware, phishing, scam, spam
 
-    public WOTModel() {
+    public Trust_Feature() {
         trustWorthinessPairValues = new Pair<Integer,Integer>(0,0);
         childSafetyPairValues = new Pair<Integer,Integer>(0,0);
         categoryEstimateValues = new Integer[4];

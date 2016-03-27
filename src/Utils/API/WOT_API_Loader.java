@@ -1,6 +1,6 @@
 package Utils.API;
 
-import data_structure.WOTModel;
+import data_structure.feature.Trust_Feature;
 import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,9 +71,9 @@ public class WOT_API_Loader {
         return listTypeBlacklists;
     }
 
-    private static WOTModel wotResultArgument(String jsonResponse, String hostName) {
+    private static Trust_Feature wotResultArgument(String jsonResponse, String hostName) {
         // Model to store WOT data
-        WOTModel wotModel = new WOTModel();
+        Trust_Feature trustFeature = new Trust_Feature();
         // Filter and Parse json response to get required data
         String[] tokenResponse = jsonResponse.replace("process","").split("[()]");
         String cleanResponseJson = tokenResponse[1];
@@ -87,7 +87,7 @@ public class WOT_API_Loader {
                 Integer estimateValuesTrust = Integer.parseInt(tokenPairTrustworthy[1]);
                 Integer confidenceValuesTrust = Integer.parseInt(tokenPairTrustworthy[2]);
                 Pair<Integer,Integer> estimateConfidencePair = new Pair<Integer, Integer>(estimateValuesTrust,confidenceValuesTrust);
-                wotModel.setTrustWorthinessPairValues(estimateConfidencePair);
+                trustFeature.setTrustWorthinessPairValues(estimateConfidencePair);
             }
             // Get safetychildren value
             if (!detail.isNull("4")) {
@@ -96,7 +96,7 @@ public class WOT_API_Loader {
                 Integer estimateValuesSafety = Integer.parseInt(tokenPairSafetyChildren[1]);
                 Integer confidenceValuesSafety = Integer.parseInt(tokenPairSafetyChildren[2]);
                 Pair<Integer,Integer> estimateConfidencePair = new Pair<Integer, Integer>(estimateValuesSafety,confidenceValuesSafety);
-                wotModel.setChildSafetyPairValues(estimateConfidencePair);
+                trustFeature.setChildSafetyPairValues(estimateConfidencePair);
             }
             // Get categories detail
             if (!detail.isNull("categories")) {
@@ -108,7 +108,7 @@ public class WOT_API_Loader {
                     int estimateValue = pairCategories.getInt(key);
                     keyEstimatePair.put(key,estimateValue);
                 }
-                wotModel.setCategoryEstimateValues(valueOfCategoryEstimateWOT(keyEstimatePair));
+                trustFeature.setCategoryEstimateValues(valueOfCategoryEstimateWOT(keyEstimatePair));
             }
             // Get blacklist
             if (!detail.isNull("blacklists")) {
@@ -120,15 +120,15 @@ public class WOT_API_Loader {
                     String key = (String) typeBlacklists.next();
                     listTypes.add(key);
                 }
-                wotModel.setBlacklistIncluded(valueOfBlacklistBooleanWOT(listTypes));
+                trustFeature.setBlacklistIncluded(valueOfBlacklistBooleanWOT(listTypes));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return wotModel;
+        return trustFeature;
     }
 
-    public static WOTModel loadAPIWOTForSite(String hostName) {
+    public static Trust_Feature loadAPIWOTForSite(String hostName) {
         // URL API with its parameter
         String urlRequest = "http://api.mywot.com/0.4/public_link_json2?hosts=" + hostName + "/&callback=process&key=" + wotAPIKey;
         // Load raw string response from above url api
@@ -152,7 +152,7 @@ public class WOT_API_Loader {
     }
 
     public static void main(String[] args) {
-        WOTModel model = WOT_API_Loader.loadAPIWOTForSite("example.net");
+        Trust_Feature model = WOT_API_Loader.loadAPIWOTForSite("example.net");
         System.out.println("CATEGORIES");
         for (int i=0;i<4;i++) {
             System.out.println(model.getCategoryEstimateValues()[i]);
