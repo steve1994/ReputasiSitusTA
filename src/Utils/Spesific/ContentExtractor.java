@@ -70,9 +70,9 @@ public class ContentExtractor {
             default :
             case 1  :   queryURL = "https://www.google.com/search?q=" + domainNameURL; break;
             case 2  :   queryURL = "https://id.search.yahoo.com/search?p=" + domainNameURL; break;
-            case 3  :   queryURL = "http://id.ask.com/web?q=" + domainNameURL; break;
-            case 4  :   queryURL = "http://www.bing.com/search?q=" + domainNameURL; break;
-            case 5  :   queryURL = "https://duckduckgo.com/?q=" + domainNameURL; break;
+          //  case 3  :   queryURL = "http://id.ask.com/web?q=" + domainNameURL; break;
+            case 3  :   queryURL = "http://www.bing.com/search?q=" + domainNameURL; break;
+          //  case 5  :   queryURL = "https://duckduckgo.com/?q=" + domainNameURL; break;
         }
 
         int inboundLink = 0;
@@ -93,7 +93,7 @@ public class ContentExtractor {
                     Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
                     inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya","").replace(" hasil","").replace(",",""));
                     break;
-                case 4:
+                case 3:
                     Elements numResults4 = doc.getElementsByClass("sb_count");
                     String[] tokenResults4 = numResults4.text().split(" ");
                     inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
@@ -111,7 +111,7 @@ public class ContentExtractor {
      * @param url
      * @return
      */
-    public static double getAverageDomainTokenLengthURL(String url) {
+    public static float getAverageDomainTokenLengthURL(String url) {
         int domainTokenCount = 0;
         int domainTokenLengthSum = 0;
         StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
@@ -120,7 +120,7 @@ public class ContentExtractor {
             domainTokenLengthSum += token.length();
             domainTokenCount++;
         }
-        return ((double) domainTokenLengthSum / (double) domainTokenCount);
+        return ((float) domainTokenLengthSum / (float) domainTokenCount);
     }
 
     /**

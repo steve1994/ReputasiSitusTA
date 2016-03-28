@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class DNS_Feature {
     private Float[] popularTLDRatio;
-    private Integer[] hitASRatio;
+    private Float[] hitASRatio;
     private float distributionNSAS;
     private int numNameServer;
     private List<Integer> listNSTTL;
@@ -54,17 +54,17 @@ public class DNS_Feature {
         this.distributionNSAS = distributionNSAS;
     }
 
-    public Integer[] getHitASRatio() {
+    public Float[] getHitASRatio() {
         return hitASRatio;
     }
 
-    public void setHitASRatio(Integer[] hitASRatio) {
+    public void setHitASRatio(Float[] hitASRatio) {
         this.hitASRatio = hitASRatio;
     }
 
     public DNS_Feature() {
         popularTLDRatio = new Float[6];         // com, org, edu, gov, uk, rest
-        hitASRatio = new Integer[3];            // malware, phishing, spamming
+        hitASRatio = new Float[3];            // malware, phishing, spamming
         distributionNSAS = 0;
         numNameServer = 0;
         listNSTTL = new ArrayList<Integer>();

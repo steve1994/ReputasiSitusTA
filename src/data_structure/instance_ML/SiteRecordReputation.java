@@ -40,7 +40,7 @@ public class SiteRecordReputation {
         TrustRecordFeature = trustRecordFeature;
     }
 
-    public SiteRecordReputation(int typeReputation) {
+    public SiteRecordReputation() {
         DNSRecordFeature = new DNS_Feature();
         SpesificRecordFeature = new Spesific_Feature();
         TrustRecordFeature = new Trust_Feature();

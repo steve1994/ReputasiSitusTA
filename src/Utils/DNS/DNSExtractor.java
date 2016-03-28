@@ -226,6 +226,9 @@ public class DNSExtractor {
        /* Sextet<Float,Float,Float,Float,Float,Float> sixRatio = DNSExtractor.getTLDDistributionFromAS("cutscenes.net");
         System.out.println("The six ratio : " + sixRatio.getValue0() + " ; " + sixRatio.getValue1() + " ; " + sixRatio.getValue2() + " ; " + sixRatio.getValue3() + " ; " + sixRatio.getValue4() + " ; " + sixRatio.getValue5());*/
         // Rasio Hit AS certain list
-        System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
+      //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
+        // Rasio 5 top populer TLD AS
+        Sextet<Float,Float,Float,Float,Float,Float> TLDRatioAS = DNSExtractor.getTLDDistributionFromAS("google.com");
+        System.out.println(TLDRatioAS);
     }
 }

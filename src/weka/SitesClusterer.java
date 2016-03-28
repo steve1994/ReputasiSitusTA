@@ -1,6 +1,15 @@
 package weka;
 
+import Utils.API.WOT_API_Loader;
+import Utils.DNS.DNSExtractor;
+import Utils.Database.EksternalFile;
+import Utils.Spesific.ContentExtractor;
+import data_structure.feature.DNS_Feature;
+import data_structure.feature.Spesific_Feature;
+import data_structure.feature.Trust_Feature;
 import data_structure.instance_ML.SiteRecordReputation;
+import org.javatuples.Sextet;
+import weka.clusterers.SimpleKMeans;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -16,6 +25,10 @@ public class SitesClusterer {
     private int numCluster = 0;
     private Instances siteReputationRecord;
     private Boolean[] listCombinationRecordType;
+
+    public Instances getSiteReputationRecord() {
+        return siteReputationRecord;
+    }
 
     /**
      * Konstruktor struktur data record reputasi situs terdiri dari 7 kombinasi :
@@ -147,8 +160,8 @@ public class SitesClusterer {
                 instanceValues.add(tld);
             }
             // Hit AS Ratio in malware / phishing / spamming
-            Integer[] hitASRatio = recordReputation.getDNSRecordFeature().getHitASRatio();
-            for (Integer hit : hitASRatio) {
+            Float[] hitASRatio = recordReputation.getDNSRecordFeature().getHitASRatio();
+            for (Float hit : hitASRatio) {
                 instanceValues.add(hit);
             }
             // Distribution name server in AS
@@ -203,5 +216,118 @@ public class SitesClusterer {
         }
         Instance instance = new Instance(1.0,values);
         siteReputationRecord.add(instance);
+    }
+
+    /**
+     * Build cluster from site record in instances weka
+     * @param instances
+     * @param maxIteration
+     * @return
+     */
+    public SimpleKMeans buildKmeansReputationModel(Instances instances, int maxIteration) {
+        SimpleKMeans siteReputationCluster = new SimpleKMeans();
+        siteReputationCluster.setPreserveInstancesOrder(true);
+        try {
+            siteReputationCluster.setMaxIterations(maxIteration);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            siteReputationCluster.setNumClusters(numCluster);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            siteReputationCluster.buildClusterer(instances);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return siteReputationCluster;
+    }
+
+    public static void main(String[] args) {
+        List<String> listSites = EksternalFile.loadSitesTrainingList(4).getKey();
+        SitesClusterer clusterSite = new SitesClusterer(4,7);
+        clusterSite.configARFFInstance();
+        System.out.println("Config ARFF Done");
+
+        for (int i=0;i<10;i++) {
+            // DNS FEATURES
+            DNS_Feature fiturDNS = new DNS_Feature();
+            // TLD ratio
+            Sextet<Float,Float,Float,Float,Float,Float> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
+            Float[] TLDRatioList = new Float[6];
+            TLDRatioList[0] = TLDRatio.getValue0();
+            TLDRatioList[1] = TLDRatio.getValue1();
+            TLDRatioList[2] = TLDRatio.getValue2();
+            TLDRatioList[3] = TLDRatio.getValue3();
+            TLDRatioList[4] = TLDRatio.getValue4();
+            TLDRatioList[5] = TLDRatio.getValue5();
+            fiturDNS.setPopularTLDRatio(TLDRatioList);
+            System.out.println("TLD Ratio");
+            // Hit AS Ratio (malware, phishing, spamming)
+            Float[] HitRatioList = new Float[3];
+            for (int j=0;j<3;j++) {
+                HitRatioList[j] = DNSExtractor.getHitASRatio(listSites.get(i),j+1);
+            }
+            fiturDNS.setHitASRatio(HitRatioList);
+            System.out.println("Hit AS Ratio");
+            // Name server distribution AS
+            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(listSites.get(i)));
+            System.out.println("Name Server Distribution AS");
+            // Name server count
+            fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers(listSites.get(i)));
+            System.out.println("Name Server Count");
+            // TTL Name Servers
+            fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive(listSites.get(i)));
+            System.out.println("TTL Name Servers");
+            // TTL DNS A Records
+            fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive(listSites.get(i)));
+            System.out.println("TTL DNS Record");
+
+            // SPESIFIC FEATURES
+            Spesific_Feature fiturSpesific = new Spesific_Feature();
+            // Token Count URL
+            fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL(listSites.get(i)));
+            System.out.println("Token Count URL");
+            // Average Token Length URL
+            fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL(listSites.get(i)));
+            System.out.println("Average Token Length URL");
+            // SLD ratio from URL (malware, phishing, spamming)
+            double[] SLDRatioList = new double[3];
+            for (int j=0;j<3;j++) {
+                SLDRatioList[j] = ContentExtractor.getSLDHitRatio(listSites.get(i),j+1);
+            }
+            fiturSpesific.setSLDRatio(SLDRatioList);
+            System.out.println("SLD Ratio List");
+            // Inbound link Approximation (Google, Yahoo, Bing)
+            int[] inboundLinkAppr = new int[3];
+            for (int j=0;j<3;j++) {
+                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(listSites.get(i),j+1);
+            }
+            fiturSpesific.setInboundLink(inboundLinkAppr);
+            System.out.println("Inbound Link Approximation");
+            // Lookup time to access site
+            fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite(listSites.get(i)));
+            System.out.println("Lookup Time");
+
+            // TRUST FEATURES
+            Trust_Feature fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
+            System.out.println("Trust WOT");
+
+            // SET RECORD INSTANCE DATA STRUCTURE
+            SiteRecordReputation recordML = new SiteRecordReputation();
+            recordML.setDNSRecordFeature(fiturDNS);
+            recordML.setSpesificRecordFeature(fiturSpesific);
+            recordML.setTrustRecordFeature(fiturTrust);
+            clusterSite.fillDataIntoInstanceRecord(recordML);
+
+            System.out.println("Situs ke-" + i);
+        }
+
+        // Tulis instance di eksternal file
+        EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
+        // Build Cluster
+      //  clusterSite.buildKmeansReputationModel(clusterSite.getSiteReputationRecord(),5);
     }
 }
