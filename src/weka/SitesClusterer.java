@@ -3,6 +3,7 @@ package weka;
 import data_structure.instance_ML.SiteRecordReputation;
 import weka.core.Attribute;
 import weka.core.FastVector;
+import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.List;
 public class SitesClusterer {
     private int numCluster = 0;
     private Instances siteReputationRecord;
-    List<SiteRecordReputation> recordSiteData;
     private Boolean[] listCombinationRecordType;
 
     /**
@@ -25,7 +25,6 @@ public class SitesClusterer {
      */
     public SitesClusterer(int numCluster, int typeReputation) {
         this.numCluster = numCluster;
-        recordSiteData = new ArrayList<SiteRecordReputation>();
 
         listCombinationRecordType = new Boolean[3];         // DNS, Spesific, Trust
         for (int i=0;i<3;i++) {
@@ -133,15 +132,76 @@ public class SitesClusterer {
         siteReputationRecord = new Instances("Reputation Site Dataset",attributeInstanceRecord,0);
     }
 
+    /**
+     * Insert new reputation record into instances
+     * Assumption : instances have been set properly
+     * @param recordReputation
+     */
     public void fillDataIntoInstanceRecord(SiteRecordReputation recordReputation) {
+       // double[] instanceValues = new double[siteReputationRecord.numAttributes()];
+        List<Object> instanceValues = new ArrayList<Object>();
         if (listCombinationRecordType[0] == true) {
-            
+            // Popular TLD ratio in AS
+            Float[] tldRatio = recordReputation.getDNSRecordFeature().getPopularTLDRatio();
+            for (Float tld : tldRatio) {
+                instanceValues.add(tld);
+            }
+            // Hit AS Ratio in malware / phishing / spamming
+            Integer[] hitASRatio = recordReputation.getDNSRecordFeature().getHitASRatio();
+            for (Integer hit : hitASRatio) {
+                instanceValues.add(hit);
+            }
+            // Distribution name server in AS
+            instanceValues.add(recordReputation.getDNSRecordFeature().getDistributionNSAS());
+            // Name server count
+            instanceValues.add(recordReputation.getDNSRecordFeature().getNumNameServer());
+            // Time To Live Name server
+            instanceValues.add(recordReputation.getDNSRecordFeature().getListNSTTL());
+            // Time To Live DNS A Record
+            instanceValues.add(recordReputation.getDNSRecordFeature().getListDNSRecordTTL());
         }
         if (listCombinationRecordType[1] == true) {
-
+            // Token Count URL
+            instanceValues.add(recordReputation.getSpesificRecordFeature().getTokenCountURL());
+            // Average Token Length URL
+            instanceValues.add(recordReputation.getSpesificRecordFeature().getAverageTokenLengthURL());
+            // SLD ratio from URL (malware, phishing, spamming)
+            double[] SLDRatio = recordReputation.getSpesificRecordFeature().getSLDRatio();
+            for (double sld : SLDRatio) {
+                instanceValues.add(sld);
+            }
+            // Inbound link Approximation (Google, Yahoo, Bing)
+            int[] inboundLink = recordReputation.getSpesificRecordFeature().getInboundLink();
+            for (int link : inboundLink) {
+                instanceValues.add(link);
+            }
+            // Lookup time to access site
+            instanceValues.add(recordReputation.getSpesificRecordFeature().getLookupTime());
         }
         if (listCombinationRecordType[2] == true) {
-
+            // Trustworthy Score
+            instanceValues.add(recordReputation.getTrustRecordFeature().getTrustWorthinessPairValues().getKey());
+            instanceValues.add(recordReputation.getTrustRecordFeature().getTrustWorthinessPairValues().getValue());
+            // Child Safety Score
+            instanceValues.add(recordReputation.getTrustRecordFeature().getChildSafetyPairValues().getKey());
+            instanceValues.add(recordReputation.getTrustRecordFeature().getChildSafetyPairValues().getValue());
+            // Category Estimation Score
+            Integer[] estimationCategories = recordReputation.getTrustRecordFeature().getCategoryEstimateValues();
+            for (Integer category : estimationCategories) {
+                instanceValues.add(category);
+            }
+            // Blacklist Detection Trust
+            Boolean[] blacklistTrust = recordReputation.getTrustRecordFeature().getBlacklistIncluded();
+            for (Boolean blacklist : blacklistTrust) {
+                instanceValues.add(blacklist);
+            }
         }
+        // Create new instance weka then insert it into siteReputationRecord
+        double[] values = new double[instanceValues.size()];
+        for (int i=0;i<instanceValues.size();i++) {
+            values[i] = (Double) instanceValues.get(i);
+        }
+        Instance instance = new Instance(1.0,values);
+        siteReputationRecord.add(instance);
     }
 }
