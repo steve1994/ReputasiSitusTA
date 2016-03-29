@@ -11,8 +11,8 @@ import java.util.List;
  * Created by steve on 29/03/2016.
  */
 public class SitesMLProcessor {
-    private Instances siteReputationRecord;
-    private Boolean[] listCombinationRecordType;
+    protected Instances siteReputationRecord;
+    protected Boolean[] listCombinationRecordType;
 
     public SitesMLProcessor(int typeReputation) {
         listCombinationRecordType = new Boolean[3];         // DNS, Spesific, Trust
