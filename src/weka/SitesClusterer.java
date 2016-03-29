@@ -61,9 +61,10 @@ public class SitesClusterer extends SitesMLProcessor{
         // Create new instance weka then insert it into siteReputationRecord
         double[] values = new double[instanceValues.size()];
         for (int i=0;i<instanceValues.size();i++) {
-            values[i] = (Double) instanceValues.get(i);
+            values[i] = new Double(instanceValues.get(i).toString());
         }
         Instance instance = new Instance(1.0,values);
+
         siteReputationRecord.add(instance);
     }
 
@@ -95,8 +96,11 @@ public class SitesClusterer extends SitesMLProcessor{
     }
 
     public static void main(String[] args) {
-        List<String> listSites = EksternalFile.loadSitesTrainingList(4).getKey();
-        SitesClusterer clusterSite = new SitesClusterer(4,7);
+        // Load tipe site ke-2 (phishing)
+        List<String> listSites = EksternalFile.loadSitesTrainingList(2).getKey();
+        // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
+        SitesClusterer clusterSite = new SitesClusterer(7,4);
+
         clusterSite.configARFFInstance();
         System.out.println("Config ARFF Done");
 
@@ -104,8 +108,8 @@ public class SitesClusterer extends SitesMLProcessor{
             // DNS FEATURES
             DNS_Feature fiturDNS = new DNS_Feature();
             // TLD ratio
-            Sextet<Float,Float,Float,Float,Float,Float> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
-            Float[] TLDRatioList = new Float[6];
+            Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
+            Double[] TLDRatioList = new Double[6];
             TLDRatioList[0] = TLDRatio.getValue0();
             TLDRatioList[1] = TLDRatio.getValue1();
             TLDRatioList[2] = TLDRatio.getValue2();
@@ -115,7 +119,7 @@ public class SitesClusterer extends SitesMLProcessor{
             fiturDNS.setPopularTLDRatio(TLDRatioList);
             System.out.println("TLD Ratio");
             // Hit AS Ratio (malware, phishing, spamming)
-            Float[] HitRatioList = new Float[3];
+            Double[] HitRatioList = new Double[3];
             for (int j=0;j<3;j++) {
                 HitRatioList[j] = DNSExtractor.getHitASRatio(listSites.get(i),j+1);
             }

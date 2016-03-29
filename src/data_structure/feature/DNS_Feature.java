@@ -7,18 +7,18 @@ import java.util.List;
  * Created by steve on 27/03/2016.
  */
 public class DNS_Feature {
-    private Float[] popularTLDRatio;
-    private Float[] hitASRatio;
-    private float distributionNSAS;
+    private Double[] popularTLDRatio;
+    private Double[] hitASRatio;
+    private double distributionNSAS;
     private int numNameServer;
     private List<Integer> listNSTTL;
     private List<Integer> listDNSRecordTTL;
 
-    public Float[] getPopularTLDRatio() {
+    public Double[] getPopularTLDRatio() {
         return popularTLDRatio;
     }
 
-    public void setPopularTLDRatio(Float[] popularTLDRatio) {
+    public void setPopularTLDRatio(Double[] popularTLDRatio) {
         this.popularTLDRatio = popularTLDRatio;
     }
 
@@ -46,26 +46,26 @@ public class DNS_Feature {
         this.numNameServer = numNameServer;
     }
 
-    public float getDistributionNSAS() {
+    public double getDistributionNSAS() {
         return distributionNSAS;
     }
 
-    public void setDistributionNSAS(float distributionNSAS) {
+    public void setDistributionNSAS(double distributionNSAS) {
         this.distributionNSAS = distributionNSAS;
     }
 
-    public Float[] getHitASRatio() {
+    public Double[] getHitASRatio() {
         return hitASRatio;
     }
 
-    public void setHitASRatio(Float[] hitASRatio) {
+    public void setHitASRatio(Double[] hitASRatio) {
         this.hitASRatio = hitASRatio;
     }
 
     public DNS_Feature() {
-        popularTLDRatio = new Float[6];         // com, org, edu, gov, uk, rest
-        hitASRatio = new Float[3];            // malware, phishing, spamming
-        distributionNSAS = 0;
+        popularTLDRatio = new Double[6];         // com, org, edu, gov, uk, rest
+        hitASRatio = new Double[3];            // malware, phishing, spamming
+        distributionNSAS = 0.0;
         numNameServer = 0;
         listNSTTL = new ArrayList<Integer>();
         listDNSRecordTTL = new ArrayList<Integer>();

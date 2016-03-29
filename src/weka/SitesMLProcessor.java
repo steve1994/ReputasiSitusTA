@@ -117,13 +117,13 @@ public class SitesMLProcessor {
         List<Object> instanceValues = new ArrayList<Object>();
         if (listCombinationRecordType[0] == true) {
             // Popular TLD ratio in AS
-            Float[] tldRatio = recordReputation.getDNSRecordFeature().getPopularTLDRatio();
-            for (Float tld : tldRatio) {
+            Double[] tldRatio = recordReputation.getDNSRecordFeature().getPopularTLDRatio();
+            for (Double tld : tldRatio) {
                 instanceValues.add(tld);
             }
             // Hit AS Ratio in malware / phishing / spamming
-            Float[] hitASRatio = recordReputation.getDNSRecordFeature().getHitASRatio();
-            for (Float hit : hitASRatio) {
+            Double[] hitASRatio = recordReputation.getDNSRecordFeature().getHitASRatio();
+            for (Double hit : hitASRatio) {
                 instanceValues.add(hit);
             }
             // Distribution name server in AS

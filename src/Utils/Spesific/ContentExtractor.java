@@ -111,7 +111,7 @@ public class ContentExtractor {
      * @param url
      * @return
      */
-    public static float getAverageDomainTokenLengthURL(String url) {
+    public static double getAverageDomainTokenLengthURL(String url) {
         int domainTokenCount = 0;
         int domainTokenLengthSum = 0;
         StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
@@ -120,7 +120,7 @@ public class ContentExtractor {
             domainTokenLengthSum += token.length();
             domainTokenCount++;
         }
-        return ((float) domainTokenLengthSum / (float) domainTokenCount);
+        return ((double) domainTokenLengthSum / (double) domainTokenCount);
     }
 
     /**
@@ -132,6 +132,7 @@ public class ContentExtractor {
         int domainTokenCount = 0;
         StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
         while (tokenDomain.hasMoreTokens()) {
+            String token = tokenDomain.nextToken();
             domainTokenCount++;
         }
         return domainTokenCount;
@@ -240,6 +241,6 @@ public class ContentExtractor {
             System.out.println(ContentExtractor.getDomainLookupTimeSite("pornhub.com"));
         }*/
 
-        System.out.println(ContentExtractor.getSLDFromURL("facebook.com"));
+        System.out.println(ContentExtractor.getDomainTokenCountURL("ol.akademik.itb.ac.id"));
     }
 }

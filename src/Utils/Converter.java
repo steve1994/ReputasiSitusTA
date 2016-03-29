@@ -70,6 +70,8 @@ public class Converter {
             }
             String[] token = outputCommand.toString().split(" ");
             ASNNumber = Integer.parseInt(token[0].replace("AS",""));
+        } catch (UnknownHostException e) {
+            System.out.println(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }

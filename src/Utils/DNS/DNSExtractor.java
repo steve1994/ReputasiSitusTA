@@ -102,7 +102,7 @@ public class DNSExtractor {
      * @param type
      * @return
      */
-    public static float getHitASRatio(String url, int type) {
+    public static double getHitASRatio(String url, int type) {
         int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
         List<String> listSites = EksternalFile.loadSitesTrainingList(type).getKey();
         int hitASCounter = 0;
@@ -112,7 +112,7 @@ public class DNSExtractor {
                 hitASCounter++;
             }
         }
-        return (float) hitASCounter / (float) 100;
+        return (double) hitASCounter / (double) 100;
     }
 
     /**
@@ -120,7 +120,7 @@ public class DNSExtractor {
      * @param url
      * @return
      */
-    public static Sextet<Float,Float,Float,Float,Float,Float> getTLDDistributionFromAS(String url) {
+    public static Sextet<Double,Double,Double,Double,Double,Double> getTLDDistributionFromAS(String url) {
         HashSet<String> comTLDRetrieved = new HashSet<String>();
         HashSet<String> orgTLDRetrieved = new HashSet<String>();
         HashSet<String> eduTLDRetrieved = new HashSet<String>();
@@ -160,14 +160,14 @@ public class DNSExtractor {
             }
         }
         // Hitung rasio keenam TLD
-        float comRatio = (float) comTLDRetrieved.size() / (float) numNameServersTotal;
-        float orgRatio = (float) orgTLDRetrieved.size() / (float) numNameServersTotal;
-        float eduRatio = (float) eduTLDRetrieved.size() / (float) numNameServersTotal;
-        float govRatio = (float) govTLDRetrieved.size() / (float) numNameServersTotal;
-        float ukRatio = (float) ukTLDRetrieved.size() / (float) numNameServersTotal;
-        float nonPopularRatio = (float) nonPopularTLDRetrieved.size() / (float) numNameServersTotal;
+        double comRatio = (double) comTLDRetrieved.size() / (double) numNameServersTotal;
+        double orgRatio = (double) orgTLDRetrieved.size() / (double) numNameServersTotal;
+        double eduRatio = (double) eduTLDRetrieved.size() / (double) numNameServersTotal;
+        double govRatio = (double) govTLDRetrieved.size() / (double) numNameServersTotal;
+        double ukRatio = (double) ukTLDRetrieved.size() / (double) numNameServersTotal;
+        double nonPopularRatio = (double) nonPopularTLDRetrieved.size() / (double) numNameServersTotal;
 
-        Sextet<Float,Float,Float,Float,Float,Float> sixRatioRetrieved = new Sextet<Float, Float, Float, Float, Float, Float>(comRatio,orgRatio,eduRatio,govRatio,ukRatio,nonPopularRatio);
+        Sextet<Double,Double,Double,Double,Double,Double> sixRatioRetrieved = new Sextet<Double, Double, Double, Double, Double, Double>(comRatio,orgRatio,eduRatio,govRatio,ukRatio,nonPopularRatio);
         return sixRatioRetrieved;
     }
 
@@ -176,7 +176,7 @@ public class DNSExtractor {
      * @param url
      * @return
      */
-    public static float getDistributionNSFromAS(String url) {
+    public static double getDistributionNSFromAS(String url) {
         int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
         List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
         HashSet<String> uniqueHostNameRetrieved = new HashSet<String>();
@@ -192,7 +192,7 @@ public class DNSExtractor {
                 numNameServersTotal++;
             }
         }
-        return ((float) uniqueHostNameRetrieved.size() / (float) numNameServersTotal);
+        return ((double) uniqueHostNameRetrieved.size() / (double) numNameServersTotal);
     }
 
     /**
@@ -228,7 +228,7 @@ public class DNSExtractor {
         // Rasio Hit AS certain list
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
-        Sextet<Float,Float,Float,Float,Float,Float> TLDRatioAS = DNSExtractor.getTLDDistributionFromAS("google.com");
+        Sextet<Double,Double,Double,Double,Double,Double> TLDRatioAS = DNSExtractor.getTLDDistributionFromAS("google.com");
         System.out.println(TLDRatioAS);
     }
 }

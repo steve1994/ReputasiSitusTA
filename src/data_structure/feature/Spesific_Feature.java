@@ -5,7 +5,7 @@ package data_structure.feature;
  */
 public class Spesific_Feature {
     private int tokenCountURL;
-    private float averageTokenLengthURL;
+    private double averageTokenLengthURL;
     private double[] SLDRatio;
     private int[] inboundLink;
     private float lookupTime;
@@ -42,11 +42,11 @@ public class Spesific_Feature {
         this.SLDRatio = SLDRatio;
     }
 
-    public float getAverageTokenLengthURL() {
+    public double getAverageTokenLengthURL() {
         return averageTokenLengthURL;
     }
 
-    public void setAverageTokenLengthURL(float averageTokenLengthURL) {
+    public void setAverageTokenLengthURL(double averageTokenLengthURL) {
         this.averageTokenLengthURL = averageTokenLengthURL;
     }
 
