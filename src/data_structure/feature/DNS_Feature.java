@@ -11,8 +11,8 @@ public class DNS_Feature {
     private Double[] hitASRatio;
     private double distributionNSAS;
     private int numNameServer;
-    private List<Integer> listNSTTL;
-    private List<Integer> listDNSRecordTTL;
+    private Integer listNSTTL;
+    private Integer listDNSRecordTTL;
 
     public Double[] getPopularTLDRatio() {
         return popularTLDRatio;
@@ -22,19 +22,19 @@ public class DNS_Feature {
         this.popularTLDRatio = popularTLDRatio;
     }
 
-    public List<Integer> getListDNSRecordTTL() {
+    public Integer getListDNSRecordTTL() {
         return listDNSRecordTTL;
     }
 
-    public void setListDNSRecordTTL(List<Integer> listDNSRecordTTL) {
+    public void setListDNSRecordTTL(Integer listDNSRecordTTL) {
         this.listDNSRecordTTL = listDNSRecordTTL;
     }
 
-    public List<Integer> getListNSTTL() {
+    public Integer getListNSTTL() {
         return listNSTTL;
     }
 
-    public void setListNSTTL(List<Integer> listNSTTL) {
+    public void setListNSTTL(Integer listNSTTL) {
         this.listNSTTL = listNSTTL;
     }
 
@@ -67,7 +67,7 @@ public class DNS_Feature {
         hitASRatio = new Double[3];            // malware, phishing, spamming
         distributionNSAS = 0.0;
         numNameServer = 0;
-        listNSTTL = new ArrayList<Integer>();
-        listDNSRecordTTL = new ArrayList<Integer>();
+//        listNSTTL = new ArrayList<Integer>();
+//        listDNSRecordTTL = new ArrayList<Integer>();
     }
 }

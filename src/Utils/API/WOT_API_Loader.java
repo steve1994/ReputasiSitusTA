@@ -52,20 +52,20 @@ public class WOT_API_Loader {
         return categoryValueEstimate;
     }
 
-    private static Boolean[] valueOfBlacklistBooleanWOT(HashSet<String> listTypes) {
-        Boolean[] listTypeBlacklists = new Boolean[4];
+    private static Integer[] valueOfBlacklistBooleanWOT(HashSet<String> listTypes) {
+        Integer[] listTypeBlacklists = new Integer[4];
         for (int i=0;i<4;i++) {
-            listTypeBlacklists[i] = false;
+            listTypeBlacklists[i] = 0;
         }
         for (String type : listTypes) {
             if (type.equals("malware")) {
-                listTypeBlacklists[0] = true;
+                listTypeBlacklists[0] = 1;
             } else if (type.equals("phishing")) {
-                listTypeBlacklists[1] = true;
+                listTypeBlacklists[1] = 1;
             } else if (type.equals("scam")) {
-                listTypeBlacklists[2] = true;
+                listTypeBlacklists[2] = 1;
             } else if (type.equals("spam")) {
-                listTypeBlacklists[3] = true;
+                listTypeBlacklists[3] = 1;
             }
         }
         return listTypeBlacklists;

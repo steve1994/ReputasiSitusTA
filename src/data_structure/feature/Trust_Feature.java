@@ -9,7 +9,7 @@ public class Trust_Feature {
     private Pair<Integer,Integer> trustWorthinessPairValues;
     private Pair<Integer,Integer> childSafetyPairValues;
     private Integer[] categoryEstimateValues; // negative, questionable, neutral, positive
-    private Boolean[] blacklistIncluded; // malware, phishing, scam, spam
+    private Integer[] blacklistIncluded; // malware, phishing, scam, spam
 
     public Trust_Feature() {
         trustWorthinessPairValues = new Pair<Integer,Integer>(0,0);
@@ -18,17 +18,17 @@ public class Trust_Feature {
         for (int i=0;i<4;i++) {
             categoryEstimateValues[i] = 0;
         }
-        blacklistIncluded = new Boolean[4];
+        blacklistIncluded = new Integer[4];
         for (int i=0;i<4;i++) {
-            blacklistIncluded[i] = false;
+            blacklistIncluded[i] = 0;
         }
     }
 
-    public Boolean[] getBlacklistIncluded() {
+    public Integer[] getBlacklistIncluded() {
         return blacklistIncluded;
     }
 
-    public void setBlacklistIncluded(Boolean[] blacklistIncluded) {
+    public void setBlacklistIncluded(Integer[] blacklistIncluded) {
         this.blacklistIncluded = blacklistIncluded;
     }
 

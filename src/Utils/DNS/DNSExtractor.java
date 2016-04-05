@@ -200,8 +200,13 @@ public class DNSExtractor {
      * @param url
      * @return
      */
-    public static List<Integer> getNameServerTimeToLive(String url) {
-        return MXToolbox_API_Loader.listNameServerTimeToLive(url);
+    public static Integer getNameServerTimeToLive(String url) {
+        List<Integer> NSTTLList = MXToolbox_API_Loader.listNameServerTimeToLive(url);
+        Integer timeToLive = 0;
+        if (NSTTLList.size() > 0) {
+            timeToLive = NSTTLList.get(0);
+        }
+        return timeToLive;
     }
 
     /**
@@ -209,8 +214,13 @@ public class DNSExtractor {
      * @param url
      * @return
      */
-    public static List<Integer> getDNSRecordTimeToLive(String url) {
-        return MXToolbox_API_Loader.listIPAddressTimeToLive(url);
+    public static Integer getDNSRecordTimeToLive(String url) {
+        List<Integer> IPTTLList = MXToolbox_API_Loader.listIPAddressTimeToLive(url);
+        Integer timeToLive = 0;
+        if (IPTTLList.size() > 0) {
+            timeToLive = IPTTLList.get(0);
+        }
+        return timeToLive;
     }
 
     public static void main(String[] args) {

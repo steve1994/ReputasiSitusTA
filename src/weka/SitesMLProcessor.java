@@ -166,8 +166,8 @@ public class SitesMLProcessor {
                 instanceValues.add(category);
             }
             // Blacklist Detection Trust
-            Boolean[] blacklistTrust = recordReputation.getTrustRecordFeature().getBlacklistIncluded();
-            for (Boolean blacklist : blacklistTrust) {
+            Integer[] blacklistTrust = recordReputation.getTrustRecordFeature().getBlacklistIncluded();
+            for (Integer blacklist : blacklistTrust) {
                 instanceValues.add(blacklist);
             }
         }
