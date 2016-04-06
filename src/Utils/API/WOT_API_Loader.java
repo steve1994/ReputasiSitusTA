@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by steve on 28/01/2016.
@@ -152,20 +149,38 @@ public class WOT_API_Loader {
     }
 
     public static void main(String[] args) {
-        Trust_Feature model = WOT_API_Loader.loadAPIWOTForSite("example.net");
+        List<Object> trustFeature = new ArrayList<Object>();
+
+        long before = System.currentTimeMillis();
+        Trust_Feature model = WOT_API_Loader.loadAPIWOTForSite("0000love.net");
         System.out.println("CATEGORIES");
         for (int i=0;i<4;i++) {
             System.out.println(model.getCategoryEstimateValues()[i]);
+            trustFeature.add(model.getCategoryEstimateValues()[i]);
         }
         System.out.println("BLACKLISTS");
         for (int i=0;i<4;i++) {
             System.out.println(model.getBlacklistIncluded()[i]);
+            trustFeature.add(model.getBlacklistIncluded()[i]);
         }
         System.out.println("TRUST");
-        System.out.println(model.getTrustWorthinessPairValues().getKey());
-        System.out.println(model.getTrustWorthinessPairValues().getValue());
+        System.out.println(model.getTrustWorthinessPairValues().getKey()); trustFeature.add(model.getTrustWorthinessPairValues().getKey());
+        System.out.println(model.getTrustWorthinessPairValues().getValue()); trustFeature.add(model.getTrustWorthinessPairValues().getValue());
         System.out.println("SAFETY");
-        System.out.println(model.getChildSafetyPairValues().getKey());
-        System.out.println(model.getChildSafetyPairValues().getValue());
+        System.out.println(model.getChildSafetyPairValues().getKey()); trustFeature.add(model.getChildSafetyPairValues().getKey());
+        System.out.println(model.getChildSafetyPairValues().getValue()); trustFeature.add(model.getChildSafetyPairValues().getValue());
+
+        System.out.println("============================================================================");
+        // TES ISI FITUR KE INSTANCE WEKA
+        double[] values = new double[trustFeature.size()];
+        for (int i=0;i<trustFeature.size();i++) {
+            values[i] = new Double(trustFeature.get(i).toString());
+        }
+        for (double d : values) {
+            System.out.println(d);
+        }
+        long after = System.currentTimeMillis();
+
+        System.out.println("Waktu eksekusi : " + (after-before));
     }
 }

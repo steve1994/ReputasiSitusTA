@@ -97,18 +97,19 @@ public class SitesClusterer extends SitesMLProcessor{
 
     public static void main(String[] args) {
         // Load tipe site ke-2 (phishing)
-        List<String> listSites = EksternalFile.loadSitesTrainingList(2).getKey();
+       //List<String> listSites = EksternalFile.loadSitesTrainingList(3).getKey();
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         SitesClusterer clusterSite = new SitesClusterer(7,4);
 
         clusterSite.configARFFInstance();
         System.out.println("Config ARFF Done");
 
-        for (int i=0;i<10;i++) {
+        long before = System.currentTimeMillis();
+        for (int i=0;i<1;i++) {
             // DNS FEATURES
             DNS_Feature fiturDNS = new DNS_Feature();
             // TLD ratio
-            Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
+            Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS("0000love.net");
             Double[] TLDRatioList = new Double[6];
             TLDRatioList[0] = TLDRatio.getValue0();
             TLDRatioList[1] = TLDRatio.getValue1();
@@ -121,51 +122,51 @@ public class SitesClusterer extends SitesMLProcessor{
             // Hit AS Ratio (malware, phishing, spamming)
             Double[] HitRatioList = new Double[3];
             for (int j=0;j<3;j++) {
-                HitRatioList[j] = DNSExtractor.getHitASRatio(listSites.get(i),j+1);
+                HitRatioList[j] = DNSExtractor.getHitASRatio("0000love.net",j+1);
             }
             fiturDNS.setHitASRatio(HitRatioList);
             System.out.println("Hit AS Ratio");
             // Name server distribution AS
-            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(listSites.get(i)));
+            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS("0000love.net"));
             System.out.println("Name Server Distribution AS");
             // Name server count
-            fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers(listSites.get(i)));
+            fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers("0000love.net"));
             System.out.println("Name Server Count");
             // TTL Name Servers
-            fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive(listSites.get(i)));
+            fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive("0000love.net"));
             System.out.println("TTL Name Servers");
             // TTL DNS A Records
-            fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive(listSites.get(i)));
+            fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive("0000love.net"));
             System.out.println("TTL DNS Record");
 
             // SPESIFIC FEATURES
             Spesific_Feature fiturSpesific = new Spesific_Feature();
             // Token Count URL
-            fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL(listSites.get(i)));
+            fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL("0000love.net"));
             System.out.println("Token Count URL");
             // Average Token Length URL
-            fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL(listSites.get(i)));
+            fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL("0000love.net"));
             System.out.println("Average Token Length URL");
             // SLD ratio from URL (malware, phishing, spamming)
             double[] SLDRatioList = new double[3];
             for (int j=0;j<3;j++) {
-                SLDRatioList[j] = ContentExtractor.getSLDHitRatio(listSites.get(i),j+1);
+                SLDRatioList[j] = ContentExtractor.getSLDHitRatio("0000love.net",j+1);
             }
             fiturSpesific.setSLDRatio(SLDRatioList);
             System.out.println("SLD Ratio List");
             // Inbound link Approximation (Google, Yahoo, Bing)
             int[] inboundLinkAppr = new int[3];
             for (int j=0;j<3;j++) {
-                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(listSites.get(i),j+1);
+                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults("0000love.net",j+1);
             }
             fiturSpesific.setInboundLink(inboundLinkAppr);
             System.out.println("Inbound Link Approximation");
             // Lookup time to access site
-            fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite(listSites.get(i)));
+            fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite("0000love.net"));
             System.out.println("Lookup Time");
 
             // TRUST FEATURES
-            Trust_Feature fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
+            Trust_Feature fiturTrust = WOT_API_Loader.loadAPIWOTForSite("0000love.net");
             System.out.println("Trust WOT");
 
             // SET RECORD INSTANCE DATA STRUCTURE
@@ -178,8 +179,14 @@ public class SitesClusterer extends SitesMLProcessor{
             System.out.println("Situs ke-" + i);
         }
 
+        long after = System.currentTimeMillis();
+        System.out.println("Instance Filling Payload : " + (after-before) + " ms");
+
         // Tulis instance di eksternal file
         EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
+
+        long after_again = System.currentTimeMillis();
+        System.out.println("Write ARFF Payload : " + (after_again-after) + " ms");
         // Build Cluster
       //  clusterSite.buildKmeansReputationModel(clusterSite.getSiteReputationRecord(),5);
     }

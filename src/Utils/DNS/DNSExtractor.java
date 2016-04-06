@@ -136,7 +136,7 @@ public class DNSExtractor {
             for (String ip : resolvedIPAddress) {
                 String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
                 // Cek apakah bisa dikonversi ke canonical name
-                if (!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) {
+                if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (nameServerConverted != "")) {
                     InternetDomainName idn = InternetDomainName.from(nameServerConverted);
                     if (idn.hasPublicSuffix()) {
                         List<String> parts = idn.parts();
@@ -160,12 +160,17 @@ public class DNSExtractor {
             }
         }
         // Hitung rasio keenam TLD
-        double comRatio = (double) comTLDRetrieved.size() / (double) numNameServersTotal;
-        double orgRatio = (double) orgTLDRetrieved.size() / (double) numNameServersTotal;
-        double eduRatio = (double) eduTLDRetrieved.size() / (double) numNameServersTotal;
-        double govRatio = (double) govTLDRetrieved.size() / (double) numNameServersTotal;
-        double ukRatio = (double) ukTLDRetrieved.size() / (double) numNameServersTotal;
-        double nonPopularRatio = (double) nonPopularTLDRetrieved.size() / (double) numNameServersTotal;
+        double comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio;
+        if (numNameServersTotal > 0) {
+            comRatio = (double) comTLDRetrieved.size() / (double) numNameServersTotal;
+            orgRatio = (double) orgTLDRetrieved.size() / (double) numNameServersTotal;
+            eduRatio = (double) eduTLDRetrieved.size() / (double) numNameServersTotal;
+            govRatio = (double) govTLDRetrieved.size() / (double) numNameServersTotal;
+            ukRatio = (double) ukTLDRetrieved.size() / (double) numNameServersTotal;
+            nonPopularRatio = (double) nonPopularTLDRetrieved.size() / (double) numNameServersTotal;
+        } else {
+            comRatio = orgRatio = eduRatio = govRatio = ukRatio = nonPopularRatio = 0.0;
+        }
 
         Sextet<Double,Double,Double,Double,Double,Double> sixRatioRetrieved = new Sextet<Double, Double, Double, Double, Double, Double>(comRatio,orgRatio,eduRatio,govRatio,ukRatio,nonPopularRatio);
         return sixRatioRetrieved;
@@ -192,7 +197,13 @@ public class DNSExtractor {
                 numNameServersTotal++;
             }
         }
-        return ((double) uniqueHostNameRetrieved.size() / (double) numNameServersTotal);
+        double distributionNSinAS;
+        if (numNameServersTotal > 0) {
+            distributionNSinAS = (double) uniqueHostNameRetrieved.size() / (double) numNameServersTotal;
+        } else {
+            distributionNSinAS = 0.0;
+        }
+        return distributionNSinAS;
     }
 
     /**
@@ -238,7 +249,58 @@ public class DNSExtractor {
         // Rasio Hit AS certain list
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
-        Sextet<Double,Double,Double,Double,Double,Double> TLDRatioAS = DNSExtractor.getTLDDistributionFromAS("google.com");
-        System.out.println(TLDRatioAS);
+
+        String hostName = "0000love.net";
+        List<Object> fiturs = new ArrayList<Object>();
+
+        long before = System.currentTimeMillis();
+        // TLD ratio
+        Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(hostName);
+        Double[] TLDRatioList = new Double[6];
+        TLDRatioList[0] = TLDRatio.getValue0(); fiturs.add(TLDRatioList[0]);
+        TLDRatioList[1] = TLDRatio.getValue1(); fiturs.add(TLDRatioList[1]);
+        TLDRatioList[2] = TLDRatio.getValue2(); fiturs.add(TLDRatioList[2]);
+        TLDRatioList[3] = TLDRatio.getValue3(); fiturs.add(TLDRatioList[3]);
+        TLDRatioList[4] = TLDRatio.getValue4(); fiturs.add(TLDRatioList[4]);
+        TLDRatioList[5] = TLDRatio.getValue5(); fiturs.add(TLDRatioList[5]);
+        System.out.println("TLD Ratio : ");
+        for (Double d : TLDRatioList) {
+            System.out.println(d);
+        }
+        // Hit AS Ratio (malware, phishing, spamming)
+        Double[] HitRatioList = new Double[3];
+        for (int j=0;j<3;j++) {
+            HitRatioList[j] = DNSExtractor.getHitASRatio(hostName,j+1);
+            fiturs.add(HitRatioList[j]);
+        }
+        System.out.println("Hit AS Ratio : ");
+        for (Double d : HitRatioList) {
+            System.out.println(d);
+        }
+        // Name server distribution AS
+        double distributionNS = DNSExtractor.getDistributionNSFromAS(hostName); fiturs.add(distributionNS);
+        System.out.println("Name Server Distribution AS : " + distributionNS);
+        // Name server count
+        int numNameServer = DNSExtractor.getNumNameServers(hostName); fiturs.add(numNameServer);
+        System.out.println("Name Server Count : " + numNameServer);
+        // TTL Name Servers
+        int NSTTL = DNSExtractor.getNameServerTimeToLive(hostName); fiturs.add(NSTTL);
+        System.out.println("TTL Name Servers : " + NSTTL);
+        // TTL DNS A Records
+        int IPTTL = DNSExtractor.getDNSRecordTimeToLive(hostName); fiturs.add(IPTTL);
+        System.out.println("TTL DNS Record : " + IPTTL);
+
+        System.out.println("==================================================================================");
+
+        double[] values = new double[fiturs.size()];
+        for (int i=0;i<fiturs.size();i++) {
+            values[i] = new Double(fiturs.get(i).toString());
+        }
+        for (double d : values) {
+            System.out.println(d);
+        }
+        long after = System.currentTimeMillis();
+
+        System.out.println("Waktu eksekusi : " + (after-before));
     }
 }
