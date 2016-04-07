@@ -95,21 +95,48 @@ public class SitesClusterer extends SitesMLProcessor{
         return siteReputationCluster;
     }
 
+    private static long getAverageListLong(List<Long> listLong) {
+        long sumListLong = 0;
+        for (Long l : listLong) {
+            sumListLong += l;
+        }
+        long average = 0;
+        if (listLong.size() > 0) {
+            average = sumListLong / (long) listLong.size();
+        }
+        return average;
+    }
+
     public static void main(String[] args) {
         // Load tipe site ke-2 (phishing)
-       //List<String> listSites = EksternalFile.loadSitesTrainingList(3).getKey();
+        List<String> listSites = EksternalFile.loadSitesTrainingList(3).getKey();
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         SitesClusterer clusterSite = new SitesClusterer(7,4);
-
         clusterSite.configARFFInstance();
         System.out.println("Config ARFF Done");
 
-        long before = System.currentTimeMillis();
+        // Time performance logger
+        List<Long> listTimeTLDRatioAS = new ArrayList<Long>();
+        List<Long> listTimeHitRatioAS = new ArrayList<Long>();
+        List<Long> listTimeNSDistAS = new ArrayList<Long>();
+        List<Long> listTimeNSCount = new ArrayList<Long>();
+        List<Long> listTimeTTLNS = new ArrayList<Long>();
+        List<Long> listTimeTTLIP = new ArrayList<Long>();
+        List<Long> listTimeTokenCount = new ArrayList<Long>();
+        List<Long> listTimeAvgToken = new ArrayList<Long>();
+        List<Long> listTimeSLDRatio = new ArrayList<Long>();
+        List<Long> listTimeInboundLink = new ArrayList<Long>();
+        List<Long> listTimeLookupTime = new ArrayList<Long>();
+        List<Long> listTimeTrust = new ArrayList<Long>();
+
         for (int i=0;i<1;i++) {
             // DNS FEATURES
             DNS_Feature fiturDNS = new DNS_Feature();
+
+            long beforeDNS = System.currentTimeMillis();
+
             // TLD ratio
-            Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS("0000love.net");
+            Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
             Double[] TLDRatioList = new Double[6];
             TLDRatioList[0] = TLDRatio.getValue0();
             TLDRatioList[1] = TLDRatio.getValue1();
@@ -119,55 +146,107 @@ public class SitesClusterer extends SitesMLProcessor{
             TLDRatioList[5] = TLDRatio.getValue5();
             fiturDNS.setPopularTLDRatio(TLDRatioList);
             System.out.println("TLD Ratio");
+
+            long afterTLDRatio = System.currentTimeMillis();
+
             // Hit AS Ratio (malware, phishing, spamming)
             Double[] HitRatioList = new Double[3];
             for (int j=0;j<3;j++) {
-                HitRatioList[j] = DNSExtractor.getHitASRatio("0000love.net",j+1);
+                HitRatioList[j] = DNSExtractor.getHitASRatio(listSites.get(i),j+1);
             }
             fiturDNS.setHitASRatio(HitRatioList);
             System.out.println("Hit AS Ratio");
+
+            long afterHitRatio = System.currentTimeMillis();
+
             // Name server distribution AS
-            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS("0000love.net"));
+            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(listSites.get(i)));
             System.out.println("Name Server Distribution AS");
+
+            long afterNSDist = System.currentTimeMillis();
+
             // Name server count
-            fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers("0000love.net"));
+            fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers(listSites.get(i)));
             System.out.println("Name Server Count");
+
+            long afterNSCount = System.currentTimeMillis();
+
             // TTL Name Servers
-            fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive("0000love.net"));
+            fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive(listSites.get(i)));
             System.out.println("TTL Name Servers");
+
+            long afterTTLNS = System.currentTimeMillis();
+
             // TTL DNS A Records
-            fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive("0000love.net"));
+            fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive(listSites.get(i)));
             System.out.println("TTL DNS Record");
+
+            long afterTTLIP = System.currentTimeMillis();
 
             // SPESIFIC FEATURES
             Spesific_Feature fiturSpesific = new Spesific_Feature();
+
+            long beforeSpesific = System.currentTimeMillis();
+
             // Token Count URL
-            fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL("0000love.net"));
+            fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL(listSites.get(i)));
             System.out.println("Token Count URL");
+
+            long afterTokenCount = System.currentTimeMillis();
+
             // Average Token Length URL
-            fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL("0000love.net"));
+            fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL(listSites.get(i)));
             System.out.println("Average Token Length URL");
+
+            long afterAvgToken = System.currentTimeMillis();
+
             // SLD ratio from URL (malware, phishing, spamming)
             double[] SLDRatioList = new double[3];
             for (int j=0;j<3;j++) {
-                SLDRatioList[j] = ContentExtractor.getSLDHitRatio("0000love.net",j+1);
+                SLDRatioList[j] = ContentExtractor.getSLDHitRatio(listSites.get(i),j+1);
             }
             fiturSpesific.setSLDRatio(SLDRatioList);
             System.out.println("SLD Ratio List");
+
+            long afterSLDRatio = System.currentTimeMillis();
+
             // Inbound link Approximation (Google, Yahoo, Bing)
             int[] inboundLinkAppr = new int[3];
             for (int j=0;j<3;j++) {
-                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults("0000love.net",j+1);
+                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(listSites.get(i),j+1);
             }
             fiturSpesific.setInboundLink(inboundLinkAppr);
             System.out.println("Inbound Link Approximation");
+
+            long afterInboundLink = System.currentTimeMillis();
+
             // Lookup time to access site
-            fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite("0000love.net"));
+            fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite(listSites.get(i)));
             System.out.println("Lookup Time");
 
+            long afterLookupTime = System.currentTimeMillis();
+
             // TRUST FEATURES
-            Trust_Feature fiturTrust = WOT_API_Loader.loadAPIWOTForSite("0000love.net");
+            long beforeTrust = System.currentTimeMillis();
+
+            Trust_Feature fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
             System.out.println("Trust WOT");
+
+            long afterTrust = System.currentTimeMillis();
+
+            // TIME LOGGER SET
+            listTimeTLDRatioAS.add(afterTLDRatio-beforeDNS);
+            listTimeHitRatioAS.add(afterHitRatio-afterTLDRatio);
+            listTimeNSDistAS.add(afterNSDist-afterHitRatio);
+            listTimeNSCount.add(afterNSCount-afterNSDist);
+            listTimeTTLNS.add(afterTTLNS-afterNSCount);
+            listTimeTTLIP.add(afterTTLIP-afterTTLNS);
+            listTimeTokenCount.add(afterTokenCount-beforeSpesific);
+            listTimeAvgToken.add(afterAvgToken-afterTokenCount);
+            listTimeSLDRatio.add(afterSLDRatio-afterAvgToken);
+            listTimeInboundLink.add(afterInboundLink-afterSLDRatio);
+            listTimeLookupTime.add(afterLookupTime-afterInboundLink);
+            listTimeTrust.add(afterTrust-beforeTrust);
 
             // SET RECORD INSTANCE DATA STRUCTURE
             SiteRecordReputation recordML = new SiteRecordReputation();
@@ -179,14 +258,22 @@ public class SitesClusterer extends SitesMLProcessor{
             System.out.println("Situs ke-" + i);
         }
 
-        long after = System.currentTimeMillis();
-        System.out.println("Instance Filling Payload : " + (after-before) + " ms");
+        System.out.println("Avg Time TLD Ratio AS : " + getAverageListLong(listTimeTLDRatioAS) + " ms");
+        System.out.println("Avg Time Hit Ratio AS : " + getAverageListLong(listTimeHitRatioAS) + " ms");
+        System.out.println("Avg Time NS Distribution AS : " + getAverageListLong(listTimeNSDistAS) + " ms");
+        System.out.println("Avg Time NS Count : " + getAverageListLong(listTimeNSCount) + " ms");
+        System.out.println("Avg Time TTL NS : " + getAverageListLong(listTimeTTLNS) + " ms");
+        System.out.println("Avg Time TTL IP : " + getAverageListLong(listTimeTTLIP) + " ms");
+        System.out.println("Avg Time Token Count : " + getAverageListLong(listTimeTokenCount) + " ms");
+        System.out.println("Avg Time Avg Token : " + getAverageListLong(listTimeAvgToken) + " ms");
+        System.out.println("Avg Time SLD Ratio : " + getAverageListLong(listTimeSLDRatio) + " ms");
+        System.out.println("Avg Time Inbound Link : " + getAverageListLong(listTimeInboundLink) + " ms");
+        System.out.println("Avg Time Lookup Time : " + getAverageListLong(listTimeLookupTime) + " ms");
+        System.out.println("Avg Time Trust : " + getAverageListLong(listTimeTrust) + " ms");
 
         // Tulis instance di eksternal file
         EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
 
-        long after_again = System.currentTimeMillis();
-        System.out.println("Write ARFF Payload : " + (after_again-after) + " ms");
         // Build Cluster
       //  clusterSite.buildKmeansReputationModel(clusterSite.getSiteReputationRecord(),5);
     }

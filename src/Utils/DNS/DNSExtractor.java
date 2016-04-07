@@ -206,6 +206,16 @@ public class DNSExtractor {
         return distributionNSinAS;
     }
 
+    private static Integer getMaxIntegerList(List<Integer> listInteger) {
+        Integer maxInteger = listInteger.get(0);
+        for (int i=1;i<listInteger.size();i++) {
+            if (listInteger.get(i) > maxInteger) {
+                maxInteger = listInteger.get(i);
+            }
+        }
+        return maxInteger;
+    }
+
     /**
      * Return list time to live for each name server owned by url
      * @param url
@@ -215,7 +225,7 @@ public class DNSExtractor {
         List<Integer> NSTTLList = MXToolbox_API_Loader.listNameServerTimeToLive(url);
         Integer timeToLive = 0;
         if (NSTTLList.size() > 0) {
-            timeToLive = NSTTLList.get(0);
+            timeToLive = getMaxIntegerList(NSTTLList);
         }
         return timeToLive;
     }
@@ -229,7 +239,7 @@ public class DNSExtractor {
         List<Integer> IPTTLList = MXToolbox_API_Loader.listIPAddressTimeToLive(url);
         Integer timeToLive = 0;
         if (IPTTLList.size() > 0) {
-            timeToLive = IPTTLList.get(0);
+            timeToLive = getMaxIntegerList(IPTTLList);
         }
         return timeToLive;
     }
@@ -254,6 +264,7 @@ public class DNSExtractor {
         List<Object> fiturs = new ArrayList<Object>();
 
         long before = System.currentTimeMillis();
+
         // TLD ratio
         Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(hostName);
         Double[] TLDRatioList = new Double[6];
@@ -267,6 +278,9 @@ public class DNSExtractor {
         for (Double d : TLDRatioList) {
             System.out.println(d);
         }
+
+        long afterTLD = System.currentTimeMillis();
+
         // Hit AS Ratio (malware, phishing, spamming)
         Double[] HitRatioList = new Double[3];
         for (int j=0;j<3;j++) {
@@ -277,18 +291,32 @@ public class DNSExtractor {
         for (Double d : HitRatioList) {
             System.out.println(d);
         }
+
+        long afterHitRatio = System.currentTimeMillis();
+
         // Name server distribution AS
         double distributionNS = DNSExtractor.getDistributionNSFromAS(hostName); fiturs.add(distributionNS);
         System.out.println("Name Server Distribution AS : " + distributionNS);
+
+        long afterNSDist = System.currentTimeMillis();
+
         // Name server count
         int numNameServer = DNSExtractor.getNumNameServers(hostName); fiturs.add(numNameServer);
         System.out.println("Name Server Count : " + numNameServer);
+
+        long afterNSCount = System.currentTimeMillis();
+
         // TTL Name Servers
         int NSTTL = DNSExtractor.getNameServerTimeToLive(hostName); fiturs.add(NSTTL);
         System.out.println("TTL Name Servers : " + NSTTL);
+
+        long afterTTLNS = System.currentTimeMillis();
+
         // TTL DNS A Records
         int IPTTL = DNSExtractor.getDNSRecordTimeToLive(hostName); fiturs.add(IPTTL);
         System.out.println("TTL DNS Record : " + IPTTL);
+
+        long afterTTLIP = System.currentTimeMillis();
 
         System.out.println("==================================================================================");
 
@@ -302,5 +330,11 @@ public class DNSExtractor {
         long after = System.currentTimeMillis();
 
         System.out.println("Waktu eksekusi : " + (after-before));
+        System.out.println("Waktu eksekusi TLD ratio : " + (afterTLD-before));
+        System.out.println("Waktu eksekusi Hit ratio : " + (afterHitRatio-afterTLD));
+        System.out.println("Waktu eksekusi NS distribution : " + (afterNSDist-afterHitRatio));
+        System.out.println("Waktu eksekusi NS count : " + (afterNSCount-afterNSDist));
+        System.out.println("Waktu eksekusi TTL NS : " + (afterTTLNS-afterNSCount));
+        System.out.println("Waktu eksekusi TTL IP : " + (afterTTLIP-afterTTLNS));
     }
 }

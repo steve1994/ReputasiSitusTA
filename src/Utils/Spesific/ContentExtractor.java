@@ -263,10 +263,16 @@ public class ContentExtractor {
         int tokenCount = ContentExtractor.getDomainTokenCountURL(hostName);
         fiturs.add(tokenCount);
         System.out.println("Token Count : " + tokenCount);
+
+        long afterTokenCount = System.currentTimeMillis();
+
         // Average Token Length URL
         double avgTokenCount = ContentExtractor.getAverageDomainTokenLengthURL(hostName);
         fiturs.add(avgTokenCount);
         System.out.println("Average Token Count : " + avgTokenCount);
+
+        long afterAvgToken = System.currentTimeMillis();
+
         // SLD ratio from URL (malware, phishing, spamming)
         double[] SLDRatioList = new double[3];
         System.out.println("SLD Ratio List : ");
@@ -275,6 +281,9 @@ public class ContentExtractor {
             System.out.println(SLDRatioList[j]);
             fiturs.add(SLDRatioList[j]);
         }
+
+        long afterSLDRatio = System.currentTimeMillis();
+
         // Inbound link Approximation (Google, Yahoo, Bing)
         int[] inboundLinkAppr = new int[3];
         System.out.println("Inbound Link Approximation : ");
@@ -283,10 +292,15 @@ public class ContentExtractor {
             System.out.println(inboundLinkAppr[j]);
             fiturs.add(inboundLinkAppr[j]);
         }
+
+        long afterInboundLink = System.currentTimeMillis();
+
         // Lookup time to access site
         long lookupTime = ContentExtractor.getDomainLookupTimeSite(hostName);
         fiturs.add(lookupTime);
         System.out.println("Lookup Time : " + lookupTime);
+
+        long afterLookup = System.currentTimeMillis();
 
         System.out.println("==========================================================================");
 
@@ -301,5 +315,10 @@ public class ContentExtractor {
         long after = System.currentTimeMillis();
 
         System.out.println("Waktu eksekusi : " + (after-before));
+        System.out.println("Waktu eksekusi token count : " + (afterTokenCount-before));
+        System.out.println("Waktu eksekusi average token count : " + (afterAvgToken-afterTokenCount));
+        System.out.println("Waktu eksekusi SLD ratio : " + (afterSLDRatio-afterAvgToken));
+        System.out.println("Waktu eksekusi Inbound Link : " + (afterInboundLink-afterSLDRatio));
+        System.out.println("Waktu eksekusi Lookup Time : " + (afterLookup-afterInboundLink));
     }
 }
