@@ -1,27 +1,5 @@
 @relation 'Reputation Site Dataset'
 
-@attribute TLD_AS_com numeric
-@attribute TLD_AS_org numeric
-@attribute TLD_AS_edu numeric
-@attribute TLD_AS_gov numeric
-@attribute TLD_AS_uk numeric
-@attribute TLD_AS_rest numeric
-@attribute Hit_AS_mal numeric
-@attribute Hit_AS_phis numeric
-@attribute Hit_AS_spam numeric
-@attribute NS_Dist_AS numeric
-@attribute NS_Count numeric
-@attribute TTL_NS numeric
-@attribute TTL_DNS_Record numeric
-@attribute token_count numeric
-@attribute avg_token_count numeric
-@attribute SLD_URL_mal numeric
-@attribute SLD_URL_phis numeric
-@attribute SLD_URL_spam numeric
-@attribute inbound_link_google numeric
-@attribute inbound_link_yahoo numeric
-@attribute inbound_link_bing numeric
-@attribute lookup_time numeric
 @attribute trust_score_1 numeric
 @attribute trust_score_2 numeric
 @attribute safety_score_1 numeric
@@ -36,13 +14,13 @@
 @attribute blacklist_spam numeric
 
 @data
-0,0,0,0,0,0,0.01,0,0,0,11,0,1440,4,4.25,0.000643,0,0,3660,125000,40,1,2,14,6,9,7,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,544,0,11,604,19,9,8,4,15,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,565,0,10,602,19,9,8,4,15,0,0,0,0,0,0,0
-0,0,0,0,0.000929,0.003714,0.01,0,0,0.005107,2,0,60,8,5.25,0.000643,0,0,426,7420,1010,1,37,7,8,7,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,804,0,12,456,43,6,8,5,5,0,0,0,0,0,0,0
-0,0,0,0,0,0.035714,0.04,0,0,0.035714,9,0,5,3,6,0.000643,0,0,9410,0,23,1,5,12,8,7,8,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,5.333333,0.028278,0,0,353,0,11,3673,20,9,7,3,15,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,942,0,10,457,19,9,8,4,15,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,5.666667,0.028278,0,0,869,10,10,548,19,9,8,4,15,0,0,0,0,0,0,0
-0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,1170,0,16,551,20,9,8,3,21,0,0,0,0,0,0,0
+94,73,92,65,0,0,46,99,0,0,0,0
+85,56,77,41,0,0,16,96,0,0,0,0
+92,66,83,48,0,0,14,100,0,0,0,0
+84,44,82,39,0,0,26,97,0,0,0,0
+94,75,93,69,0,0,9,99,0,0,0,0
+94,81,94,72,0,0,5,100,0,0,0,0
+94,66,93,59,0,0,10,99,0,0,0,0
+78,40,74,34,0,0,0,100,0,0,0,0
+94,56,91,51,0,0,26,98,0,0,0,0
+93,68,88,53,0,0,12,92,0,0,0,0

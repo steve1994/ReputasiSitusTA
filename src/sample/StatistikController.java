@@ -8,13 +8,20 @@ import data_structure.feature.DNS_Feature;
 import data_structure.feature.Spesific_Feature;
 import data_structure.feature.Trust_Feature;
 import data_structure.instance_ML.SiteRecordReputation;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 import org.javatuples.Pair;
 import org.javatuples.Sextet;
 import weka.SitesClusterer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +37,7 @@ public class StatistikController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
-        SitesClusterer clusterSite = new SitesClusterer(7,4);
+        SitesClusterer clusterSite = new SitesClusterer(StaticVars.reputationType,4);
         clusterSite.configARFFInstance();
         System.out.println("Config ARFF Done");
 
@@ -222,5 +229,17 @@ public class StatistikController implements Initializable{
 
         // Tulis instance di eksternal file
         EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
+    }
+
+    public void handleBackButton(ActionEvent actionEvent) {
+        // Go into Statistic screens
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
     }
 }

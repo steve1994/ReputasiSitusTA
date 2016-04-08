@@ -92,6 +92,8 @@ public class ContentExtractor {
                         inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
+                    } catch (NullPointerException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case 2:
@@ -99,6 +101,8 @@ public class ContentExtractor {
                         Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
                         inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya", "").replace(" hasil", "").replace(",", ""));
                     } catch (NumberFormatException e) {
+                        System.out.println(e.getMessage());
+                    } catch (NullPointerException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -108,6 +112,8 @@ public class ContentExtractor {
                         String[] tokenResults4 = numResults4.text().split(" ");
                         inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
                     } catch (NumberFormatException e) {
+                        System.out.println(e.getMessage());
+                    } catch (NullPointerException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
