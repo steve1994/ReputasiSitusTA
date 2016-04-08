@@ -8,6 +8,7 @@ import data_structure.feature.DNS_Feature;
 import data_structure.feature.Spesific_Feature;
 import data_structure.feature.Trust_Feature;
 import data_structure.instance_ML.SiteRecordReputation;
+import org.javatuples.Pair;
 import org.javatuples.Sextet;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Attribute;
@@ -95,7 +96,7 @@ public class SitesClusterer extends SitesMLProcessor{
         return siteReputationCluster;
     }
 
-    private static long getAverageListLong(List<Long> listLong) {
+    public static long getAverageListLong(List<Long> listLong) {
         long sumListLong = 0;
         for (Long l : listLong) {
             sumListLong += l;
@@ -109,7 +110,8 @@ public class SitesClusterer extends SitesMLProcessor{
 
     public static void main(String[] args) {
         // Load tipe site ke-2 (phishing)
-        List<String> listSites = EksternalFile.loadSitesTrainingList(3).getKey();
+        List<String> listSites = EksternalFile.loadSitesTrainingList(1).getKey();
+
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         SitesClusterer clusterSite = new SitesClusterer(7,4);
         clusterSite.configARFFInstance();
@@ -129,7 +131,7 @@ public class SitesClusterer extends SitesMLProcessor{
         List<Long> listTimeLookupTime = new ArrayList<Long>();
         List<Long> listTimeTrust = new ArrayList<Long>();
 
-        for (int i=0;i<1;i++) {
+        for (int i=0;i<10;i++) {
             // DNS FEATURES
             DNS_Feature fiturDNS = new DNS_Feature();
 
@@ -258,21 +260,29 @@ public class SitesClusterer extends SitesMLProcessor{
             System.out.println("Situs ke-" + i);
         }
 
+        System.out.println("FITUR DNS : ");
         System.out.println("Avg Time TLD Ratio AS : " + getAverageListLong(listTimeTLDRatioAS) + " ms");
         System.out.println("Avg Time Hit Ratio AS : " + getAverageListLong(listTimeHitRatioAS) + " ms");
         System.out.println("Avg Time NS Distribution AS : " + getAverageListLong(listTimeNSDistAS) + " ms");
         System.out.println("Avg Time NS Count : " + getAverageListLong(listTimeNSCount) + " ms");
         System.out.println("Avg Time TTL NS : " + getAverageListLong(listTimeTTLNS) + " ms");
         System.out.println("Avg Time TTL IP : " + getAverageListLong(listTimeTTLIP) + " ms");
+        System.out.println("FITUR SPESIFIK : ");
         System.out.println("Avg Time Token Count : " + getAverageListLong(listTimeTokenCount) + " ms");
         System.out.println("Avg Time Avg Token : " + getAverageListLong(listTimeAvgToken) + " ms");
         System.out.println("Avg Time SLD Ratio : " + getAverageListLong(listTimeSLDRatio) + " ms");
         System.out.println("Avg Time Inbound Link : " + getAverageListLong(listTimeInboundLink) + " ms");
         System.out.println("Avg Time Lookup Time : " + getAverageListLong(listTimeLookupTime) + " ms");
+        System.out.println("FITUR TRUST : ");
         System.out.println("Avg Time Trust : " + getAverageListLong(listTimeTrust) + " ms");
 
         // Tulis instance di eksternal file
         EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
+        // Tulis statistik non null data tiap attribute terlibat
+        List<Pair<String,Double>> percentageNotNullData = clusterSite.getPercentageNotNullData(clusterSite.getSiteReputationRecord());
+        for (Pair<String,Double> percent : percentageNotNullData) {
+            System.out.println("Attribute Name : " + percent.getValue0() + "  Percentage not null data : " + percent.getValue1());
+        }
 
         // Build Cluster
       //  clusterSite.buildKmeansReputationModel(clusterSite.getSiteReputationRecord(),5);

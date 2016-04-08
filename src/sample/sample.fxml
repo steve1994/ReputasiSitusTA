@@ -1,8 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.GridPane?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="sample.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+
+<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <children>
+          <RadioButton fx:id="malwareRadioButton" layoutX="45.0" layoutY="52.0" mnemonicParsing="false" text="Malware Sites" />
+          <Label layoutX="25.0" layoutY="29.0" text="Sites Training Type :" />
+          <RadioButton fx:id="phishingRadioButton" layoutX="45.0" layoutY="76.0" mnemonicParsing="false" text="Phishing Sites" />
+          <RadioButton fx:id="spammingRadioButton" layoutX="45.0" layoutY="100.0" mnemonicParsing="false" text="Spamming Sites" />
+          <Label layoutX="25.0" layoutY="151.0" text="Site Number Proceed :" />
+          <TextField fx:id="numSitesTextField" layoutX="159.0" layoutY="147.0" prefHeight="25.0" prefWidth="327.0" />
+          <Label layoutX="25.0" layoutY="179.0" text="Reputation Features :" />
+          <RadioButton fx:id="popularRadioButton" layoutX="45.0" layoutY="123.0" mnemonicParsing="false" text="Popular Sites" />
+          <CheckBox fx:id="optionDNSCheckBox" layoutX="42.0" layoutY="205.0" mnemonicParsing="false" text="DNS " />
+          <CheckBox fx:id="optionSpesificCheckBox" layoutX="42.0" layoutY="233.0" mnemonicParsing="false" text="Site's Spesific Info" />
+          <CheckBox fx:id="optionTrustCheckBox" layoutX="42.0" layoutY="262.0" mnemonicParsing="false" text="Trust Collaboration" />
+          <Button layoutX="25.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleTrainingDataFeatures" text="SUBMIT" />
+    </children>
+</AnchorPane>

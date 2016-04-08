@@ -13,6 +13,36 @@
 @attribute NS_Count numeric
 @attribute TTL_NS numeric
 @attribute TTL_DNS_Record numeric
+@attribute token_count numeric
+@attribute avg_token_count numeric
+@attribute SLD_URL_mal numeric
+@attribute SLD_URL_phis numeric
+@attribute SLD_URL_spam numeric
+@attribute inbound_link_google numeric
+@attribute inbound_link_yahoo numeric
+@attribute inbound_link_bing numeric
+@attribute lookup_time numeric
+@attribute trust_score_1 numeric
+@attribute trust_score_2 numeric
+@attribute safety_score_1 numeric
+@attribute safety_score_2 numeric
+@attribute category_negative numeric
+@attribute category_questionable numeric
+@attribute category_neutral numeric
+@attribute category_positive numeric
+@attribute blacklist_mal numeric
+@attribute blacklist_phis numeric
+@attribute blacklist_scam numeric
+@attribute blacklist_spam numeric
 
 @data
-0,0,0,0,0,0,0.33,0.24,0.99,0,0,0,0
+0,0,0,0,0,0,0.01,0,0,0,11,0,1440,4,4.25,0.000643,0,0,3660,125000,40,1,2,14,6,9,7,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,544,0,11,604,19,9,8,4,15,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,565,0,10,602,19,9,8,4,15,0,0,0,0,0,0,0
+0,0,0,0,0.000929,0.003714,0.01,0,0,0.005107,2,0,60,8,5.25,0.000643,0,0,426,7420,1010,1,37,7,8,7,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,804,0,12,456,43,6,8,5,5,0,0,0,0,0,0,0
+0,0,0,0,0,0.035714,0.04,0,0,0.035714,9,0,5,3,6,0.000643,0,0,9410,0,23,1,5,12,8,7,8,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,5.333333,0.028278,0,0,353,0,11,3673,20,9,7,3,15,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,942,0,10,457,19,9,8,4,15,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,5.666667,0.028278,0,0,869,10,10,548,19,9,8,4,15,0,0,0,0,0,0,0
+0,0,0,0,0,0,0.34,0.24,0.99,0,0,0,0,3,4.666667,0.028278,0,0,1170,0,16,551,20,9,8,3,21,0,0,0,0,0,0,0

@@ -115,6 +115,24 @@ public class DNSExtractor {
         return (double) hitASCounter / (double) 100;
     }
 
+//     static class hitASRatioThread implements Runnable {
+//         private int controlURLASN;
+//         private String siteComparerURL;
+//
+//         public hitASRatioThread(int controlURLASN, String siteComparerURL) {
+//             this.controlURLASN = controlURLASN;
+//             this.siteComparerURL = siteComparerURL;
+//         }
+//
+//         @Override
+//         public void run() {
+//             int siteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(siteComparerURL));
+//             if (controlURLASN == siteASN) {
+//                 hitASCounter++;
+//             }
+//         }
+//     }
+
     /**
      * Return distribution top level domain from Site's Autonomous System (.com, .org, .edu, .gov., .uk)
      * @param url

@@ -1,7 +1,9 @@
 package weka;
 
 import data_structure.instance_ML.SiteRecordReputation;
+import org.javatuples.Pair;
 import weka.core.Attribute;
+import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class SitesMLProcessor {
     protected Instances siteReputationRecord;
     protected Boolean[] listCombinationRecordType;
 
-    public SitesMLProcessor(int typeReputation) {
+    protected SitesMLProcessor(int typeReputation) {
         listCombinationRecordType = new Boolean[3];         // DNS, Spesific, Trust
         for (int i=0;i<3;i++) {
             listCombinationRecordType[i] = false;
@@ -50,7 +52,7 @@ public class SitesMLProcessor {
         }
     }
 
-    public List<Attribute> getInstanceAttributes() {
+    protected List<Attribute> getInstanceAttributes() {
         List<Attribute> overallInstanceVector = new ArrayList<Attribute>();
         // DNS
         if (listCombinationRecordType[0] == true) {
@@ -113,7 +115,7 @@ public class SitesMLProcessor {
         return overallInstanceVector;
     }
 
-    public List<Object> getInstanceRecord(SiteRecordReputation recordReputation) {
+    protected List<Object> getInstanceRecord(SiteRecordReputation recordReputation) {
         List<Object> instanceValues = new ArrayList<Object>();
         if (listCombinationRecordType[0] == true) {
             // Popular TLD ratio in AS
@@ -172,5 +174,43 @@ public class SitesMLProcessor {
             }
         }
         return instanceValues;
+    }
+
+    /**
+     * Get statistic about not null data percentage each attribute per instance weka
+     * @param instances
+     * @return
+     */
+    public List<Pair<String,Double>> getPercentageNotNullData(Instances instances) {
+        List<Pair<String,Double>> vectorPercentageEachAttribute = new ArrayList<Pair<String, Double>>();
+
+        // Initialize counter not null data for each attribute
+        int[] counterNotNullData = new int[instances.numAttributes()];
+        for (int i=0;i<instances.numAttributes();i++) {
+            counterNotNullData[i] = 0;
+        }
+        // Enumerate instance to get not null data for each attribute
+        for (int i=0;i<instances.numInstances();i++) {
+            Instance thisInstance = instances.instance(i);
+            for (int j=0;j<instances.numAttributes();j++) {
+                double valueThisAttribute = thisInstance.value(j);
+                String attrName = thisInstance.attribute(j).name();
+                if (attrName.equals("token_count") || attrName.equals("avg_token_count") || attrName.equals("lookup_time")) {
+                    counterNotNullData[j]++;
+                } else {
+                    if (valueThisAttribute > 0) {
+                        counterNotNullData[j]++;
+                    }
+                }
+            }
+        }
+        // Calculate not null data percentage based on counter
+        for (int i=0;i<instances.numAttributes();i++) {
+            double percentageThisAttr = (double) counterNotNullData[i] / (double) instances.numInstances();
+            String nameAttr = instances.attribute(i).name();
+            vectorPercentageEachAttribute.add(new Pair<String, Double>(nameAttr,percentageThisAttr));
+        }
+
+        return vectorPercentageEachAttribute;
     }
 }

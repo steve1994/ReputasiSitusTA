@@ -209,10 +209,14 @@ public class ContentExtractor {
 
         double totalSitesSLDMatch = 0.0;
         for (int i=0;i<listSites.size();i++) {
-            String SLDCheckList = getSLDFromURL(listSites.get(i));
-            String SLDThisURL = getSLDFromURL(url);
-            if (SLDThisURL.equals(SLDCheckList)) {
-                totalSitesSLDMatch++;
+            try {
+                String SLDCheckList = getSLDFromURL(listSites.get(i));
+                String SLDThisURL = getSLDFromURL(url);
+                if (SLDThisURL.equals(SLDCheckList)) {
+                    totalSitesSLDMatch++;
+                }
+            } catch (NullPointerException e) {
+                System.out.println(e.getMessage());
             }
         }
 

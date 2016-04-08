@@ -1,5 +1,8 @@
 package Utils;
 
+import Utils.API.MXToolbox_API_Loader;
+import Utils.DNS.DNSExtractor;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,14 +27,15 @@ public class Converter {
     }
 
     public static String convertHostNameIntoIPAddress(String hostName) {
-        String IPAddress = "";
-        try {
-            InetAddress addr = InetAddress.getByName(hostName);
-            IPAddress = addr.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return IPAddress;
+//        String IPAddress = "";
+//        try {
+//            InetAddress addr = InetAddress.getByName(hostName);
+//            IPAddress = addr.getHostAddress();
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//        }
+//        return IPAddress;
+        return MXToolbox_API_Loader.HostNameToIPAddress(hostName);
     }
 
     public static List<String> convertPrefixIntoResolvedIPAddress(String IPPrefix) {
@@ -57,33 +61,45 @@ public class Converter {
     }
 
     public static int convertIPAddressIntoASN(String IPAddress) {
-        int ASNNumber = -9999;
-        Runtime rt = Runtime.getRuntime();
-        String commandExec = "curl ipinfo.io/" + IPAddress + "/org";
-        try {
-            Process pr = rt.exec(commandExec);
-            BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            StringBuffer outputCommand = new StringBuffer();
-            String line = "";
-            while ((line = commandReader.readLine()) != null) {
-                outputCommand.append(line + "\n");
+        int ASNNumber = 0;
+
+        if (IPAddress != "") {
+            Runtime rt = Runtime.getRuntime();
+            String commandExec = "curl ipinfo.io/" + IPAddress + "/org";
+            try {
+                Process pr = rt.exec(commandExec);
+                BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                StringBuffer outputCommand = new StringBuffer();
+                String line = "";
+                while ((line = commandReader.readLine()) != null) {
+                    outputCommand.append(line + "\n");
+                }
+                String[] token = outputCommand.toString().split(" ");
+                ASNNumber = Integer.parseInt(token[0].replace("AS", ""));
+            } catch (UnknownHostException e) {
+                System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            String[] token = outputCommand.toString().split(" ");
-            ASNNumber = Integer.parseInt(token[0].replace("AS",""));
-        } catch (UnknownHostException e) {
-            System.out.println(e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
         return ASNNumber;
     }
 
     public static void main(String[] args) {
-        List<String> ipAddress = Converter.convertPrefixIntoResolvedIPAddress("217.16.179.17/32");
-        for (String ip : ipAddress) {
-            System.out.println(Converter.convertIPAddressIntoHostName(ip));
+//        List<String> ipAddress = Converter.convertPrefixIntoResolvedIPAddress("217.16.179.17/32");
+//        for (String ip : ipAddress) {
+//            System.out.println(Converter.convertIPAddressIntoHostName(ip));
+//        }
+        long before = System.currentTimeMillis();
+        Double[] HitRatioList = new Double[3];
+        for (int j=0;j<3;j++) {
+            HitRatioList[j] = DNSExtractor.getHitASRatio("0000love.net",j+1);
         }
+        long after_1 = System.currentTimeMillis();
+
+        System.out.println((after_1-before));
     }
 }
