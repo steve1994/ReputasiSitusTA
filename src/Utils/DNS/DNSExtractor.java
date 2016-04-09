@@ -103,35 +103,19 @@ public class DNSExtractor {
      * @return
      */
     public static double getHitASRatio(String url, int type) {
-        int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
-        List<String> listSites = EksternalFile.loadSitesTrainingList(type).getKey();
         int hitASCounter = 0;
-        for (int i=0;i<100;i++) {
-            int siteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(listSites.get(i)));
-            if (siteASN == thisURLASN) {
-                hitASCounter++;
+        int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
+        if (thisURLASN > 0) {  // Sites not detected or null
+            List<String> listSites = EksternalFile.loadSitesTrainingList(type).getKey();
+            for (int i = 0; i < 100; i++) {
+                int siteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(listSites.get(i)));
+                if (siteASN == thisURLASN) {
+                    hitASCounter++;
+                }
             }
         }
         return (double) hitASCounter / (double) 100;
     }
-
-//     static class hitASRatioThread implements Runnable {
-//         private int controlURLASN;
-//         private String siteComparerURL;
-//
-//         public hitASRatioThread(int controlURLASN, String siteComparerURL) {
-//             this.controlURLASN = controlURLASN;
-//             this.siteComparerURL = siteComparerURL;
-//         }
-//
-//         @Override
-//         public void run() {
-//             int siteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(siteComparerURL));
-//             if (controlURLASN == siteASN) {
-//                 hitASCounter++;
-//             }
-//         }
-//     }
 
     /**
      * Return distribution top level domain from Site's Autonomous System (.com, .org, .edu, .gov., .uk)
@@ -200,19 +184,21 @@ public class DNSExtractor {
      * @return
      */
     public static double getDistributionNSFromAS(String url) {
-        int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
-        List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
-        HashSet<String> uniqueHostNameRetrieved = new HashSet<String>();
         int numNameServersTotal = 0;
-        for (String IPPrefix : listIPPrefixes) {
-            List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
-            for (String ip : resolvedIPAddress) {
-                String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
-                // Cek apakah bisa dikonversi ke canonical name
-                if (!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) {
-                    uniqueHostNameRetrieved.add(nameServerConverted);
+        HashSet<String> uniqueHostNameRetrieved = new HashSet<String>();
+        int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
+        if (ASNumberThisURL > 0) {  // Sites not detected or null
+            List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
+            for (String IPPrefix : listIPPrefixes) {
+                List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
+                for (String ip : resolvedIPAddress) {
+                    String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
+                    // Cek apakah bisa dikonversi ke canonical name
+                    if (!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) {
+                        uniqueHostNameRetrieved.add(nameServerConverted);
+                    }
+                    numNameServersTotal++;
                 }
-                numNameServersTotal++;
             }
         }
         double distributionNSinAS;
