@@ -25,10 +25,6 @@ import java.util.List;
 public class SitesClusterer extends SitesMLProcessor{
     private int numCluster = 0;
 
-    public Instances getSiteReputationRecord() {
-        return siteReputationRecord;
-    }
-
     /**
      * Konstruktor struktur data record reputasi situs terdiri dari 7 kombinasi :
      * 1 (T,F,F) 2 (F,T,F) 3 (F,F,T) 4 (T,T,F) 5 (T,F,T) 6 (F,T,T) 7 (T,T,T)
