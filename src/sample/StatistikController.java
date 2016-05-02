@@ -228,7 +228,9 @@ public class StatistikController implements Initializable{
         percentageNullStat.setText(percentageNotNullPerAttribute.toString());
 
         // Tulis instance di eksternal file
-        EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
+        String fileName = "num_" + StaticVars.numSitesTraining + ".type_" + StaticVars.reputationType + ".unsupervised.txt";
+        String pathName = "database/weka/" + fileName;
+        EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord(),pathName);
     }
 
     public void handleBackButton(ActionEvent actionEvent) {

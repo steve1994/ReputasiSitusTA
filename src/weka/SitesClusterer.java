@@ -106,10 +106,13 @@ public class SitesClusterer extends SitesMLProcessor{
 
     public static void main(String[] args) {
         // Load tipe site ke-2 (phishing)
-        List<String> listSites = EksternalFile.loadSitesTrainingList(1).getKey();
+        int typeList = 1;
+        List<String> listSites = EksternalFile.loadSitesTrainingList(typeList).getKey();
 
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
-        SitesClusterer clusterSite = new SitesClusterer(7,4);
+        int typeReputation = 7;
+        int numCluster = 4;
+        SitesClusterer clusterSite = new SitesClusterer(typeReputation,numCluster);
         clusterSite.configARFFInstance();
         System.out.println("Config ARFF Done");
 
@@ -273,7 +276,9 @@ public class SitesClusterer extends SitesMLProcessor{
         System.out.println("Avg Time Trust : " + getAverageListLong(listTimeTrust) + " ms");
 
         // Tulis instance di eksternal file
-        EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord());
+        String fileName = "type_" + typeReputation + ".numcluster_" + numCluster + ".unsupervised.txt";
+        String pathName = "database/weka/" + fileName;
+        EksternalFile.saveInstanceWekaToExternalARFF(clusterSite.getSiteReputationRecord(),pathName);
         // Tulis statistik non null data tiap attribute terlibat
         List<Pair<String,Double>> percentageNotNullData = clusterSite.getPercentageNotNullData(clusterSite.getSiteReputationRecord());
         for (Pair<String,Double> percent : percentageNotNullData) {

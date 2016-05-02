@@ -112,13 +112,30 @@ public class EksternalFile {
     /**
      * Save weka instances to external file
      * @param instances
+     * @param path
      */
-    public static void saveInstanceWekaToExternalARFF(Instances instances) {
+    public static void saveInstanceWekaToExternalARFF(Instances instances, String path) {
         try {
-            ConverterUtils.DataSink.write("database/weka/siteReputation.arff",instances);
+//            ConverterUtils.DataSink.write("database/weka/siteReputation.arff",instances);
+            ConverterUtils.DataSink.write(path,instances);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Save raw content (anything) into eksternal file in spesific path
+     * @param rawContent
+     * @param path
+     */
+    public static void saveRawContentToEksternalFile(String rawContent, String path) {
+        FileOutputStream fout = null;
+        try {
+            fout = new FileOutputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        new PrintStream(fout).print(rawContent);
     }
 
     /**
