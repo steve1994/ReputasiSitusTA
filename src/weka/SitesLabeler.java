@@ -18,6 +18,7 @@ import weka.classifiers.trees.J48;
 import weka.core.*;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
@@ -93,7 +94,7 @@ public class SitesLabeler extends SitesMLProcessor{
         switch (classifierType) {
             default:
             case 1:
-                classifier = new NaiveBayes();
+                classifier = new Id3();
                 try {
                     classifier.buildClassifier(instances);
                 } catch (Exception e) {
@@ -101,7 +102,7 @@ public class SitesLabeler extends SitesMLProcessor{
                 }
                 break;
             case 2:
-                classifier = new Id3();
+                classifier = new NaiveBayes();
                 try {
                     classifier.buildClassifier(instances);
                 } catch (Exception e) {
@@ -142,9 +143,10 @@ public class SitesLabeler extends SitesMLProcessor{
         List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
-        for (int k=0;k<3;k++) {
+        int numSitesEachType = 50;
+        for (int k=0;k<3;k++) {     // Phishing, Malware, Spamming
             List<String> listSites = EksternalFile.loadSitesTrainingList(k+1).getKey();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < numSitesEachType; i++) {
                 // DNS FEATURES
                 DNS_Feature fiturDNS = new DNS_Feature();
 
@@ -283,9 +285,17 @@ public class SitesLabeler extends SitesMLProcessor{
 
         // Pisahkan instances ke dalam golongan malware / phishing / spamming
         Instances allInstancesRecordSite = labeledSite.getSiteReputationRecord();
-        Instances malwareInstances = null;
-        Instances phishingInstances = null;
-        Instances spammingInstances = null;
+        // Extract attributes from allInstancesRecordSite
+        Enumeration attributesRecordSite = allInstancesRecordSite.enumerateAttributes();
+        FastVector instancesAttributes = new FastVector();
+        while (attributesRecordSite.hasMoreElements()) {
+            instancesAttributes.addElement((Attribute) attributesRecordSite.nextElement());
+        }
+        instancesAttributes.addElement(allInstancesRecordSite.classAttribute());
+        // Divide allInstancesRecordSite based on site class
+        Instances malwareInstances = new Instances("malware_instances",instancesAttributes,0);
+        Instances phishingInstances = new Instances("phishing_instances",instancesAttributes,0);
+        Instances spammingInstances = new Instances("spamming_instances",instancesAttributes,0);
         for (int i=0;i<allInstancesRecordSite.numInstances();i++) {
             int indexClassThisInstance = (int) allInstancesRecordSite.instance(i).classValue();
             if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "malware") {
@@ -296,35 +306,41 @@ public class SitesLabeler extends SitesMLProcessor{
                 spammingInstances.add(allInstancesRecordSite.instance(i));
             }
         }
+
         // Secara bertahap dari jumlah training 1-100 (iterasi 10), evaluasi hasil pembelajaran
         StringBuffer statisticEvaluationReport = new StringBuffer();
-        for (int numSitesEachType = 10; numSitesEachType <= 100; numSitesEachType = numSitesEachType + 10) {
-            // Bentuk Training Record Secara Bertahap
-            Instances trainingRecordSites = null;
-            for (int j=0;j<numSitesEachType;j++) {
-                trainingRecordSites.add(malwareInstances.instance(j));
-                trainingRecordSites.add(phishingInstances.instance(j));
-                trainingRecordSites.add(spammingInstances.instance(j));
-            }
-            // Tulis instance di eksternal file
-            String fileName = "num_" + numSitesEachType + ".type_" + typeReputation + ".supervised.arff";
-            String pathName = "database/weka/" + fileName;
-            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites,pathName);
-            // Evaluasi Hasil Pembelajaran
-            statisticEvaluationReport.append("\nNum Sites : " + numSitesEachType + "\n\n");
-            for (int k=0;k<3;k++) {
-                statisticEvaluationReport.append("\nAlgoritma Pembelajaran Supervised Learning ke-" + (k + 1) + " : \n\n");
-                Classifier siteClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites, (k + 1));
-                try {
-                    // Full Training
-                    Evaluation evalLabeledSite1 = new Evaluation(labeledSite.getSiteReputationRecord());
-                    evalLabeledSite1.evaluateModel(siteClassifier, labeledSite.getSiteReputationRecord());
-                    statisticEvaluationReport.append(evalLabeledSite1.toSummaryString("\nResults Full-Training\n\n", false));
-                    // Cross Validation
-                    Evaluation evalLabeledSite2 = new Evaluation(labeledSite.getSiteReputationRecord());
-                    evalLabeledSite2.crossValidateModel(siteClassifier, labeledSite.getSiteReputationRecord(), 10, new Random(1));
-                    statisticEvaluationReport.append(evalLabeledSite2.toSummaryString("\nResults Cross-Validation\n\n", false));
-                    // Test Set Validation (ambil 10 situs terakhir di daftar phishing / spamming / malware)
+        for (int i = 0; i <= numSitesEachType; i=i+5) {
+            if (i > 0) {
+                // Bentuk Training Record Secara Bertahap
+                Instances trainingRecordSites = new Instances("mixed_instances", instancesAttributes, 0);
+                for (int j = 0; j < i; j++) {
+                    trainingRecordSites.add(malwareInstances.instance(j));
+                    trainingRecordSites.add(phishingInstances.instance(j));
+                    trainingRecordSites.add(spammingInstances.instance(j));
+                }
+                trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes() - 1);
+                System.out.println("TRAINING RECORD SITES ATTR NUM : " + trainingRecordSites.numAttributes());
+                System.out.println("NUMBER INSTANCES : " + trainingRecordSites.numInstances());
+                // Tulis instance di eksternal file
+                String fileName = "num_" + i + ".type_" + typeReputation + ".supervised.arff";
+                String pathName = "database/weka/" + fileName;
+                EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
+                // Evaluasi Hasil Pembelajaran
+                statisticEvaluationReport.append("===========================================================\n\nNUM SITES : " + i + "\n\n");
+                for (int k = 1; k < 3; k++) {     // Algoritma Naive Bayes, J48
+                    statisticEvaluationReport.append("\nAlgoritma Pembelajaran Supervised Learning ke-" + (k + 1) + " : \n\n");
+                    Classifier siteClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites, (k + 1));
+                    try {
+                        // Full Training
+                        Evaluation evalLabeledSite1 = new Evaluation(trainingRecordSites);
+                        evalLabeledSite1.evaluateModel(siteClassifier, trainingRecordSites);
+                        statisticEvaluationReport.append(evalLabeledSite1.toSummaryString("\nResults Full-Training\n\n", false));
+                        // Cross Validation
+                        int numFold = i / numSitesEachType;
+                        Evaluation evalLabeledSite2 = new Evaluation(trainingRecordSites);
+                        evalLabeledSite2.crossValidateModel(siteClassifier, trainingRecordSites, numFold, new Random(1));
+                        statisticEvaluationReport.append(evalLabeledSite2.toSummaryString("\nResults Cross-Validation\n\n", false));
+                        // Test Set Validation (ambil 10 situs terakhir di daftar phishing / spamming / malware)
 //                List<String> listSitesTest = new ArrayList<String>();
 //                for (int j=0;j<3;j++) {
 //                    List<String> listSitesThisType = EksternalFile.loadSitesTrainingList(i+1).getKey();
@@ -333,8 +349,9 @@ public class SitesLabeler extends SitesMLProcessor{
 //                    }
 //                }
 //                Evaluation evalLabeledSite3 = new Evaluation(labeledSite.getSiteReputationRecord());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
