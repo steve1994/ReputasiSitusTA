@@ -249,10 +249,12 @@ public class SitesLabeler extends SitesMLProcessor{
                 }
 
                 // TRUST FEATURES
-                long beforeTrust = System.currentTimeMillis();
-
-                Trust_Feature fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
-                System.out.println("Trust WOT");
+                Trust_Feature fiturTrust = new Trust_Feature();
+                if (labeledSite.getListCombinationRecordType()[2] == true) {
+                    long beforeTrust = System.currentTimeMillis();
+                    fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
+                    System.out.println("Trust WOT");
+                }
 
                 long afterTrust = System.currentTimeMillis();
 

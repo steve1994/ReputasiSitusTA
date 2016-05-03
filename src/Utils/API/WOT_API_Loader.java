@@ -72,55 +72,56 @@ public class WOT_API_Loader {
         // Model to store WOT data
         Trust_Feature trustFeature = new Trust_Feature();
         // Filter and Parse json response to get required data
-        String[] tokenResponse = jsonResponse.replace("process","").split("[()]");
-        String cleanResponseJson = tokenResponse[1];
-        try {
-            JSONObject obj = new JSONObject(cleanResponseJson);
-            JSONObject detail = obj.getJSONObject(hostName);
-            // Get trustworthy value
-            if (!detail.isNull("0")) {
-                JSONArray pairTrustworthy = detail.getJSONArray("0");
-                String[] tokenPairTrustworthy = pairTrustworthy.toString().split("[\\[\\],]");
-                Integer estimateValuesTrust = Integer.parseInt(tokenPairTrustworthy[1]);
-                Integer confidenceValuesTrust = Integer.parseInt(tokenPairTrustworthy[2]);
-                Pair<Integer,Integer> estimateConfidencePair = new Pair<Integer, Integer>(estimateValuesTrust,confidenceValuesTrust);
-                trustFeature.setTrustWorthinessPairValues(estimateConfidencePair);
-            }
-            // Get safetychildren value
-            if (!detail.isNull("4")) {
-                JSONArray pairSafetyChildren = detail.getJSONArray("4");
-                String[] tokenPairSafetyChildren = pairSafetyChildren.toString().split("[\\[\\],]");
-                Integer estimateValuesSafety = Integer.parseInt(tokenPairSafetyChildren[1]);
-                Integer confidenceValuesSafety = Integer.parseInt(tokenPairSafetyChildren[2]);
-                Pair<Integer,Integer> estimateConfidencePair = new Pair<Integer, Integer>(estimateValuesSafety,confidenceValuesSafety);
-                trustFeature.setChildSafetyPairValues(estimateConfidencePair);
-            }
-            // Get categories detail
-            if (!detail.isNull("categories")) {
-                JSONObject pairCategories = detail.getJSONObject("categories");
-                HashMap<String,Integer> keyEstimatePair = new HashMap<String, Integer>();
-                Iterator keyCategoriesList = pairCategories.keys();
-                while (keyCategoriesList.hasNext()) {
-                    String key = (String) keyCategoriesList.next();
-                    int estimateValue = pairCategories.getInt(key);
-                    keyEstimatePair.put(key,estimateValue);
+        if (jsonResponse.contains("process")) {
+            String[] tokenResponse = jsonResponse.replace("process", "").split("[()]");
+            String cleanResponseJson = tokenResponse[1];
+            try {
+                JSONObject obj = new JSONObject(cleanResponseJson);
+                JSONObject detail = obj.getJSONObject(hostName);
+                // Get trustworthy value
+                if (!detail.isNull("0")) {
+                    JSONArray pairTrustworthy = detail.getJSONArray("0");
+                    String[] tokenPairTrustworthy = pairTrustworthy.toString().split("[\\[\\],]");
+                    Integer estimateValuesTrust = Integer.parseInt(tokenPairTrustworthy[1]);
+                    Integer confidenceValuesTrust = Integer.parseInt(tokenPairTrustworthy[2]);
+                    Pair<Integer, Integer> estimateConfidencePair = new Pair<Integer, Integer>(estimateValuesTrust, confidenceValuesTrust);
+                    trustFeature.setTrustWorthinessPairValues(estimateConfidencePair);
                 }
-                trustFeature.setCategoryEstimateValues(valueOfCategoryEstimateWOT(keyEstimatePair));
-            }
-            // Get blacklist
-            if (!detail.isNull("blacklists")) {
-                JSONObject blacklists = detail.getJSONObject("blacklists");
-                HashSet<String> listTypes = new HashSet<String>();
-                Iterator typeBlacklists = blacklists.keys();
-                while (typeBlacklists.hasNext())
-                {
-                    String key = (String) typeBlacklists.next();
-                    listTypes.add(key);
+                // Get safetychildren value
+                if (!detail.isNull("4")) {
+                    JSONArray pairSafetyChildren = detail.getJSONArray("4");
+                    String[] tokenPairSafetyChildren = pairSafetyChildren.toString().split("[\\[\\],]");
+                    Integer estimateValuesSafety = Integer.parseInt(tokenPairSafetyChildren[1]);
+                    Integer confidenceValuesSafety = Integer.parseInt(tokenPairSafetyChildren[2]);
+                    Pair<Integer, Integer> estimateConfidencePair = new Pair<Integer, Integer>(estimateValuesSafety, confidenceValuesSafety);
+                    trustFeature.setChildSafetyPairValues(estimateConfidencePair);
                 }
-                trustFeature.setBlacklistIncluded(valueOfBlacklistBooleanWOT(listTypes));
+                // Get categories detail
+                if (!detail.isNull("categories")) {
+                    JSONObject pairCategories = detail.getJSONObject("categories");
+                    HashMap<String, Integer> keyEstimatePair = new HashMap<String, Integer>();
+                    Iterator keyCategoriesList = pairCategories.keys();
+                    while (keyCategoriesList.hasNext()) {
+                        String key = (String) keyCategoriesList.next();
+                        int estimateValue = pairCategories.getInt(key);
+                        keyEstimatePair.put(key, estimateValue);
+                    }
+                    trustFeature.setCategoryEstimateValues(valueOfCategoryEstimateWOT(keyEstimatePair));
+                }
+                // Get blacklist
+                if (!detail.isNull("blacklists")) {
+                    JSONObject blacklists = detail.getJSONObject("blacklists");
+                    HashSet<String> listTypes = new HashSet<String>();
+                    Iterator typeBlacklists = blacklists.keys();
+                    while (typeBlacklists.hasNext()) {
+                        String key = (String) typeBlacklists.next();
+                        listTypes.add(key);
+                    }
+                    trustFeature.setBlacklistIncluded(valueOfBlacklistBooleanWOT(listTypes));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         return trustFeature;
     }
