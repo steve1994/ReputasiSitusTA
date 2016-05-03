@@ -20,6 +20,10 @@ public class SitesMLProcessor {
         return siteReputationRecord;
     }
 
+    public Boolean[] getListCombinationRecordType() {
+        return listCombinationRecordType;
+    }
+
     protected SitesMLProcessor(int typeReputation) {
         listCombinationRecordType = new Boolean[3];         // DNS, Spesific, Trust
         for (int i=0;i<3;i++) {

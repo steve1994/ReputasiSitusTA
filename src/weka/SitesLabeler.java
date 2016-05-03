@@ -13,6 +13,7 @@ import org.javatuples.Sextet;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.lazy.IBk;
 import weka.classifiers.trees.Id3;
 import weka.classifiers.trees.J48;
 import weka.core.*;
@@ -94,7 +95,7 @@ public class SitesLabeler extends SitesMLProcessor{
         switch (classifierType) {
             default:
             case 1:
-                classifier = new Id3();
+                classifier = new IBk();
                 try {
                     classifier.buildClassifier(instances);
                 } catch (Exception e) {
@@ -122,25 +123,25 @@ public class SitesLabeler extends SitesMLProcessor{
     }
 
     public static void main (String[] args){
-        // Labeled sites dengan tipe reputasi 1
-        int typeReputation = 1;
+        // Labeled sites dengan tipe reputasi 2
+        int typeReputation = 2;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[] {"malware","phishing","spamming"});
         System.out.println("Config ARFF Done");
 
         // Time performance logger
-        List<Long> listTimeTLDRatioAS = new ArrayList<Long>();
-        List<Long> listTimeHitRatioAS = new ArrayList<Long>();
-        List<Long> listTimeNSDistAS = new ArrayList<Long>();
-        List<Long> listTimeNSCount = new ArrayList<Long>();
-        List<Long> listTimeTTLNS = new ArrayList<Long>();
-        List<Long> listTimeTTLIP = new ArrayList<Long>();
-        List<Long> listTimeTokenCount = new ArrayList<Long>();
-        List<Long> listTimeAvgToken = new ArrayList<Long>();
-        List<Long> listTimeSLDRatio = new ArrayList<Long>();
-        List<Long> listTimeInboundLink = new ArrayList<Long>();
-        List<Long> listTimeLookupTime = new ArrayList<Long>();
-        List<Long> listTimeTrust = new ArrayList<Long>();
+//        List<Long> listTimeTLDRatioAS = new ArrayList<Long>();
+//        List<Long> listTimeHitRatioAS = new ArrayList<Long>();
+//        List<Long> listTimeNSDistAS = new ArrayList<Long>();
+//        List<Long> listTimeNSCount = new ArrayList<Long>();
+//        List<Long> listTimeTTLNS = new ArrayList<Long>();
+//        List<Long> listTimeTTLIP = new ArrayList<Long>();
+//        List<Long> listTimeTokenCount = new ArrayList<Long>();
+//        List<Long> listTimeAvgToken = new ArrayList<Long>();
+//        List<Long> listTimeSLDRatio = new ArrayList<Long>();
+//        List<Long> listTimeInboundLink = new ArrayList<Long>();
+//        List<Long> listTimeLookupTime = new ArrayList<Long>();
+//        List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
         int numSitesEachType = 50;
@@ -150,98 +151,102 @@ public class SitesLabeler extends SitesMLProcessor{
                 // DNS FEATURES
                 DNS_Feature fiturDNS = new DNS_Feature();
 
-                long beforeDNS = System.currentTimeMillis();
+                if (labeledSite.getListCombinationRecordType()[0] == true) {
+                    long beforeDNS = System.currentTimeMillis();
 
-                // TLD ratio
-                Sextet<Double, Double, Double, Double, Double, Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
-                Double[] TLDRatioList = new Double[6];
-                TLDRatioList[0] = TLDRatio.getValue0();
-                TLDRatioList[1] = TLDRatio.getValue1();
-                TLDRatioList[2] = TLDRatio.getValue2();
-                TLDRatioList[3] = TLDRatio.getValue3();
-                TLDRatioList[4] = TLDRatio.getValue4();
-                TLDRatioList[5] = TLDRatio.getValue5();
-                fiturDNS.setPopularTLDRatio(TLDRatioList);
-                System.out.println("TLD Ratio");
+                    // TLD ratio
+                    Sextet<Double, Double, Double, Double, Double, Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(listSites.get(i));
+                    Double[] TLDRatioList = new Double[6];
+                    TLDRatioList[0] = TLDRatio.getValue0();
+                    TLDRatioList[1] = TLDRatio.getValue1();
+                    TLDRatioList[2] = TLDRatio.getValue2();
+                    TLDRatioList[3] = TLDRatio.getValue3();
+                    TLDRatioList[4] = TLDRatio.getValue4();
+                    TLDRatioList[5] = TLDRatio.getValue5();
+                    fiturDNS.setPopularTLDRatio(TLDRatioList);
+                    System.out.println("TLD Ratio");
 
-                long afterTLDRatio = System.currentTimeMillis();
+                    long afterTLDRatio = System.currentTimeMillis();
 
-                // Hit AS Ratio (malware, phishing, spamming)
-                Double[] HitRatioList = new Double[3];
-                for (int j = 0; j < 3; j++) {
-                    HitRatioList[j] = DNSExtractor.getHitASRatio(listSites.get(i), j + 1);
+                    // Hit AS Ratio (malware, phishing, spamming)
+                    Double[] HitRatioList = new Double[3];
+                    for (int j = 0; j < 3; j++) {
+                        HitRatioList[j] = DNSExtractor.getHitASRatio(listSites.get(i), j + 1);
+                    }
+                    fiturDNS.setHitASRatio(HitRatioList);
+                    System.out.println("Hit AS Ratio");
+
+                    long afterHitRatio = System.currentTimeMillis();
+
+                    // Name server distribution AS
+                    fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(listSites.get(i)));
+                    System.out.println("Name Server Distribution AS");
+
+                    long afterNSDist = System.currentTimeMillis();
+
+                    // Name server count
+                    fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers(listSites.get(i)));
+                    System.out.println("Name Server Count");
+
+                    long afterNSCount = System.currentTimeMillis();
+
+                    // TTL Name Servers
+                    fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive(listSites.get(i)));
+                    System.out.println("TTL Name Servers");
+
+                    long afterTTLNS = System.currentTimeMillis();
+
+                    // TTL DNS A Records
+                    fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive(listSites.get(i)));
+                    System.out.println("TTL DNS Record");
+
+                    long afterTTLIP = System.currentTimeMillis();
                 }
-                fiturDNS.setHitASRatio(HitRatioList);
-                System.out.println("Hit AS Ratio");
-
-                long afterHitRatio = System.currentTimeMillis();
-
-                // Name server distribution AS
-                fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(listSites.get(i)));
-                System.out.println("Name Server Distribution AS");
-
-                long afterNSDist = System.currentTimeMillis();
-
-                // Name server count
-                fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers(listSites.get(i)));
-                System.out.println("Name Server Count");
-
-                long afterNSCount = System.currentTimeMillis();
-
-                // TTL Name Servers
-                fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive(listSites.get(i)));
-                System.out.println("TTL Name Servers");
-
-                long afterTTLNS = System.currentTimeMillis();
-
-                // TTL DNS A Records
-                fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive(listSites.get(i)));
-                System.out.println("TTL DNS Record");
-
-                long afterTTLIP = System.currentTimeMillis();
 
                 // SPESIFIC FEATURES
                 Spesific_Feature fiturSpesific = new Spesific_Feature();
 
-                long beforeSpesific = System.currentTimeMillis();
+                if (labeledSite.getListCombinationRecordType()[1] == true) {
+                    long beforeSpesific = System.currentTimeMillis();
 
-                // Token Count URL
-                fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL(listSites.get(i)));
-                System.out.println("Token Count URL");
+                    // Token Count URL
+                    fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL(listSites.get(i)));
+                    System.out.println("Token Count URL");
 
-                long afterTokenCount = System.currentTimeMillis();
+                    long afterTokenCount = System.currentTimeMillis();
 
-                // Average Token Length URL
-                fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL(listSites.get(i)));
-                System.out.println("Average Token Length URL");
+                    // Average Token Length URL
+                    fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL(listSites.get(i)));
+                    System.out.println("Average Token Length URL");
 
-                long afterAvgToken = System.currentTimeMillis();
+                    long afterAvgToken = System.currentTimeMillis();
 
-                // SLD ratio from URL (malware, phishing, spamming)
-                double[] SLDRatioList = new double[3];
-                for (int j = 0; j < 3; j++) {
-                    SLDRatioList[j] = ContentExtractor.getSLDHitRatio(listSites.get(i), j + 1);
+                    // SLD ratio from URL (malware, phishing, spamming)
+                    double[] SLDRatioList = new double[3];
+                    for (int j = 0; j < 3; j++) {
+                        SLDRatioList[j] = ContentExtractor.getSLDHitRatio(listSites.get(i), j + 1);
+                    }
+                    fiturSpesific.setSLDRatio(SLDRatioList);
+                    System.out.println("SLD Ratio List");
+
+                    long afterSLDRatio = System.currentTimeMillis();
+
+                    // Inbound link Approximation (Google, Yahoo, Bing)
+                    int[] inboundLinkAppr = new int[3];
+                    for (int j = 0; j < 3; j++) {
+                        inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(listSites.get(i), j + 1);
+                    }
+                    fiturSpesific.setInboundLink(inboundLinkAppr);
+                    System.out.println("Inbound Link Approximation");
+
+                    long afterInboundLink = System.currentTimeMillis();
+
+                    // Lookup time to access site
+                    fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite(listSites.get(i)));
+                    System.out.println("Lookup Time");
+
+                    long afterLookupTime = System.currentTimeMillis();
                 }
-                fiturSpesific.setSLDRatio(SLDRatioList);
-                System.out.println("SLD Ratio List");
-
-                long afterSLDRatio = System.currentTimeMillis();
-
-                // Inbound link Approximation (Google, Yahoo, Bing)
-                int[] inboundLinkAppr = new int[3];
-                for (int j = 0; j < 3; j++) {
-                    inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(listSites.get(i), j + 1);
-                }
-                fiturSpesific.setInboundLink(inboundLinkAppr);
-                System.out.println("Inbound Link Approximation");
-
-                long afterInboundLink = System.currentTimeMillis();
-
-                // Lookup time to access site
-                fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite(listSites.get(i)));
-                System.out.println("Lookup Time");
-
-                long afterLookupTime = System.currentTimeMillis();
 
                 // TRUST FEATURES
                 long beforeTrust = System.currentTimeMillis();
@@ -252,18 +257,18 @@ public class SitesLabeler extends SitesMLProcessor{
                 long afterTrust = System.currentTimeMillis();
 
                 // TIME LOGGER SET
-                listTimeTLDRatioAS.add(afterTLDRatio - beforeDNS);
-                listTimeHitRatioAS.add(afterHitRatio - afterTLDRatio);
-                listTimeNSDistAS.add(afterNSDist - afterHitRatio);
-                listTimeNSCount.add(afterNSCount - afterNSDist);
-                listTimeTTLNS.add(afterTTLNS - afterNSCount);
-                listTimeTTLIP.add(afterTTLIP - afterTTLNS);
-                listTimeTokenCount.add(afterTokenCount - beforeSpesific);
-                listTimeAvgToken.add(afterAvgToken - afterTokenCount);
-                listTimeSLDRatio.add(afterSLDRatio - afterAvgToken);
-                listTimeInboundLink.add(afterInboundLink - afterSLDRatio);
-                listTimeLookupTime.add(afterLookupTime - afterInboundLink);
-                listTimeTrust.add(afterTrust - beforeTrust);
+//                listTimeTLDRatioAS.add(afterTLDRatio - beforeDNS);
+//                listTimeHitRatioAS.add(afterHitRatio - afterTLDRatio);
+//                listTimeNSDistAS.add(afterNSDist - afterHitRatio);
+//                listTimeNSCount.add(afterNSCount - afterNSDist);
+//                listTimeTTLNS.add(afterTTLNS - afterNSCount);
+//                listTimeTTLIP.add(afterTTLIP - afterTTLNS);
+//                listTimeTokenCount.add(afterTokenCount - beforeSpesific);
+//                listTimeAvgToken.add(afterAvgToken - afterTokenCount);
+//                listTimeSLDRatio.add(afterSLDRatio - afterAvgToken);
+//                listTimeInboundLink.add(afterInboundLink - afterSLDRatio);
+//                listTimeLookupTime.add(afterLookupTime - afterInboundLink);
+//                listTimeTrust.add(afterTrust - beforeTrust);
 
                 // SET RECORD INSTANCE DATA STRUCTURE
                 SiteRecordReputation recordML = new SiteRecordReputation();
@@ -326,7 +331,7 @@ public class SitesLabeler extends SitesMLProcessor{
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
             // Evaluasi Hasil Pembelajaran
             statisticEvaluationReport.append("===========================================================\n\nNUM SITES : " + i + "\n\n");
-            for (int k = 1; k < 3; k++) {     // Algoritma Naive Bayes, J48
+            for (int k = 0; k < 3; k++) {     // Algoritma IBk, Naive Bayes, J48
                 statisticEvaluationReport.append("\nAlgoritma Pembelajaran Supervised Learning ke-" + (k + 1) + " : \n\n");
                 Classifier siteClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites, (k + 1));
                 try {
@@ -335,7 +340,7 @@ public class SitesLabeler extends SitesMLProcessor{
                     evalLabeledSite1.evaluateModel(siteClassifier, trainingRecordSites);
                     statisticEvaluationReport.append(evalLabeledSite1.toSummaryString("\nResults Full-Training\n\n", false));
                     // Cross Validation
-                    int numFold = i / numSitesEachType;
+                    int numFold = i / 2;
                     Evaluation evalLabeledSite2 = new Evaluation(trainingRecordSites);
                     evalLabeledSite2.crossValidateModel(siteClassifier, trainingRecordSites, numFold, new Random(1));
                     statisticEvaluationReport.append(evalLabeledSite2.toSummaryString("\nResults Cross-Validation\n\n", false));
