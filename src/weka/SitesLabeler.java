@@ -309,38 +309,37 @@ public class SitesLabeler extends SitesMLProcessor{
 
         // Secara bertahap dari jumlah training 1-100 (iterasi 10), evaluasi hasil pembelajaran
         StringBuffer statisticEvaluationReport = new StringBuffer();
-        for (int i = 0; i <= numSitesEachType; i=i+5) {
-            if (i > 0) {
-                // Bentuk Training Record Secara Bertahap
-                Instances trainingRecordSites = new Instances("mixed_instances", instancesAttributes, 0);
-                for (int j = 0; j < i; j++) {
-                    trainingRecordSites.add(malwareInstances.instance(j));
-                    trainingRecordSites.add(phishingInstances.instance(j));
-                    trainingRecordSites.add(spammingInstances.instance(j));
-                }
-                trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes() - 1);
-                System.out.println("TRAINING RECORD SITES ATTR NUM : " + trainingRecordSites.numAttributes());
-                System.out.println("NUMBER INSTANCES : " + trainingRecordSites.numInstances());
-                // Tulis instance di eksternal file
-                String fileName = "num_" + i + ".type_" + typeReputation + ".supervised.arff";
-                String pathName = "database/weka/" + fileName;
-                EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
-                // Evaluasi Hasil Pembelajaran
-                statisticEvaluationReport.append("===========================================================\n\nNUM SITES : " + i + "\n\n");
-                for (int k = 1; k < 3; k++) {     // Algoritma Naive Bayes, J48
-                    statisticEvaluationReport.append("\nAlgoritma Pembelajaran Supervised Learning ke-" + (k + 1) + " : \n\n");
-                    Classifier siteClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites, (k + 1));
-                    try {
-                        // Full Training
-                        Evaluation evalLabeledSite1 = new Evaluation(trainingRecordSites);
-                        evalLabeledSite1.evaluateModel(siteClassifier, trainingRecordSites);
-                        statisticEvaluationReport.append(evalLabeledSite1.toSummaryString("\nResults Full-Training\n\n", false));
-                        // Cross Validation
-                        int numFold = i / numSitesEachType;
-                        Evaluation evalLabeledSite2 = new Evaluation(trainingRecordSites);
-                        evalLabeledSite2.crossValidateModel(siteClassifier, trainingRecordSites, numFold, new Random(1));
-                        statisticEvaluationReport.append(evalLabeledSite2.toSummaryString("\nResults Cross-Validation\n\n", false));
-                        // Test Set Validation (ambil 10 situs terakhir di daftar phishing / spamming / malware)
+        for (int i = 5; i <= numSitesEachType; i=i+5) {
+            // Bentuk Training Record Secara Bertahap
+            Instances trainingRecordSites = new Instances("mixed_instances", instancesAttributes, 0);
+            for (int j = 0; j < i; j++) {
+                trainingRecordSites.add(malwareInstances.instance(j));
+                trainingRecordSites.add(phishingInstances.instance(j));
+                trainingRecordSites.add(spammingInstances.instance(j));
+            }
+            trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes() - 1);
+            System.out.println("TRAINING RECORD SITES ATTR NUM : " + trainingRecordSites.numAttributes());
+            System.out.println("NUMBER INSTANCES : " + trainingRecordSites.numInstances());
+            // Tulis instance di eksternal file
+            String fileName = "num_" + i + ".type_" + typeReputation + ".supervised.arff";
+            String pathName = "database/weka/" + fileName;
+            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
+            // Evaluasi Hasil Pembelajaran
+            statisticEvaluationReport.append("===========================================================\n\nNUM SITES : " + i + "\n\n");
+            for (int k = 1; k < 3; k++) {     // Algoritma Naive Bayes, J48
+                statisticEvaluationReport.append("\nAlgoritma Pembelajaran Supervised Learning ke-" + (k + 1) + " : \n\n");
+                Classifier siteClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites, (k + 1));
+                try {
+                    // Full Training
+                    Evaluation evalLabeledSite1 = new Evaluation(trainingRecordSites);
+                    evalLabeledSite1.evaluateModel(siteClassifier, trainingRecordSites);
+                    statisticEvaluationReport.append(evalLabeledSite1.toSummaryString("\nResults Full-Training\n\n", false));
+                    // Cross Validation
+                    int numFold = i / numSitesEachType;
+                    Evaluation evalLabeledSite2 = new Evaluation(trainingRecordSites);
+                    evalLabeledSite2.crossValidateModel(siteClassifier, trainingRecordSites, numFold, new Random(1));
+                    statisticEvaluationReport.append(evalLabeledSite2.toSummaryString("\nResults Cross-Validation\n\n", false));
+                    // Test Set Validation (ambil 10 situs terakhir di daftar phishing / spamming / malware)
 //                List<String> listSitesTest = new ArrayList<String>();
 //                for (int j=0;j<3;j++) {
 //                    List<String> listSitesThisType = EksternalFile.loadSitesTrainingList(i+1).getKey();
@@ -349,9 +348,8 @@ public class SitesLabeler extends SitesMLProcessor{
 //                    }
 //                }
 //                Evaluation evalLabeledSite3 = new Evaluation(labeledSite.getSiteReputationRecord());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
