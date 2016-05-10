@@ -144,7 +144,7 @@ public class SitesLabeler extends SitesMLProcessor {
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
-        int numSitesEachType = 1000;
+        int numSitesEachType = 10;
         for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
             List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
             for (int i = 0; i < numSitesEachType; i++) {
@@ -276,33 +276,37 @@ public class SitesLabeler extends SitesMLProcessor {
                 recordML.setDNSRecordFeature(fiturDNS);
                 recordML.setSpesificRecordFeature(fiturSpesific);
                 recordML.setTrustRecordFeature(fiturTrust);
-                String classLabel = "";
-                switch (k) {
-                    default:
-                    case 0:
-                        classLabel = "malware";
-                        break;
-                    case 1:
-                        classLabel = "phishing";
-                        break;
-                    case 2:
-                        classLabel = "spamming";
-                        break;
+
+                if (k < 3) {
+                    String classLabel = "";
+                    switch (k) {
+                        default:
+                        case 0:
+                            classLabel = "malware";
+                            break;
+                        case 1:
+                            classLabel = "phishing";
+                            break;
+                        case 2:
+                            classLabel = "spamming";
+                            break;
+                    }
+                    labeledSite.fillDataIntoInstanceRecord(recordML, classLabel);
                 }
                 String classLabel2 = "";
                 switch (k) {
-                    default:
                     case 0:
                     case 1:
                     case 2:
                         classLabel2 = "abnormal";
                         break;
+                    default:
                     case 3:
                         classLabel2 = "normal";
                         break;
                 }
-                labeledSite.fillDataIntoInstanceRecord(recordML, classLabel);
                 labeledSite2.fillDataIntoInstanceRecord(recordML, classLabel2);
+
                 System.out.println("Situs ke-" + i);
             }
         }
