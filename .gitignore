@@ -16,3 +16,4 @@ hs_err_pid*
 # weka arff instance
 database/weka/*.arff
 database/weka/*.txt
+database/weka/*.model
