@@ -2,7 +2,9 @@ package Utils.Database;
 
 import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
+import weka.classifiers.Classifier;
 import weka.core.Instances;
+import weka.core.SerializationHelper;
 import weka.core.converters.ConverterUtils;
 
 import java.io.*;
@@ -116,8 +118,20 @@ public class EksternalFile {
      */
     public static void saveInstanceWekaToExternalARFF(Instances instances, String path) {
         try {
-//            ConverterUtils.DataSink.write("database/weka/siteReputation.arff",instances);
             ConverterUtils.DataSink.write(path,instances);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Save classifier model to external file
+     * @param classifier
+     * @param path
+     */
+    public static void saveClassifierToExternalModel(Classifier classifier, String path) {
+        try {
+            SerializationHelper.write(path,classifier);
         } catch (Exception e) {
             e.printStackTrace();
         }
