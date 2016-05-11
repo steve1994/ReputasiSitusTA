@@ -69,9 +69,10 @@ public class SitesClusterer extends SitesMLProcessor{
      * Build cluster from site record in instances weka
      * @param instances
      * @param maxIteration
+     * @param seed
      * @return
      */
-    public SimpleKMeans buildKmeansReputationModel(Instances instances, int maxIteration) {
+    public SimpleKMeans buildKmeansReputationModel(Instances instances, int maxIteration, int seed) {
         SimpleKMeans siteReputationCluster = new SimpleKMeans();
         siteReputationCluster.setPreserveInstancesOrder(true);
         try {
@@ -84,6 +85,7 @@ public class SitesClusterer extends SitesMLProcessor{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        siteReputationCluster.setSeed(seed);
         try {
             siteReputationCluster.buildClusterer(instances);
         } catch (Exception e) {

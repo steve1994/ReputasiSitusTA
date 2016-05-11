@@ -109,7 +109,7 @@ public class SitesLabeler extends SitesMLProcessor {
                 }
                 break;
             case 2:
-                classifier = new IBk();
+                classifier = new IBk(numNearestNeighbor);
                 try {
                     classifier.buildClassifier(instances);
                 } catch (Exception e) {
@@ -121,8 +121,8 @@ public class SitesLabeler extends SitesMLProcessor {
     }
 
     public static void main(String[] args) {
-        // Labeled sites dengan tipe reputasi 7
-        int typeReputation = 7;
+        // Labeled sites dengan tipe reputasi 3
+        int typeReputation = 2;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
@@ -380,11 +380,11 @@ public class SitesLabeler extends SitesMLProcessor {
 
             // Tulis instance di eksternal file (training 1)
             String fileName = "num_" + i + ".type_" + typeReputation + ".dangerous_category.supervised.arff";
-            String pathName = "database/weka/data" + fileName;
+            String pathName = "database/weka/data/" + fileName;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
             // Tulis instance di eksternal file (training 2)
             String fileName2 = "num_" + i + ".type_" + typeReputation + ".normality_category.supervised.arff";
-            String pathName2 = "database/weka/data" + fileName2;
+            String pathName2 = "database/weka/data/" + fileName2;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites2, pathName2);
 
             statisticEvaluationReport.append("\n\n=================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
@@ -401,7 +401,7 @@ public class SitesLabeler extends SitesMLProcessor {
             }
             // Simpan hasil pembelajaran (classifier) untuk training data normal / tidak normal di eksternal file
             String normalFileName = "num_" + i + ".type_" + typeReputation + ".normalitySVM.model";
-            String normalPathName = "database/weka/model" + normalFileName;
+            String normalPathName = "database/weka/model/" + normalFileName;
             EksternalFile.saveClassifierToExternalModel(normalityClassifier,normalPathName);
 
             // Evaluasi Hasil Pembelajaran Untuk Kategori Situs Berbahaya (Malware / Phishing / Spamming)
@@ -419,13 +419,13 @@ public class SitesLabeler extends SitesMLProcessor {
                 // Simpan hasil pembelajaran (classifier) untuk training data
                 // situs berbahaya malware / phishing / spamming di eksternal file
                 String dangerousFileName = "num_" + i + ".type_" + typeReputation + ".dangerousityKNN_" + j + ".model";
-                String dangerousPathName = "database/weka/model" + dangerousFileName;
+                String dangerousPathName = "database/weka/model/" + dangerousFileName;
                 EksternalFile.saveClassifierToExternalModel(dangerousityClassifier,dangerousPathName);
             }
         }
         // Write evaluation statistic result
         String fileNameEvaluation = "evaluationStatisticSupervisedLearning.type_" + typeReputation + ".txt";
-        String pathNameEvaluation = "database/weka/" + fileNameEvaluation;
+        String pathNameEvaluation = "database/weka/statistic/" + fileNameEvaluation;
         EksternalFile.saveRawContentToEksternalFile(statisticEvaluationReport.toString(), pathNameEvaluation);
     }
 }
