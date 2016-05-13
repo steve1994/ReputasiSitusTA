@@ -37,8 +37,8 @@ public class StatistikController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
-        SitesClusterer clusterSite = new SitesClusterer(StaticVars.reputationType,4);
-        clusterSite.configARFFInstance();
+        SitesClusterer clusterSite = new SitesClusterer(StaticVars.reputationType);
+        clusterSite.configARFFInstance(new String[] {"malware","phishing","spamming","normal"});
         System.out.println("Config ARFF Done");
 
         // Time performance logger
@@ -190,7 +190,7 @@ public class StatistikController implements Initializable{
             recordML.setDNSRecordFeature(fiturDNS);
             recordML.setSpesificRecordFeature(fiturSpesific);
             recordML.setTrustRecordFeature(fiturTrust);
-            clusterSite.fillDataIntoInstanceRecord(recordML);
+            clusterSite.fillDataIntoInstanceRecord(recordML,"normal");
 
             System.out.println("Situs ke-" + (i+1));
         }
