@@ -450,24 +450,27 @@ public class SitesClusterer extends SitesMLProcessor{
             String pathName = "database/weka/data/" + fileName;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
 
-            statisticEvaluationReport.append("\n\n=================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
+            statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
 
             // Build cluster berdasarkan mixed instances kemudian langsung evaluasi (K-means)
-            statisticEvaluationReport.append("\n\n-----------------------------------------------------------------\n\n SIMPLE K-means Algorithm \n\n");
+//            statisticEvaluationReport.append("\n\n-----------------------------------------------------------------\n\n SIMPLE K-means Algorithm \n\n");
             for (int j=1;j<=maxCluster;j++) {
                 SimpleKMeans clusterKMeans = clusterSite.buildKmeansReputationModel(trainingRecordSites,j);
                 // Classes to cluster evaluation
                 ClusterEvaluation eval = clusterSite.evaluateClusterReputationModel(trainingRecordSites,clusterKMeans);
+                statisticEvaluationReport.append("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
                 statisticEvaluationReport.append("\nResults Classes To Cluster Evaluation with cluster " + j + " : \n\n" + eval.clusterResultsToString());
             }
 
             // Build cluster berdasarkan mixed instances kemudian langsung evaluasi (EM)
-            statisticEvaluationReport.append("\n\n-----------------------------------------------------------------\n\n EM Algorithm \n\n");
+//            statisticEvaluationReport.append("\n\n-----------------------------------------------------------------\n\n EM Algorithm \n\n");
             for (int j=1;j<=maxCluster;j++) {
                 EM clusterEM = clusterSite.buildEMReputationModel(trainingRecordSites, j);
                 // Classes to cluster evaluation
                 ClusterEvaluation eval = clusterSite.evaluateClusterReputationModel(trainingRecordSites,clusterEM);
+                statisticEvaluationReport.append("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
                 statisticEvaluationReport.append("\nResults Classes To Cluster Evaluation with cluster " + j + " : \n\n" + eval.clusterResultsToString());
+
             }
         }
         // Write evaluation statistic result

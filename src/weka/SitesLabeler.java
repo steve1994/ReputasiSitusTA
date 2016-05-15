@@ -144,7 +144,7 @@ public class SitesLabeler extends SitesMLProcessor {
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
-        int numSitesEachType = 100;
+        int numSitesEachType = 1000;
         for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
             List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
             for (int i = 0; i < numSitesEachType; i++) {
@@ -360,6 +360,7 @@ public class SitesLabeler extends SitesMLProcessor {
         StringBuffer statisticEvaluationReport = new StringBuffer();
         int interval = 100;
         int numFoldCrossValidation = 10;
+        int numNearestNeighbor = 10;
         for (int i = interval; i <= numSitesEachType; i = i + interval) {
             // Bentuk Training Record 1 Secara Bertahap (malware, phishing, dan spamming)
             Instances trainingRecordSites = new Instances("mixed_instances_1", instancesAttributes, 0);
@@ -405,7 +406,6 @@ public class SitesLabeler extends SitesMLProcessor {
             EksternalFile.saveClassifierToExternalModel(normalityClassifier,normalPathName);
 
             // Evaluasi Hasil Pembelajaran Untuk Kategori Situs Berbahaya (Malware / Phishing / Spamming)
-            int numNearestNeighbor = 10;
             for (int j=1;j<=numNearestNeighbor;j++) {
                 Classifier dangerousityClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites,2,j);
                 try {

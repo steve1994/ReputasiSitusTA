@@ -82,6 +82,22 @@ public class RIPE_API_Loader {
         return nameServerList;
     }
 
+    public static Boolean checkDomainNameResolved(String host) {
+        String urlRequest = "https://stat.ripe.net/data/dns-chain/data.json?resource=" + host;
+        String jsonString = getRawJsonResponse(urlRequest);
+
+        Boolean isDomainNSExist = false;
+        try {
+            JSONObject mainResponse = new JSONObject(jsonString);
+            if (!mainResponse.isNull("data")) {
+                isDomainNSExist = true;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return isDomainNSExist;
+    }
+
     private static List<String> ripeNameServersPrefixArgument(String jsonString) {
         List<String> listResolvedNameServers = new ArrayList<String>();
         try {
@@ -149,14 +165,21 @@ public class RIPE_API_Loader {
             System.out.println(prefix);
         }*/
         // List Name servers from Domain / Host
-       /* List<String> nameServers = RIPE_API_Loader.loadNameServersFromHost("www.ripe.net");
-        for (String ns : nameServers) {
-            System.out.println(ns);
-        }*/
+//        List<String> nameServers = RIPE_API_Loader.loadNameServersFromHost("fsdfsdfs.fsdfsdfdsfsdfsd");
+//        for (String ns : nameServers) {
+//            System.out.println(ns);
+//        }
+
+        long begin = System.currentTimeMillis();
+        System.out.println("Is Domain Name Available? " + RIPE_API_Loader.checkDomainNameResolved("facebook.com.tar.gz.werewfdsfdsfd"));
+        long end = System.currentTimeMillis();
+
+        System.out.println("Waktu eksekusi : " + (end-begin));
+
         // List Name Servers from Reverse IP Prefix
-        List<String> nsList = RIPE_API_Loader.loadNameServersFromIPPrefix("193.0.0.0/21");
-        for (String ns : nsList) {
-            System.out.println(ns);
-        }
+//        List<String> nsList = RIPE_API_Loader.loadNameServersFromIPPrefix("193.0.0.0/21");
+//        for (String ns : nsList) {
+//            System.out.println(ns);
+//        }
     }
 }

@@ -38,6 +38,17 @@ public class Converter {
         return MXToolbox_API_Loader.HostNameToIPAddress(hostName);
     }
 
+    public static Boolean checkIfDomainResolved(String hostName) {
+        Boolean isDomainResolved = true;
+        try {
+            InetAddress.getByName(hostName).isReachable(10000);
+        } catch (IOException e) {
+            isDomainResolved = false;
+            e.printStackTrace();
+        }
+        return isDomainResolved;
+    }
+
     public static List<String> convertPrefixIntoResolvedIPAddress(String IPPrefix) {
         List<String> IPAddressResolved = new ArrayList<String>();
 
@@ -93,13 +104,19 @@ public class Converter {
 //        for (String ip : ipAddress) {
 //            System.out.println(Converter.convertIPAddressIntoHostName(ip));
 //        }
-        long before = System.currentTimeMillis();
-        Double[] HitRatioList = new Double[3];
-        for (int j=0;j<3;j++) {
-            HitRatioList[j] = DNSExtractor.getHitASRatio("0000love.net",j+1);
-        }
-        long after_1 = System.currentTimeMillis();
+//        long before = System.currentTimeMillis();
+//        Double[] HitRatioList = new Double[3];
+//        for (int j=0;j<3;j++) {
+//            HitRatioList[j] = DNSExtractor.getHitASRatio("0000love.net",j+1);
+//        }
+//        long after_1 = System.currentTimeMillis();
+//
+//        System.out.println((after_1-before));
 
-        System.out.println((after_1-before));
+        long begin = System.currentTimeMillis();
+        System.out.println("Is Domain Name Available? " + Converter.checkIfDomainResolved("facebook.com"));
+        long end = System.currentTimeMillis();
+
+        System.out.println("Waktu eksekusi : " + (end-begin));
     }
 }

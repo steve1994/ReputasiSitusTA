@@ -1,5 +1,6 @@
 package Utils.Spesific;
 
+import Utils.API.RIPE_API_Loader;
 import Utils.Converter;
 import Utils.Database.EksternalFile;
 import com.google.common.net.InternetDomainName;
@@ -71,9 +72,7 @@ public class ContentExtractor {
             default :
             case 1  :   queryURL = "https://www.google.com/search?q=" + domainNameURL; break;
             case 2  :   queryURL = "https://id.search.yahoo.com/search?p=" + domainNameURL; break;
-          //  case 3  :   queryURL = "http://id.ask.com/web?q=" + domainNameURL; break;
             case 3  :   queryURL = "http://www.bing.com/search?q=" + domainNameURL; break;
-          //  case 5  :   queryURL = "https://duckduckgo.com/?q=" + domainNameURL; break;
         }
 
         int inboundLink = 0;
@@ -87,9 +86,11 @@ public class ContentExtractor {
                 default:
                 case 1:
                     try {
-                        Element numResults1 = doc.getElementById("resultStats");
-                        String[] tokenResults1 = numResults1.text().split(" ");
-                        inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
+                        if (doc.hasAttr("resultStats")) {
+                            Element numResults1 = doc.getElementById("resultStats");
+                            String[] tokenResults1 = numResults1.text().split(" ");
+                            inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
                     } catch (NullPointerException e) {
@@ -98,8 +99,10 @@ public class ContentExtractor {
                     break;
                 case 2:
                     try {
-                        Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
-                        inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya", "").replace(" hasil", "").replace(",", ""));
+                        if (doc.hasClass("compPagination")) {
+                            Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
+                            inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya", "").replace(" hasil", "").replace(",", ""));
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
                     } catch (NullPointerException e) {
@@ -108,9 +111,11 @@ public class ContentExtractor {
                     break;
                 case 3:
                     try {
-                        Elements numResults4 = doc.getElementsByClass("sb_count");
-                        String[] tokenResults4 = numResults4.text().split(" ");
-                        inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
+                        if (doc.hasClass("sb_count")) {
+                            Elements numResults4 = doc.getElementsByClass("sb_count");
+                            String[] tokenResults4 = numResults4.text().split(" ");
+                            inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
                     } catch (NullPointerException e) {
@@ -184,14 +189,25 @@ public class ContentExtractor {
         String SLD = null;
         url = getBaseHostURL(url);
 
-        if (InternetDomainName.isValid(url)) {
-            InternetDomainName idn = InternetDomainName.from(url);
-            if (idn.hasPublicSuffix()) {
-                List<String> parts = idn.parts();
-                String pureHost = parts.get(0);
-                SLD = url.replace(pureHost + ".","");
-            }
+//        if (InternetDomainName.isValid(url)) {
+//            InternetDomainName idn = InternetDomainName.from(url);
+//            if (idn.hasPublicSuffix()) {
+//                List<String> parts = idn.parts();
+//                String pureHost = parts.get(0);
+//                SLD = url.replace(pureHost + ".", "");
+//            }
+//        }
+
+        List<String> SLDToken = new ArrayList<String>();
+        StringTokenizer levelSLDSplit = new StringTokenizer(url,".");
+        while (levelSLDSplit.hasMoreTokens()) {
+            String token = levelSLDSplit.nextToken();
+            SLDToken.add(token);
         }
+        if (SLDToken.size() > 1) {
+            SLD = SLDToken.get(SLDToken.size()-2) + "." + SLDToken.get(SLDToken.size()-1);
+        }
+
         return SLD;
     }
 
@@ -218,7 +234,7 @@ public class ContentExtractor {
             try {
                 String SLDCheckList = getSLDFromURL(listSites.get(i));
                 String SLDThisURL = getSLDFromURL(url);
-                if (SLDThisURL.equals(SLDCheckList)) {
+                if (SLDThisURL.equals(SLDCheckList) && (SLDCheckList != null) && (SLDThisURL != null)) {
                     totalSitesSLDMatch++;
                 }
             } catch (NullPointerException e) {
