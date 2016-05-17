@@ -211,7 +211,7 @@ public class SitesClusterer extends SitesMLProcessor{
 
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
-        int typeReputation = 3;
+        int typeReputation = 4;
         SitesClusterer clusterSite = new SitesClusterer(typeReputation);
         clusterSite.configARFFInstance(new String[]{"malware", "phishing", "spamming","normal"});
         System.out.println("Config ARFF Done");
@@ -230,7 +230,7 @@ public class SitesClusterer extends SitesMLProcessor{
 //        List<Long> listTimeLookupTime = new ArrayList<Long>();
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
-        int numSitesMaxAllocation = 10;
+        int numSitesMaxAllocation = 1000;
         for (int k=0;k<4;k++) {
             List<String> listSites = EksternalFile.loadSitesTrainingList(k+1).getKey();
             for (int i = 0; i < numSitesMaxAllocation; i++) {
@@ -432,7 +432,7 @@ public class SitesClusterer extends SitesMLProcessor{
 
         // Secara bertahap dari jumlah training 1-100 (iterasi 10), evaluasi hasil clustering
         StringBuffer statisticEvaluationReport = new StringBuffer();
-        int interval = 5;
+        int interval = 100;
         int maxCluster = 10;
         for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
             // Bentuk Training Record Secara Bertahap (malware, phishing, dan spamming)
@@ -470,7 +470,6 @@ public class SitesClusterer extends SitesMLProcessor{
                 ClusterEvaluation eval = clusterSite.evaluateClusterReputationModel(trainingRecordSites,clusterEM);
                 statisticEvaluationReport.append("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
                 statisticEvaluationReport.append("\nResults Classes To Cluster Evaluation with cluster " + j + " : \n\n" + eval.clusterResultsToString());
-
             }
         }
         // Write evaluation statistic result

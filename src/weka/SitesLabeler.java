@@ -122,7 +122,7 @@ public class SitesLabeler extends SitesMLProcessor {
 
     public static void main(String[] args) {
         // Labeled sites dengan tipe reputasi 3
-        int typeReputation = 2;
+        int typeReputation = 3;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
@@ -144,7 +144,7 @@ public class SitesLabeler extends SitesMLProcessor {
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
-        int numSitesEachType = 1000;
+        int numSitesEachType = 100;
         for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
             List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
             for (int i = 0; i < numSitesEachType; i++) {
@@ -307,7 +307,7 @@ public class SitesLabeler extends SitesMLProcessor {
                 }
                 labeledSite2.fillDataIntoInstanceRecord(recordML, classLabel2);
 
-                System.out.println("Situs ke-" + i);
+                System.out.println("Situs ke-" + (i+1));
             }
         }
 
@@ -360,8 +360,10 @@ public class SitesLabeler extends SitesMLProcessor {
         StringBuffer statisticEvaluationReport = new StringBuffer();
         int interval = 100;
         int numFoldCrossValidation = 10;
-        int numNearestNeighbor = 10;
+
         for (int i = interval; i <= numSitesEachType; i = i + interval) {
+            int numNearestNeighbor = (int) Math.sqrt(i);
+
             // Bentuk Training Record 1 Secara Bertahap (malware, phishing, dan spamming)
             Instances trainingRecordSites = new Instances("mixed_instances_1", instancesAttributes, 0);
             int numDangerousSites = i / 3;
@@ -371,7 +373,7 @@ public class SitesLabeler extends SitesMLProcessor {
                 trainingRecordSites.add(spammingInstances.instance(j));
             }
             trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes() - 1);
-            // Bentuk Training Record 2 Secar Bertahap (normal, abnormal)
+            // Bentuk Training Record 2 Secara Bertahap (normal, abnormal)
             Instances trainingRecordSites2 = new Instances("mixed_instances_2", instancesAttributes2, 0);
             for (int j = 0; j < i; j++) {
                 trainingRecordSites2.add(normalInstances.instance(j));
@@ -383,10 +385,15 @@ public class SitesLabeler extends SitesMLProcessor {
             String fileName = "num_" + i + ".type_" + typeReputation + ".dangerous_category.supervised.arff";
             String pathName = "database/weka/data/" + fileName;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
+//            Instances trainingRecordSites = EksternalFile.loadInstanceWekaFromExternalARFF(pathName);
+//            trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes()-1);
+
             // Tulis instance di eksternal file (training 2)
             String fileName2 = "num_" + i + ".type_" + typeReputation + ".normality_category.supervised.arff";
             String pathName2 = "database/weka/data/" + fileName2;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites2, pathName2);
+//            Instances trainingRecordSites2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathName2);
+//            trainingRecordSites2.setClassIndex(trainingRecordSites2.numAttributes()-1);
 
             statisticEvaluationReport.append("\n\n=================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
 
