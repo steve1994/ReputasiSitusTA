@@ -177,6 +177,7 @@ public class SitesHybrid {
         // Get extracted instances result from labeler / clusterer
         Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_100.type_3.normality_category.supervised.arff");
         allInstancesLabelNormality.setClassIndex(allInstancesLabelNormality.numAttributes()-1);
+        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_100.type_3.dangerousity_category.supervised.arff");
 //        Instances allInstancesLabelDangerousity = labelSiteDangerousity.getSiteReputationRecord();
 //        Instances allInstancesLabelNormality = labelSiteNormality.getSiteReputationRecord();
 //        Instances allInstancesClusterDangerousity = clusterSiteDangerousity.getSiteReputationRecord();
@@ -189,18 +190,22 @@ public class SitesHybrid {
             instancesAttributesNormality.addElement((Attribute) attributesRecordSiteNormality.nextElement());
         }
         instancesAttributesNormality.addElement(allInstancesLabelNormality.classAttribute());
-//        // Extracted vector attributes for Dangerous Instances (Malware / Phishing / Spamming)
-//        FastVector instancesAttributesDangerousity = new FastVector();
-//        Enumeration attributesRecordSiteDangerousity = allInstancesLabelDangerousity.enumerateAttributes();
-//        while (attributesRecordSiteDangerousity.hasMoreElements()) {
-//            instancesAttributesDangerousity.addElement((Attribute) attributesRecordSiteDangerousity.nextElement());
-//        }
-//        instancesAttributesDangerousity.addElement(allInstancesLabelDangerousity.classAttribute());
+        // Extracted vector attributes for Dangerous Instances (Malware / Phishing / Spamming)
+        FastVector instancesAttributesDangerousity = new FastVector();
+        Enumeration attributesRecordSiteDangerousity = allInstancesLabelDangerousity.enumerateAttributes();
+        while (attributesRecordSiteDangerousity.hasMoreElements()) {
+            instancesAttributesDangerousity.addElement((Attribute) attributesRecordSiteDangerousity.nextElement());
+        }
+        instancesAttributesDangerousity.addElement(allInstancesLabelDangerousity.classAttribute());
 //
+
+        // STAGE 1
+
         // Classify Normality Sites First and Split Normal / Abnormal
         Instances classifiedNormalityInstances = new Instances("normal_sites_supervised",instancesAttributesNormality,0);
         classifiedNormalityInstances.setClassIndex(classifiedNormalityInstances.numAttributes()-1);
         Classifier normalClassifier = labelSiteNormality.buildLabelReputationModel(allInstancesLabelNormality,1,0);
+
         Enumeration normalityInstances = allInstancesLabelNormality.enumerateInstances();
         while (normalityInstances.hasMoreElements()) {
             Instance thisInstanceNormality = (Instance) normalityInstances.nextElement();
@@ -216,6 +221,7 @@ public class SitesHybrid {
                 e.printStackTrace();
             }
         }
+
         // Build Normal / Abnormal Cluster
         Instances hybridInstancesAbnormal = new Instances("hybrid_normality_cluster",instancesAttributesNormality,0);
         int optimumNumCluster = 10;
@@ -243,57 +249,34 @@ public class SitesHybrid {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(evalClusterNormality.clusterResultsToString());
 
+        // STAGE 2
 
-        // Divide allInstancesRecordSite based on site class (malware / phishing / spamming / normal)
-//        Instances malwareInstances = new Instances("malware_instances", instancesAttributes, 0);
-//        Instances phishingInstances = new Instances("phishing_instances", instancesAttributes, 0);
-//        Instances spammingInstances = new Instances("spamming_instances", instancesAttributes, 0);
-//        Instances normalInstances = new Instances("normal_instances", instancesAttributes, 0);
-//        for (int i = 0; i < allInstancesRecordSite.numInstances(); i++) {
-//            int indexClassThisInstance = (int) allInstancesRecordSite.instance(i).classValue();
-//            if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "malware") {
-//                malwareInstances.add(allInstancesRecordSite.instance(i));
-//            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "phishing") {
-//                phishingInstances.add(allInstancesRecordSite.instance(i));
-//            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "spamming") {
-//                spammingInstances.add(allInstancesRecordSite.instance(i));
-//            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "normal") {
-//                normalInstances.add(allInstancesRecordSite.instance(i));
-//            }
-//        }
+        // Classify Abnormal Instances from Stage 1 Using kNN Algorithm
+        Instances classifiedDangerousityInstances = new Instances("dangerous_type_sites_supervised",instancesAttributesDangerousity,0);
+        classifiedDangerousityInstances.setClassIndex(classifiedDangerousityInstances.numAttributes()-1);
+        Classifier dangerousClassifier = labelSiteDangerousity.buildLabelReputationModel(allInstancesLabelDangerousity,1,0);
 
+        Enumeration dangerousityInstances = allInstancesLabelDangerousity.enumerateInstances();
+        while (dangerousityInstances.hasMoreElements()) {
+            Instance thisInstanceDangerousity = (Instance) dangerousityInstances.nextElement();
+            double oldClassValue = thisInstanceDangerousity.classValue();
+            System.out.println("OLD CLASS LABEL : " + allInstancesLabelNormality.classAttribute().value((int) oldClassValue));
+            try {
+                double classValue = dangerousClassifier.classifyInstance(thisInstanceDangerousity);
+                thisInstanceDangerousity.setClassValue(classValue);
+                classifiedNormalityInstances.add(thisInstanceDangerousity);
+                System.out.println("INSTANCE : " + thisInstanceDangerousity);
+                System.out.println("NEW CLASS LABEL : " + classifiedNormalityInstances.classAttribute().value((int) classValue));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-
-        // Secara bertahap dari jumlah training 1-100 (iterasi 10), evaluasi hasil clustering
-//        StringBuffer statisticEvaluationReport = new StringBuffer();
-//        int interval = 100;
-//        int maxCluster = 10;
-//        for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
-            // Bentuk Training Record Secara Bertahap (malware, phishing, dan spamming)
-//            Instances trainingRecordSites = new Instances("mixed_instances_1", instancesAttributes, 0);
-//            for (int j = 0; j < i; j++) {
-//                trainingRecordSites.add(malwareInstances.instance(j));
-//                trainingRecordSites.add(phishingInstances.instance(j));
-//                trainingRecordSites.add(spammingInstances.instance(j));
-//                trainingRecordSites.add(normalInstances.instance(j));
-//            }
-//            trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes() - 1);
-//
-//            // Tulis instance di eksternal file
-//            String fileName = "num_" + i + ".type_" + typeReputation + ".unsupervised.arff";
-//            String pathName = "database/weka/data/" + fileName;
-//            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
-
-            // Build cluster berdasarkan mixed instances kemudian langsung evaluasi (K-means)
-//            for (int j=1;j<=maxCluster;j++) {
-//                SimpleKMeans clusterKMeans = clusterSite.buildKmeansReputationModel(trainingRecordSites, j);
-//            }
-//
-//            // Build cluster berdasarkan mixed instances kemudian langsung evaluasi (EM)
-//            for (int j=1;j<=maxCluster;j++) {
-//                EM clusterEM = clusterSite.buildEMReputationModel(trainingRecordSites, j);
-//            }
-//        }
+        // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition)
+        Clusterer clusterDangerousity = clusterSiteDangerousity.buildKmeansReputationModel(classifiedDangerousityInstances, optimumNumCluster);
+        ClusterEvaluation evalClusterDangerousity = clusterSiteDangerousity.evaluateClusterReputationModel(classifiedDangerousityInstances,clusterDangerousity);
+        System.out.println(evalClusterDangerousity.clusterResultsToString());
     }
 }
