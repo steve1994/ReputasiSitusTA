@@ -175,9 +175,10 @@ public class SitesHybrid {
         }
 
         // Get extracted instances result from labeler / clusterer
-        Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_100.type_3.normality_category.supervised.arff");
+        Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_1000.type_3.normality_category.supervised.arff");
         allInstancesLabelNormality.setClassIndex(allInstancesLabelNormality.numAttributes()-1);
-        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_100.type_3.dangerousity_category.supervised.arff");
+        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_1000.type_3.dangerous_category.supervised.arff");
+        allInstancesLabelDangerousity.setClassIndex(allInstancesLabelDangerousity.numAttributes()-1);
 //        Instances allInstancesLabelDangerousity = labelSiteDangerousity.getSiteReputationRecord();
 //        Instances allInstancesLabelNormality = labelSiteNormality.getSiteReputationRecord();
 //        Instances allInstancesClusterDangerousity = clusterSiteDangerousity.getSiteReputationRecord();
@@ -262,13 +263,13 @@ public class SitesHybrid {
         while (dangerousityInstances.hasMoreElements()) {
             Instance thisInstanceDangerousity = (Instance) dangerousityInstances.nextElement();
             double oldClassValue = thisInstanceDangerousity.classValue();
-            System.out.println("OLD CLASS LABEL : " + allInstancesLabelNormality.classAttribute().value((int) oldClassValue));
+            System.out.println("OLD CLASS LABEL : " + allInstancesLabelDangerousity.classAttribute().value((int) oldClassValue));
             try {
                 double classValue = dangerousClassifier.classifyInstance(thisInstanceDangerousity);
                 thisInstanceDangerousity.setClassValue(classValue);
-                classifiedNormalityInstances.add(thisInstanceDangerousity);
+                classifiedDangerousityInstances.add(thisInstanceDangerousity);
                 System.out.println("INSTANCE : " + thisInstanceDangerousity);
-                System.out.println("NEW CLASS LABEL : " + classifiedNormalityInstances.classAttribute().value((int) classValue));
+                System.out.println("NEW CLASS LABEL : " + classifiedDangerousityInstances.classAttribute().value((int) classValue));
             } catch (Exception e) {
                 e.printStackTrace();
             }
