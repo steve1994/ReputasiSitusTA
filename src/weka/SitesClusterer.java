@@ -211,9 +211,13 @@ public class SitesClusterer extends SitesMLProcessor{
 
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
-        int typeReputation = 4;
+        int typeReputation = 3;
         SitesClusterer clusterSite = new SitesClusterer(typeReputation);
         clusterSite.configARFFInstance(new String[]{"malware", "phishing", "spamming","normal"});
+        SitesClusterer normalityClusterSite = new SitesClusterer(typeReputation);
+        normalityClusterSite.configARFFInstance(new String[]{"normal","abnormal"});
+        SitesClusterer dangerousityClusterSite = new SitesClusterer(typeReputation);
+        dangerousityClusterSite.configARFFInstance(new String[]{"malware,phishing,spamming"});
         System.out.println("Config ARFF Done");
 
         // Time performance logger
@@ -366,6 +370,39 @@ public class SitesClusterer extends SitesMLProcessor{
                 recordML.setDNSRecordFeature(fiturDNS);
                 recordML.setSpesificRecordFeature(fiturSpesific);
                 recordML.setTrustRecordFeature(fiturTrust);
+
+                // Instances for data static
+                if (k < 3) {
+                    String classLabelDangerous = "";
+                    switch (k) {
+                        default:
+                        case 0:
+                            classLabelDangerous = "malware";
+                            break;
+                        case 1:
+                            classLabelDangerous = "phishing";
+                            break;
+                        case 2:
+                            classLabelDangerous = "spamming";
+                            break;
+                    }
+                    dangerousityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelDangerous);
+                }
+                String classLabelNormality = "";
+                switch (k) {
+                    case 0:
+                    case 1:
+                    case 2:
+                        classLabelNormality = "abnormal";
+                        break;
+                    default:
+                    case 3:
+                        classLabelNormality = "normal";
+                        break;
+                }
+                normalityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelNormality);
+
+                // Instances for real clustering
                 String classLabel = "";
                 switch (k) {
                     default:
@@ -405,6 +442,20 @@ public class SitesClusterer extends SitesMLProcessor{
 
         // Pisahkan instances berdasarkan tipenya (malware / phishing / spamming / normal)
         Instances allInstancesRecordSite = clusterSite.getSiteReputationRecord();
+        String fileNameStatic = "numsites_" + numSitesMaxAllocation + ".ratio_1111.staticdata.arff";
+        String pathNameStatic = "database/weka/data_static/" + fileNameStatic;
+        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite,pathNameStatic);
+
+        // Save data static (cluster normality and dangerousity)
+        Instances allInstancesNormalityStatic = normalityClusterSite.getSiteReputationRecord();
+        String fileNameStaticNormality = "numsites_" + numSitesMaxAllocation + ".ratio_3111.normality.staticdata.arff";
+        String pathNameStaticNormality = "database/weka/data_static/" + fileNameStaticNormality;
+        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesNormalityStatic,pathNameStaticNormality);
+        Instances allInstancesDangerousityStatic = dangerousityClusterSite.getSiteReputationRecord();
+        String fileNameStaticDangerousity = "numsites_" + numSitesMaxAllocation + ".ratio_3111.dangerousity.staticdata.arff";
+        String pathNameStaticDangerousity = "database/weka/data_static/" + fileNameStaticDangerousity;
+        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesDangerousityStatic,pathNameStaticDangerousity);
+
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
         FastVector instancesAttributes = new FastVector();
         Enumeration attributesRecordSite = allInstancesRecordSite.enumerateAttributes();
