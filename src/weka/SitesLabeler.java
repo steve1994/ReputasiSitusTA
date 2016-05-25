@@ -313,7 +313,14 @@ public class SitesLabeler extends SitesMLProcessor {
 
         // Pisahkan instances ke dalam golongan malware / phishing / spamming / normal
         Instances allInstancesRecordSite = labeledSite.getSiteReputationRecord();
+        String fileNameStatic = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff";
+        String pathNameStatic = "database/weka/data_static/" + fileNameStatic;
+        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite,pathNameStatic);
+
         Instances allInstancesRecordSite2 = labeledSite2.getSiteReputationRecord();
+        String fileNameStatic2 = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".normal.staticdata.arff";
+        String pathNameStatic2 = "database/weka/data_static/" + fileNameStatic2;
+        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,pathNameStatic2);
 
         // Extract attributes from allInstancesRecordSite 1 (abnormal only (malware / phishing / spamming))
         FastVector instancesAttributes = new FastVector();

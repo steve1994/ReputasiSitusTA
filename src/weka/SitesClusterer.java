@@ -22,10 +22,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.filters.Filter;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by steve on 26/03/2016.
@@ -212,8 +209,8 @@ public class SitesClusterer extends SitesMLProcessor{
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         int typeReputation = 3;
-        SitesClusterer clusterSite = new SitesClusterer(typeReputation);
-        clusterSite.configARFFInstance(new String[]{"malware", "phishing", "spamming","normal"});
+//        SitesClusterer clusterSite = new SitesClusterer(typeReputation);
+//        clusterSite.configARFFInstance(new String[]{"malware", "phishing", "spamming","normal"});
         SitesClusterer normalityClusterSite = new SitesClusterer(typeReputation);
         normalityClusterSite.configARFFInstance(new String[]{"normal","abnormal"});
         SitesClusterer dangerousityClusterSite = new SitesClusterer(typeReputation);
@@ -241,7 +238,7 @@ public class SitesClusterer extends SitesMLProcessor{
                 // DNS FEATURES
                 DNS_Feature fiturDNS = new DNS_Feature();
 
-                if (clusterSite.getListCombinationRecordType()[0] == true) {
+                if (Arrays.asList(1,4,5,7).contains(typeReputation)) {
 
                     long beforeDNS = System.currentTimeMillis();
 
@@ -297,7 +294,7 @@ public class SitesClusterer extends SitesMLProcessor{
                 // SPESIFIC FEATURES
                 Spesific_Feature fiturSpesific = new Spesific_Feature();
 
-                if (clusterSite.getListCombinationRecordType()[1] == true) {
+                if (Arrays.asList(2,4,6,7).contains(typeReputation)) {
                     long beforeSpesific = System.currentTimeMillis();
 
                     // Token Count URL
@@ -342,7 +339,7 @@ public class SitesClusterer extends SitesMLProcessor{
                 // TRUST FEATURES
                 Trust_Feature fiturTrust = new Trust_Feature();
 
-                if (clusterSite.getListCombinationRecordType()[2] == true) {
+                if (Arrays.asList(3, 5, 6, 7).contains(typeReputation)) {
                     long beforeTrust = System.currentTimeMillis();
 
                     fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
@@ -402,24 +399,6 @@ public class SitesClusterer extends SitesMLProcessor{
                 }
                 normalityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelNormality);
 
-                // Instances for real clustering
-                String classLabel = "";
-                switch (k) {
-                    default:
-                    case 0:
-                        classLabel = "malware";
-                        break;
-                    case 1:
-                        classLabel = "phishing";
-                        break;
-                    case 2:
-                        classLabel = "spamming";
-                        break;
-                    case 3:
-                        classLabel = "normal";
-                }
-                clusterSite.fillDataIntoInstanceRecord(recordML,classLabel);
-
                 System.out.println("Situs ke-" + i);
             }
         }
@@ -441,43 +420,51 @@ public class SitesClusterer extends SitesMLProcessor{
 //        System.out.println("Avg Time Trust : " + getAverageListLong(listTimeTrust) + " ms");
 
         // Pisahkan instances berdasarkan tipenya (malware / phishing / spamming / normal)
-        Instances allInstancesRecordSite = clusterSite.getSiteReputationRecord();
-        String fileNameStatic = "numsites_" + numSitesMaxAllocation + ".ratio_1111.staticdata.arff";
-        String pathNameStatic = "database/weka/data_static/" + fileNameStatic;
-        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite,pathNameStatic);
+//        Instances allInstancesRecordSite = normalityClusterSite.getSiteReputationRecord();
+//        Instances allInstancesRecordSite2 = dangerousityClusterSite.getSiteReputationRecord();
 
         // Save data static (cluster normality and dangerousity)
-        Instances allInstancesNormalityStatic = normalityClusterSite.getSiteReputationRecord();
-        String fileNameStaticNormality = "numsites_" + numSitesMaxAllocation + ".ratio_3111.normality.staticdata.arff";
-        String pathNameStaticNormality = "database/weka/data_static/" + fileNameStaticNormality;
-        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesNormalityStatic,pathNameStaticNormality);
-        Instances allInstancesDangerousityStatic = dangerousityClusterSite.getSiteReputationRecord();
-        String fileNameStaticDangerousity = "numsites_" + numSitesMaxAllocation + ".ratio_3111.dangerousity.staticdata.arff";
-        String pathNameStaticDangerousity = "database/weka/data_static/" + fileNameStaticDangerousity;
-        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesDangerousityStatic,pathNameStaticDangerousity);
+        Instances allInstancesNormality = normalityClusterSite.getSiteReputationRecord();
+        Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
-        FastVector instancesAttributes = new FastVector();
-        Enumeration attributesRecordSite = allInstancesRecordSite.enumerateAttributes();
-        while (attributesRecordSite.hasMoreElements()) {
-            instancesAttributes.addElement((Attribute) attributesRecordSite.nextElement());
+        FastVector instancesAttributesNormality = new FastVector();
+        Enumeration attributesRecordSiteNormality = allInstancesNormality.enumerateAttributes();
+        while (attributesRecordSiteNormality.hasMoreElements()) {
+            instancesAttributesNormality.addElement((Attribute) attributesRecordSiteNormality.nextElement());
         }
-        instancesAttributes.addElement(allInstancesRecordSite.classAttribute());
+        instancesAttributesNormality.addElement(allInstancesNormality.classAttribute());
+
+        FastVector instancesAttributesDangerousity = new FastVector();
+        Enumeration attributesRecordSiteDangerousity = allInstancesDangerousity.enumerateAttributes();
+        while (attributesRecordSiteDangerousity.hasMoreElements()) {
+            instancesAttributesDangerousity.addElement((Attribute) attributesRecordSiteDangerousity.nextElement());
+        }
+        instancesAttributesDangerousity.addElement(allInstancesDangerousity.classAttribute());
+
         // Divide allInstancesRecordSite based on site class (malware / phishing / spamming / normal)
-        Instances malwareInstances = new Instances("malware_instances", instancesAttributes, 0);
-        Instances phishingInstances = new Instances("phishing_instances", instancesAttributes, 0);
-        Instances spammingInstances = new Instances("spamming_instances", instancesAttributes, 0);
-        Instances normalInstances = new Instances("normal_instances", instancesAttributes, 0);
-        for (int i = 0; i < allInstancesRecordSite.numInstances(); i++) {
-            int indexClassThisInstance = (int) allInstancesRecordSite.instance(i).classValue();
-            if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "malware") {
-                malwareInstances.add(allInstancesRecordSite.instance(i));
-            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "phishing") {
-                phishingInstances.add(allInstancesRecordSite.instance(i));
-            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "spamming") {
-                spammingInstances.add(allInstancesRecordSite.instance(i));
-            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "normal") {
-                normalInstances.add(allInstancesRecordSite.instance(i));
+        Instances normalInstances = new Instances("normal_instances", instancesAttributesNormality, 0);
+        Instances abnormalInstances = new Instances("abnormal_instances", instancesAttributesNormality, 0);
+        for (int i = 0; i < allInstancesNormality.numInstances(); i++) {
+            int indexClassThisInstance = (int) allInstancesNormality.instance(i).classValue();
+            if (allInstancesNormality.classAttribute().value(indexClassThisInstance) == "normal") {
+                normalInstances.add(allInstancesNormality.instance(i));
+            } else {
+                abnormalInstances.add(allInstancesNormality.instance(i));
+            }
+        }
+
+        Instances malwareInstances = new Instances("malware_instances", instancesAttributesDangerousity, 0);
+        Instances phishingInstances = new Instances("phishing_instances", instancesAttributesDangerousity, 0);
+        Instances spammingInstances = new Instances("spamming_instances", instancesAttributesDangerousity, 0);
+        for (int i = 0; i < allInstancesDangerousity.numInstances(); i++) {
+            int indexClassThisInstance = (int) allInstancesDangerousity.instance(i).classValue();
+            if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance) == "malware") {
+                malwareInstances.add(allInstancesDangerousity.instance(i));
+            } else if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance) == "phishing") {
+                phishingInstances.add(allInstancesDangerousity.instance(i));
+            } else if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance) == "spamming") {
+                spammingInstances.add(allInstancesDangerousity.instance(i));
             }
         }
 
@@ -486,42 +473,54 @@ public class SitesClusterer extends SitesMLProcessor{
         int interval = 100;
         int maxCluster = 10;
         for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
-            // Bentuk Training Record Secara Bertahap (malware, phishing, dan spamming)
-            Instances trainingRecordSites = new Instances("mixed_instances_1", instancesAttributes, 0);
+            // Bentuk Training Record Secara Bertahap (normal, abnormal)
+            Instances trainingRecordSitesNormality = new Instances("mixed_instances_normality", instancesAttributesNormality, 0);
             for (int j = 0; j < i; j++) {
-                trainingRecordSites.add(malwareInstances.instance(j));
-                trainingRecordSites.add(phishingInstances.instance(j));
-                trainingRecordSites.add(spammingInstances.instance(j));
-                trainingRecordSites.add(normalInstances.instance(j));
+                trainingRecordSitesNormality.add(normalInstances.instance(j));
+                trainingRecordSitesNormality.add(abnormalInstances.instance(j));
             }
-            trainingRecordSites.setClassIndex(trainingRecordSites.numAttributes() - 1);
+            trainingRecordSitesNormality.setClassIndex(trainingRecordSitesNormality.numAttributes() - 1);
+            // Bentuk Training Record Secara Bertahap (normal, abnormal)
+            Instances trainingRecordSitesDangerousity = new Instances("mixed_instances_dangerousity", instancesAttributesDangerousity, 0);
+            for (int j = 0; j < i; j++) {
+                trainingRecordSitesDangerousity.add(malwareInstances.instance(j));
+                trainingRecordSitesDangerousity.add(phishingInstances.instance(j));
+                trainingRecordSitesDangerousity.add(spammingInstances.instance(j));
+            }
+            trainingRecordSitesDangerousity.setClassIndex(trainingRecordSitesDangerousity.numAttributes() - 1);
 
             // Tulis instance di eksternal file
-            String fileName = "num_" + i + ".type_" + typeReputation + ".unsupervised.arff";
+            String fileName = "num_" + i + ".type_" + typeReputation + ".normality_category.unsupervised.arff";
             String pathName = "database/weka/data/" + fileName;
-            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSites, pathName);
+            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesNormality, pathName);
+
+            String fileName2 = "num_" + i + ".type_" + typeReputation + ".dangerous_category.unsupervised.arff";
+            String pathName2 = "database/weka/data/" + fileName2;
+            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesDangerousity, pathName2);
 
             statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
 
-            // Build cluster berdasarkan mixed instances kemudian langsung evaluasi (K-means)
-//            statisticEvaluationReport.append("\n\n-----------------------------------------------------------------\n\n SIMPLE K-means Algorithm \n\n");
+            int optimumClusterEMNormal = 0, optimumClusterEMDangerous = 0, optimumClusterKmeansNormal = 0, optimumClusterKmeansDangerous = 0;
+
+            // Find optimum Cluster for EM Algorithm
             for (int j=1;j<=maxCluster;j++) {
-                SimpleKMeans clusterKMeans = clusterSite.buildKmeansReputationModel(trainingRecordSites,j);
-                // Classes to cluster evaluation
-                ClusterEvaluation eval = clusterSite.evaluateClusterReputationModel(trainingRecordSites,clusterKMeans);
-                statisticEvaluationReport.append("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
-                statisticEvaluationReport.append("\nResults Classes To Cluster Evaluation with cluster " + j + " : \n\n" + eval.clusterResultsToString());
+
+            }
+            // Find Optimum Cluster for KMeans Algorithm
+            for (int j=1;j<=maxCluster;j++) {
+
             }
 
-            // Build cluster berdasarkan mixed instances kemudian langsung evaluasi (EM)
-//            statisticEvaluationReport.append("\n\n-----------------------------------------------------------------\n\n EM Algorithm \n\n");
-            for (int j=1;j<=maxCluster;j++) {
-                EM clusterEM = clusterSite.buildEMReputationModel(trainingRecordSites, j);
-                // Classes to cluster evaluation
-                ClusterEvaluation eval = clusterSite.evaluateClusterReputationModel(trainingRecordSites,clusterEM);
-                statisticEvaluationReport.append("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
-                statisticEvaluationReport.append("\nResults Classes To Cluster Evaluation with cluster " + j + " : \n\n" + eval.clusterResultsToString());
-            }
+            // Build cluster (normality type)
+            Clusterer clusterKMeansNormal = normalityClusterSite.buildKmeansReputationModel(trainingRecordSitesNormality,optimumClusterKmeansNormal);
+            normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterKMeansNormal);
+            Clusterer clusterEMNormal = normalityClusterSite.buildEMReputationModel(trainingRecordSitesNormality,optimumClusterEMNormal);
+            normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterEMNormal);
+            // Build cluster (dangerousity type)
+            Clusterer clusterKMeansDangerous = dangerousityClusterSite.buildKmeansReputationModel(trainingRecordSitesDangerousity,optimumClusterKmeansDangerous);
+            dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterKMeansDangerous);
+            Clusterer clusterEMDangerous = dangerousityClusterSite.buildEMReputationModel(trainingRecordSitesDangerousity,optimumClusterEMDangerous);
+            dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterEMDangerous);
         }
         // Write evaluation statistic result
         String fileNameEvaluation = "evaluationStatisticUnsupervisedLearning.type_" + typeReputation + ".txt";
