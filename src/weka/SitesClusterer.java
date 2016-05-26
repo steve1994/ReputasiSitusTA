@@ -183,7 +183,7 @@ public class SitesClusterer extends SitesMLProcessor{
      * @param numFold
      * @return
      */
-    public List<Instances> getSplitInstanceDataSet(Instances dataset, int numFold) {
+    private List<Instances> getSplitInstanceDataSet(Instances dataset, int numFold) {
         List<Instances> splitInstances = new ArrayList<Instances>();
 
         // Inisialisasi instances kosong per fold
@@ -271,7 +271,7 @@ public class SitesClusterer extends SitesMLProcessor{
      * @param testSet
      * @return
      */
-    public double getIncorreclyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
+    private double getIncorreclyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
         int[] classesToCluster = eval.getClassesToClusters();
         double[] clusterAssignment = eval.getClusterAssignments();
 
@@ -305,17 +305,24 @@ public class SitesClusterer extends SitesMLProcessor{
         return eval;
     }
 
-    public static long getAverageListLong(List<Long> listLong) {
-        long sumListLong = 0;
-        for (Long l : listLong) {
-            sumListLong += l;
+    /**
+     * Find minimum double value along with its index in List of Double
+     * @param listDouble
+     * @return
+     */
+    public static Pair<Integer,Double> getMinimumValueListDouble(List<Double> listDouble) {
+        int indexMinValue = 0;
+        Double minimumValue = listDouble.get(0);
+        for (int i=1;i<listDouble.size();i++) {
+            if (listDouble.get(i) < minimumValue) {
+                indexMinValue = i;
+                minimumValue = listDouble.get(i);
+            }
         }
-        long average = 0;
-        if (listLong.size() > 0) {
-            average = sumListLong / (long) listLong.size();
-        }
-        return average;
+        Pair<Integer,Double> pairMinimum = new Pair<Integer, Double>(indexMinValue,minimumValue);
+        return pairMinimum;
     }
+
 
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
@@ -588,6 +595,7 @@ public class SitesClusterer extends SitesMLProcessor{
         StringBuffer statisticEvaluationReport = new StringBuffer();
         int interval = 100;
         int maxCluster = 10;
+        int optimumClusterEMNormal = 0, optimumClusterEMDangerous = 0, optimumClusterKmeansNormal = 0, optimumClusterKmeansDangerous = 0;
         for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
             // Bentuk Training Record Secara Bertahap (normal, abnormal)
             Instances trainingRecordSitesNormality = new Instances("mixed_instances_normality", instancesAttributesNormality, 0);
@@ -616,16 +624,25 @@ public class SitesClusterer extends SitesMLProcessor{
 
             statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
 
-            int optimumClusterEMNormal = 0, optimumClusterEMDangerous = 0, optimumClusterKmeansNormal = 0, optimumClusterKmeansDangerous = 0;
-
             // Find optimum Cluster for EM Algorithm
-            for (int j=1;j<=maxCluster;j++) {
-
+            List<Double> listAvgPerClusterNormalEM = new ArrayList<Double>();
+            List<Double> listAvgPerClusterDangerousEM = new ArrayList<Double>();
+            for (int j=0;j<maxCluster;j++) {
+                listAvgPerClusterNormalEM.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 2, j, 10));
+                listAvgPerClusterDangerousEM.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 2, j, 10));
             }
+            optimumClusterEMNormal = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterNormalEM).getValue0() + 1;
+            optimumClusterEMDangerous = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 1;
+
             // Find Optimum Cluster for KMeans Algorithm
-            for (int j=1;j<=maxCluster;j++) {
-
+            List<Double> listAvgPerClusterNormalKmeans = new ArrayList<Double>();
+            List<Double> listAvgPerClusterDangerousKmeans = new ArrayList<Double>();
+            for (int j=0;j<maxCluster;j++) {
+                listAvgPerClusterNormalKmeans.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 1, j, 10));
+                listAvgPerClusterDangerousKmeans.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 1, j, 10));
             }
+            optimumClusterKmeansNormal = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterNormalKmeans).getValue0() + 1;
+            optimumClusterKmeansDangerous = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterDangerousKmeans).getValue0() + 1;
 
             // Build cluster (normality type)
             Clusterer clusterKMeansNormal = normalityClusterSite.buildKmeansReputationModel(trainingRecordSitesNormality,optimumClusterKmeansNormal);
