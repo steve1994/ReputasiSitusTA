@@ -178,16 +178,127 @@ public class SitesClusterer extends SitesMLProcessor{
     }
 
     /**
+     * Split instances by numFold folds (round robin method)
+     * @param dataset
+     * @param numFold
+     * @return
+     */
+    public List<Instances> getSplitInstanceDataSet(Instances dataset, int numFold) {
+        List<Instances> splitInstances = new ArrayList<Instances>();
+
+        // Inisialisasi instances kosong per fold
+        FastVector datasetAttributes = getAttributesVector(dataset);
+        for (int i=0;i<numFold;i++) {
+            Instances splitInstancesThisPart = new Instances("split_instance_fold_"+(i+1),datasetAttributes,0);
+            splitInstances.add(i,splitInstancesThisPart);
+        }
+        // Secara round robin, isi instances dari dataset
+        int sizeDatasetCounter = 0;
+        int splitIndex = 0;
+        do {
+            Instance instanceFromDataset = dataset.instance(sizeDatasetCounter);
+            splitInstances.get(splitIndex).add(instanceFromDataset);
+            splitIndex++;
+            if (splitIndex == numFold) {
+                splitIndex = 0;
+            }
+            sizeDatasetCounter++;
+        } while (sizeDatasetCounter < dataset.numInstances());
+
+        return splitInstances;
+    }
+
+    /**
+     * Calculate list double average
+     * @param listDouble
+     * @return
+     */
+    private double getAverageFromListDouble(List<Double> listDouble) {
+        int size = listDouble.size();
+        double sumElement = 0;
+        for (Double element : listDouble) {
+            sumElement += element;
+        }
+        return sumElement / (double) size;
+    }
+
+    /**
+     * Calculated average test set error using v-fold cross validation method
+     * @param dataset
+     * @param algorithmType
+     * @param clusterNumber
+     * @param numFold
+     * @return
+     */
+    public double getAverageTestErrorsCV(Instances dataset, int algorithmType, int clusterNumber, int numFold) {
+        List<Double> listErrorsPerFold = new ArrayList<Double>();
+        List<Instances> splitInstances = getSplitInstanceDataSet(dataset,numFold);
+        for (int j=0;j<numFold;j++) {
+            Instances testInstances = new Instances("test_instances",getAttributesVector(dataset),0);
+            testInstances.setClassIndex(testInstances.numAttributes()-1);
+            Instances trainingInstances = new Instances("training_instances",getAttributesVector(dataset),0);
+            trainingInstances.setClassIndex(trainingInstances.numAttributes()-1);
+            // Fill Test Set and Training Set
+            Instances instancesThisFold = splitInstances.get(j);
+            for (int k=0;k<instancesThisFold.numInstances();k++) {
+                testInstances.add(instancesThisFold.instance(k));
+            }
+            for (int k=0;k<numFold;k++) {
+                if (k != j) {
+                    Instances instancesRemainingFold = splitInstances.get(k);
+                    for (int l=0;l<instancesRemainingFold.numInstances();l++) {
+                        trainingInstances.add(instancesRemainingFold.instance(l));
+                    }
+                }
+            }
+            // Build Cluster using Training, Evaluate Cluster using Test and get error
+            Clusterer clusterer;
+            if (algorithmType == 1) {
+                clusterer = buildKmeansReputationModel(trainingInstances,clusterNumber);
+            } else {
+                clusterer = buildEMReputationModel(trainingInstances,clusterNumber);
+            }
+            double errorCluster = getIncorreclyClassifiedInstance(evaluateClusterReputationModel(testInstances, clusterer), testInstances);
+            listErrorsPerFold.add(errorCluster);
+        }
+
+        return getAverageFromListDouble(listErrorsPerFold);
+    }
+
+    /**
+     * Calculate incorreclty classified instances manually (classes to cluster eval)
+     * @param eval
+     * @param testSet
+     * @return
+     */
+    public double getIncorreclyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
+        int[] classesToCluster = eval.getClassesToClusters();
+        double[] clusterAssignment = eval.getClusterAssignments();
+
+        int incorrectClusterInstance = 0;
+        for (int i=0;i<testSet.numInstances();i++) {
+            int classValueOriginal = (int) testSet.instance(i).classValue();
+            int clusterThisInstance = (int) clusterAssignment[i];
+            int classValueClustering = classesToCluster[clusterThisInstance];
+            if (classValueOriginal != classValueClustering) {
+                incorrectClusterInstance++;
+            }
+        }
+
+        return ((double) incorrectClusterInstance / (double) testSet.numInstances()) * 100;
+    }
+
+    /**
      * Evaluate cluster build result with current instances
-     * @param instances
+     * @param testInstances
      * @param clusterer
      * @return
      */
-    public ClusterEvaluation evaluateClusterReputationModel(Instances instances, Clusterer clusterer) {
+    public ClusterEvaluation evaluateClusterReputationModel(Instances testInstances, Clusterer clusterer) {
         ClusterEvaluation eval = new ClusterEvaluation();
         eval.setClusterer(clusterer);
         try {
-            eval.evaluateClusterer(instances);
+            eval.evaluateClusterer(testInstances);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,13 +320,18 @@ public class SitesClusterer extends SitesMLProcessor{
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         int typeReputation = 3;
-//        SitesClusterer clusterSite = new SitesClusterer(typeReputation);
-//        clusterSite.configARFFInstance(new String[]{"malware", "phishing", "spamming","normal"});
         SitesClusterer normalityClusterSite = new SitesClusterer(typeReputation);
         normalityClusterSite.configARFFInstance(new String[]{"normal","abnormal"});
         SitesClusterer dangerousityClusterSite = new SitesClusterer(typeReputation);
         dangerousityClusterSite.configARFFInstance(new String[]{"malware,phishing,spamming"});
         System.out.println("Config ARFF Done");
+
+        Instances cobacoba = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_100.type_3.dangerous_category.supervised.arff");
+        cobacoba.setClassIndex(cobacoba.numAttributes()-1);
+        // Test AVG Log likelihood
+        for (int i=0;i<10;i++) {
+            System.out.println("Average error cluster-" + (i+1) + " : " + dangerousityClusterSite.getAverageTestErrorsCV(cobacoba,1,(i+1),10));
+        }
 
         // Time performance logger
 //        List<Long> listTimeTLDRatioAS = new ArrayList<Long>();
