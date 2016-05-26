@@ -27,8 +27,9 @@ public class SitesMLProcessor {
     }
 
     protected FastVector getAttributesVector(Instances dataset) {
-        FastVector attributesVectorDataset = new FastVector();
+        dataset.setClassIndex(dataset.numAttributes()-1);
 
+        FastVector attributesVectorDataset = new FastVector();
         Enumeration attributesDataset = dataset.enumerateAttributes();
         while (attributesDataset.hasMoreElements()) {
             attributesVectorDataset.addElement((Attribute) attributesDataset.nextElement());
