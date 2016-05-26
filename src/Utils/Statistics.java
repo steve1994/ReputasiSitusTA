@@ -125,14 +125,23 @@ public class Statistics {
     }
 
     public static void main(String[] args) {
-        List<Integer> tes = new ArrayList<Integer>();
-        tes.add(1);
-        tes.add(3);
-        tes.add(3);
-        tes.add(4);
-        tes.add(4);
-        tes.add(2);
-        tes.add(2);
-        System.out.println(Statistics.getMostFrequentValueListInteger(tes));
+//        List<Integer> tes = new ArrayList<Integer>();
+//        tes.add(1);
+//        tes.add(3);
+//        tes.add(3);
+//        tes.add(4);
+//        tes.add(4);
+//        tes.add(2);
+//        tes.add(2);
+//        System.out.println(Statistics.getMostFrequentValueListInteger(tes));
+        List<Double> tes2 = new ArrayList<Double>();
+        tes2.add(10.0);
+        tes2.add(20.0);
+        tes2.add(30.0);
+        tes2.add(40.0);
+        tes2.add(50.0);
+        tes2.add(60.0);
+        tes2.add(70.0);
+        System.out.println(Statistics.getAverageListDouble(tes2));
     }
 }

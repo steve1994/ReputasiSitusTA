@@ -4,6 +4,7 @@ import Utils.API.WOT_API_Loader;
 import Utils.DNS.DNSExtractor;
 import Utils.Database.EksternalFile;
 import Utils.Spesific.ContentExtractor;
+import Utils.Statistics;
 import data_structure.feature.DNS_Feature;
 import data_structure.feature.Spesific_Feature;
 import data_structure.feature.Trust_Feature;
@@ -198,24 +199,24 @@ public class StatistikController implements Initializable{
         StringBuffer responseTimePerAttributes = new StringBuffer();
         if ((StaticVars.reputationType == 1) || (StaticVars.reputationType == 4) || (StaticVars.reputationType == 5) || (StaticVars.reputationType == 7)) {
             responseTimePerAttributes.append("FITUR DNS : \n");
-            responseTimePerAttributes.append("Avg Time TLD Ratio AS : " + SitesClusterer.getAverageListLong(listTimeTLDRatioAS) + " ms \n");
-            responseTimePerAttributes.append("Avg Time Hit Ratio AS : " + SitesClusterer.getAverageListLong(listTimeHitRatioAS) + " ms \n");
-            responseTimePerAttributes.append("Avg Time NS Distribution AS : " + SitesClusterer.getAverageListLong(listTimeNSDistAS) + " ms \n");
-            responseTimePerAttributes.append("Avg Time NS Count : " + SitesClusterer.getAverageListLong(listTimeNSCount) + " ms \n");
-            responseTimePerAttributes.append("Avg Time TTL NS : " + SitesClusterer.getAverageListLong(listTimeTTLNS) + " ms \n");
-            responseTimePerAttributes.append("Avg Time TTL IP : " + SitesClusterer.getAverageListLong(listTimeTTLIP) + " ms \n");
+            responseTimePerAttributes.append("Avg Time TLD Ratio AS : " + Statistics.getAverageListLong(listTimeTLDRatioAS) + " ms \n");
+            responseTimePerAttributes.append("Avg Time Hit Ratio AS : " + Statistics.getAverageListLong(listTimeHitRatioAS) + " ms \n");
+            responseTimePerAttributes.append("Avg Time NS Distribution AS : " + Statistics.getAverageListLong(listTimeNSDistAS) + " ms \n");
+            responseTimePerAttributes.append("Avg Time NS Count : " + Statistics.getAverageListLong(listTimeNSCount) + " ms \n");
+            responseTimePerAttributes.append("Avg Time TTL NS : " + Statistics.getAverageListLong(listTimeTTLNS) + " ms \n");
+            responseTimePerAttributes.append("Avg Time TTL IP : " + Statistics.getAverageListLong(listTimeTTLIP) + " ms \n");
         }
         if ((StaticVars.reputationType == 2) || (StaticVars.reputationType == 4) || (StaticVars.reputationType == 6) || (StaticVars.reputationType == 7)) {
             responseTimePerAttributes.append("FITUR SPESIFIK :  \n");
-            responseTimePerAttributes.append("Avg Time Token Count : " + SitesClusterer.getAverageListLong(listTimeTokenCount) + " ms \n");
-            responseTimePerAttributes.append("Avg Time Avg Token : " + SitesClusterer.getAverageListLong(listTimeAvgToken) + " ms \n");
-            responseTimePerAttributes.append("Avg Time SLD Ratio : " + SitesClusterer.getAverageListLong(listTimeSLDRatio) + " ms \n");
-            responseTimePerAttributes.append("Avg Time Inbound Link : " + SitesClusterer.getAverageListLong(listTimeInboundLink) + " ms \n");
-            responseTimePerAttributes.append("Avg Time Lookup Time : " + SitesClusterer.getAverageListLong(listTimeLookupTime) + " ms \n");
+            responseTimePerAttributes.append("Avg Time Token Count : " + Statistics.getAverageListLong(listTimeTokenCount) + " ms \n");
+            responseTimePerAttributes.append("Avg Time Avg Token : " + Statistics.getAverageListLong(listTimeAvgToken) + " ms \n");
+            responseTimePerAttributes.append("Avg Time SLD Ratio : " + Statistics.getAverageListLong(listTimeSLDRatio) + " ms \n");
+            responseTimePerAttributes.append("Avg Time Inbound Link : " + Statistics.getAverageListLong(listTimeInboundLink) + " ms \n");
+            responseTimePerAttributes.append("Avg Time Lookup Time : " + Statistics.getAverageListLong(listTimeLookupTime) + " ms \n");
         }
         if ((StaticVars.reputationType == 3) || (StaticVars.reputationType == 5) || (StaticVars.reputationType == 6) || (StaticVars.reputationType == 7)) {
             responseTimePerAttributes.append("FITUR TRUST :  \n");
-            responseTimePerAttributes.append("Avg Time Trust : " + SitesClusterer.getAverageListLong(listTimeTrust) + " ms \n");
+            responseTimePerAttributes.append("Avg Time Trust : " + Statistics.getAverageListLong(listTimeTrust) + " ms \n");
         }
         responseTimeStat.setText(responseTimePerAttributes.toString());
 
