@@ -3,10 +3,12 @@ package weka;
 import data_structure.instance_ML.SiteRecordReputation;
 import org.javatuples.Pair;
 import weka.core.Attribute;
+import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -20,8 +22,20 @@ public class SitesMLProcessor {
         return siteReputationRecord;
     }
 
-    public Boolean[] getListCombinationRecordType() {
+    protected Boolean[] getListCombinationRecordType() {
         return listCombinationRecordType;
+    }
+
+    protected FastVector getAttributesVector(Instances dataset) {
+        FastVector attributesVectorDataset = new FastVector();
+
+        Enumeration attributesDataset = dataset.enumerateAttributes();
+        while (attributesDataset.hasMoreElements()) {
+            attributesVectorDataset.addElement((Attribute) attributesDataset.nextElement());
+        }
+        attributesVectorDataset.addElement(dataset.classAttribute());
+
+        return attributesVectorDataset;
     }
 
     protected SitesMLProcessor(int typeReputation) {
