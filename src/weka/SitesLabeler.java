@@ -19,10 +19,7 @@ import weka.classifiers.trees.Id3;
 import weka.classifiers.trees.J48;
 import weka.core.*;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by steve on 29/03/2016.
@@ -151,7 +148,7 @@ public class SitesLabeler extends SitesMLProcessor {
                 // DNS FEATURES
                 DNS_Feature fiturDNS = new DNS_Feature();
 
-                if (labeledSite.getListCombinationRecordType()[0] == true) {
+                if (Arrays.asList(1,4,5,7).contains(typeReputation)) {
                     long beforeDNS = System.currentTimeMillis();
 
                     // TLD ratio
@@ -206,7 +203,7 @@ public class SitesLabeler extends SitesMLProcessor {
                 // SPESIFIC FEATURES
                 Spesific_Feature fiturSpesific = new Spesific_Feature();
 
-                if (labeledSite.getListCombinationRecordType()[1] == true) {
+                if (Arrays.asList(2,4,6,7).contains(typeReputation)) {
                     long beforeSpesific = System.currentTimeMillis();
 
                     // Token Count URL
@@ -250,7 +247,7 @@ public class SitesLabeler extends SitesMLProcessor {
 
                 // TRUST FEATURES
                 Trust_Feature fiturTrust = new Trust_Feature();
-                if (labeledSite.getListCombinationRecordType()[2] == true) {
+                if (Arrays.asList(3, 5, 6, 7).contains(typeReputation)) {
                     long beforeTrust = System.currentTimeMillis();
                     fiturTrust = WOT_API_Loader.loadAPIWOTForSite(listSites.get(i));
                     System.out.println("Trust WOT");
@@ -343,11 +340,11 @@ public class SitesLabeler extends SitesMLProcessor {
         Instances spammingInstances = new Instances("spamming_instances", instancesAttributes, 0);
         for (int i = 0; i < allInstancesRecordSite.numInstances(); i++) {
             int indexClassThisInstance = (int) allInstancesRecordSite.instance(i).classValue();
-            if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "malware") {
+            if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance).equals("malware")) {
                 malwareInstances.add(allInstancesRecordSite.instance(i));
-            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "phishing") {
+            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance).equals("phishing")) {
                 phishingInstances.add(allInstancesRecordSite.instance(i));
-            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance) == "spamming") {
+            } else if (allInstancesRecordSite.classAttribute().value(indexClassThisInstance).equals("spamming")) {
                 spammingInstances.add(allInstancesRecordSite.instance(i));
             }
         }
@@ -356,7 +353,7 @@ public class SitesLabeler extends SitesMLProcessor {
         Instances abnormalInstances = new Instances("abnormal_instances", instancesAttributes2, 0);
         for (int i = 0; i < allInstancesRecordSite2.numInstances(); i++) {
             int indexClassThisInstance = (int) allInstancesRecordSite2.instance(i).classValue();
-            if (allInstancesRecordSite2.classAttribute().value(indexClassThisInstance) == "normal") {
+            if (allInstancesRecordSite2.classAttribute().value(indexClassThisInstance).equals("normal")) {
                 normalInstances.add(allInstancesRecordSite2.instance(i));
             } else {
                 abnormalInstances.add(allInstancesRecordSite2.instance(i));

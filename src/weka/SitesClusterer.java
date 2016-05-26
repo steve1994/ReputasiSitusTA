@@ -4,6 +4,7 @@ import Utils.API.WOT_API_Loader;
 import Utils.DNS.DNSExtractor;
 import Utils.Database.EksternalFile;
 import Utils.Spesific.ContentExtractor;
+import Utils.Statistics;
 import data_structure.feature.DNS_Feature;
 import data_structure.feature.Spesific_Feature;
 import data_structure.feature.Trust_Feature;
@@ -12,10 +13,7 @@ import org.javatuples.Pair;
 import org.javatuples.Sextet;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.clusterers.ClusterEvaluation;
-import weka.clusterers.Clusterer;
-import weka.clusterers.EM;
-import weka.clusterers.SimpleKMeans;
+import weka.clusterers.*;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -42,20 +40,6 @@ public class SitesClusterer extends SitesMLProcessor{
      */
     public void configARFFInstance(String[] classLabel) {
         List<Attribute> overallInstanceVector = super.getInstanceAttributes();
-        // Setting Attributes Vector Overall to Instance Record
-//        FastVector attributeInstanceRecord = new FastVector();
-//        for (Attribute attr : overallInstanceVector) {
-//            attributeInstanceRecord.addElement(attr);
-//        }
-//        Attribute siteLabelNominal = new Attribute("class", siteLabel);
-//        overallInstanceVector.add(siteLabelNominal);
-//        // Setting Attributes Vector Overall to Instance Record
-//        FastVector attributeInstanceRecord = new FastVector();
-//        for (Attribute attr : overallInstanceVector) {
-//            attributeInstanceRecord.addElement(attr);
-//        }
-//        siteReputationRecord = new Instances("Reputation Site Dataset",attributeInstanceRecord,0);
-//        siteReputationRecord.setClassIndex(siteReputationRecord.numAttributes() - 1);
         FastVector siteLabel = new FastVector();
         for (String label : classLabel) {
             siteLabel.addElement(label);
@@ -80,14 +64,6 @@ public class SitesClusterer extends SitesMLProcessor{
     public void fillDataIntoInstanceRecord(SiteRecordReputation recordReputation, String classLabel) {
         List<Object> instanceValues = super.getInstanceRecord(recordReputation);
         instanceValues.add(classLabel);
-        // Create new instance weka then insert it into siteReputationRecord
-//        double[] values = new double[instanceValues.size()];
-//        for (int i=0;i<instanceValues.size();i++) {
-//            values[i] = new Double(instanceValues.get(i).toString());
-//        }
-//        Instance instance = new Instance(1.0,values);
-//
-//        siteReputationRecord.add(instance);
 
         double[] values = new double[instanceValues.size()];
         for (int i = 0; i < instanceValues.size(); i++) {
@@ -178,6 +154,27 @@ public class SitesClusterer extends SitesMLProcessor{
     }
 
     /**
+     * Build cluster from site record in instances weka (other settings is default)
+     * using HC (Hierarchical Clustering) Clustering Algorithm
+     * @param instances
+     * @param numCluster
+     * @return
+     */
+    public HierarchicalClusterer buildHCReputationModel(Instances instances, int numCluster) {
+        // Filter data before build
+        Instances dataClusterer = filteredClassesToCluster(instances);
+        // Build Cluster
+        HierarchicalClusterer siteReputationCluster = new HierarchicalClusterer();
+        siteReputationCluster.setNumClusters(numCluster);
+        try {
+            siteReputationCluster.buildClusterer(dataClusterer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return siteReputationCluster;
+    }
+
+    /**
      * Split instances by numFold folds (round robin method)
      * @param dataset
      * @param numFold
@@ -206,20 +203,6 @@ public class SitesClusterer extends SitesMLProcessor{
         } while (sizeDatasetCounter < dataset.numInstances());
 
         return splitInstances;
-    }
-
-    /**
-     * Calculate list double average
-     * @param listDouble
-     * @return
-     */
-    private double getAverageFromListDouble(List<Double> listDouble) {
-        int size = listDouble.size();
-        double sumElement = 0;
-        for (Double element : listDouble) {
-            sumElement += element;
-        }
-        return sumElement / (double) size;
     }
 
     /**
@@ -255,14 +238,16 @@ public class SitesClusterer extends SitesMLProcessor{
             Clusterer clusterer;
             if (algorithmType == 1) {
                 clusterer = buildKmeansReputationModel(trainingInstances,clusterNumber);
-            } else {
+            } else if (algorithmType == 2) {
                 clusterer = buildEMReputationModel(trainingInstances,clusterNumber);
+            } else {
+                clusterer = buildHCReputationModel(trainingInstances,clusterNumber);
             }
             double errorCluster = getIncorreclyClassifiedInstance(evaluateClusterReputationModel(testInstances, clusterer), testInstances);
             listErrorsPerFold.add(errorCluster);
         }
 
-        return getAverageFromListDouble(listErrorsPerFold);
+        return Statistics.getAverageListDouble(listErrorsPerFold);
     }
 
     /**
@@ -271,7 +256,7 @@ public class SitesClusterer extends SitesMLProcessor{
      * @param testSet
      * @return
      */
-    private double getIncorreclyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
+    public double getIncorreclyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
         int[] classesToCluster = eval.getClassesToClusters();
         double[] clusterAssignment = eval.getClusterAssignments();
 
@@ -305,24 +290,6 @@ public class SitesClusterer extends SitesMLProcessor{
         return eval;
     }
 
-    /**
-     * Find minimum double value along with its index in List of Double
-     * @param listDouble
-     * @return
-     */
-    public static Pair<Integer,Double> getMinimumValueListDouble(List<Double> listDouble) {
-        int indexMinValue = 0;
-        Double minimumValue = listDouble.get(0);
-        for (int i=1;i<listDouble.size();i++) {
-            if (listDouble.get(i) < minimumValue) {
-                indexMinValue = i;
-                minimumValue = listDouble.get(i);
-            }
-        }
-        Pair<Integer,Double> pairMinimum = new Pair<Integer, Double>(indexMinValue,minimumValue);
-        return pairMinimum;
-    }
-
 
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
@@ -332,13 +299,6 @@ public class SitesClusterer extends SitesMLProcessor{
         SitesClusterer dangerousityClusterSite = new SitesClusterer(typeReputation);
         dangerousityClusterSite.configARFFInstance(new String[]{"malware,phishing,spamming"});
         System.out.println("Config ARFF Done");
-
-        Instances cobacoba = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_100.type_3.dangerous_category.supervised.arff");
-        cobacoba.setClassIndex(cobacoba.numAttributes()-1);
-        // Test AVG Log likelihood
-        for (int i=0;i<10;i++) {
-            System.out.println("Average error cluster-" + (i+1) + " : " + dangerousityClusterSite.getAverageTestErrorsCV(cobacoba,1,(i+1),10));
-        }
 
         // Time performance logger
 //        List<Long> listTimeTLDRatioAS = new ArrayList<Long>();
@@ -542,35 +502,20 @@ public class SitesClusterer extends SitesMLProcessor{
 //        System.out.println("FITUR TRUST : ");
 //        System.out.println("Avg Time Trust : " + getAverageListLong(listTimeTrust) + " ms");
 
-        // Pisahkan instances berdasarkan tipenya (malware / phishing / spamming / normal)
-//        Instances allInstancesRecordSite = normalityClusterSite.getSiteReputationRecord();
-//        Instances allInstancesRecordSite2 = dangerousityClusterSite.getSiteReputationRecord();
-
         // Save data static (cluster normality and dangerousity)
         Instances allInstancesNormality = normalityClusterSite.getSiteReputationRecord();
         Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
-        FastVector instancesAttributesNormality = new FastVector();
-        Enumeration attributesRecordSiteNormality = allInstancesNormality.enumerateAttributes();
-        while (attributesRecordSiteNormality.hasMoreElements()) {
-            instancesAttributesNormality.addElement((Attribute) attributesRecordSiteNormality.nextElement());
-        }
-        instancesAttributesNormality.addElement(allInstancesNormality.classAttribute());
-
-        FastVector instancesAttributesDangerousity = new FastVector();
-        Enumeration attributesRecordSiteDangerousity = allInstancesDangerousity.enumerateAttributes();
-        while (attributesRecordSiteDangerousity.hasMoreElements()) {
-            instancesAttributesDangerousity.addElement((Attribute) attributesRecordSiteDangerousity.nextElement());
-        }
-        instancesAttributesDangerousity.addElement(allInstancesDangerousity.classAttribute());
+        FastVector instancesAttributesNormality = normalityClusterSite.getAttributesVector(allInstancesNormality);
+        FastVector instancesAttributesDangerousity = dangerousityClusterSite.getAttributesVector(allInstancesDangerousity);
 
         // Divide allInstancesRecordSite based on site class (malware / phishing / spamming / normal)
         Instances normalInstances = new Instances("normal_instances", instancesAttributesNormality, 0);
         Instances abnormalInstances = new Instances("abnormal_instances", instancesAttributesNormality, 0);
         for (int i = 0; i < allInstancesNormality.numInstances(); i++) {
             int indexClassThisInstance = (int) allInstancesNormality.instance(i).classValue();
-            if (allInstancesNormality.classAttribute().value(indexClassThisInstance) == "normal") {
+            if (allInstancesNormality.classAttribute().value(indexClassThisInstance).equals("normal")) {
                 normalInstances.add(allInstancesNormality.instance(i));
             } else {
                 abnormalInstances.add(allInstancesNormality.instance(i));
@@ -582,21 +527,34 @@ public class SitesClusterer extends SitesMLProcessor{
         Instances spammingInstances = new Instances("spamming_instances", instancesAttributesDangerousity, 0);
         for (int i = 0; i < allInstancesDangerousity.numInstances(); i++) {
             int indexClassThisInstance = (int) allInstancesDangerousity.instance(i).classValue();
-            if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance) == "malware") {
+            if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance).equals("malware")) {
                 malwareInstances.add(allInstancesDangerousity.instance(i));
-            } else if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance) == "phishing") {
+            } else if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance).equals("phishing")) {
                 phishingInstances.add(allInstancesDangerousity.instance(i));
-            } else if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance) == "spamming") {
+            } else if (allInstancesDangerousity.classAttribute().value(indexClassThisInstance).equals("spamming")) {
                 spammingInstances.add(allInstancesDangerousity.instance(i));
             }
         }
 
-        // Secara bertahap dari jumlah training 1-100 (iterasi 10), evaluasi hasil clustering
         StringBuffer statisticEvaluationReport = new StringBuffer();
+
+        // Secara bertahap dari jumlah training 1-100 (iterasi 10), ambil cluster optimum per iterasi
         int interval = 100;
         int maxCluster = 10;
-        int optimumClusterEMNormal = 0, optimumClusterEMDangerous = 0, optimumClusterKmeansNormal = 0, optimumClusterKmeansDangerous = 0;
+        List<Integer> listOCKmeansNormalPerAlloc = new ArrayList<Integer>();
+        List<Integer> listOCKmeansDangerousPerAlloc = new ArrayList<Integer>();
+        List<Integer> listOCEMNormalPerAlloc = new ArrayList<Integer>();
+        List<Integer> listOCEMDangerousPerAlloc = new ArrayList<Integer>();
+        List<Integer> listOCHCNormalPerAlloc = new ArrayList<Integer>();
+        List<Integer> listOCHCDangerousPerAlloc = new ArrayList<Integer>();
+
+        statisticEvaluationReport.append("\n\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+        statisticEvaluationReport.append("$$$$$$$$$$   NUMBER CLUSTER EACH TRAINING ALLOCATION   $$$$$$$$$$$$$$\n");
+        statisticEvaluationReport.append("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n");
+
         for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
+            statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
+
             // Bentuk Training Record Secara Bertahap (normal, abnormal)
             Instances trainingRecordSitesNormality = new Instances("mixed_instances_normality", instancesAttributesNormality, 0);
             for (int j = 0; j < i; j++) {
@@ -604,9 +562,11 @@ public class SitesClusterer extends SitesMLProcessor{
                 trainingRecordSitesNormality.add(abnormalInstances.instance(j));
             }
             trainingRecordSitesNormality.setClassIndex(trainingRecordSitesNormality.numAttributes() - 1);
-            // Bentuk Training Record Secara Bertahap (normal, abnormal)
+
+            // Bentuk Training Record Secara Bertahap (malware, phishing, spamming)
             Instances trainingRecordSitesDangerousity = new Instances("mixed_instances_dangerousity", instancesAttributesDangerousity, 0);
-            for (int j = 0; j < i; j++) {
+            int numDangerousSites = i / 3;
+            for (int j = 0; j < numDangerousSites; j++) {
                 trainingRecordSitesDangerousity.add(malwareInstances.instance(j));
                 trainingRecordSitesDangerousity.add(phishingInstances.instance(j));
                 trainingRecordSitesDangerousity.add(spammingInstances.instance(j));
@@ -622,39 +582,113 @@ public class SitesClusterer extends SitesMLProcessor{
             String pathName2 = "database/weka/data/" + fileName2;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesDangerousity, pathName2);
 
-            statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
+            // Find Optimum Cluster for KMeans Algorithm
+            List<Double> listAvgPerClusterNormalKmeans = new ArrayList<Double>();
+            List<Double> listAvgPerClusterDangerousKmeans = new ArrayList<Double>();
+            for (int j=0;j<maxCluster;j++) {
+                listAvgPerClusterNormalKmeans.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 1, (j+1), 10));
+                listAvgPerClusterDangerousKmeans.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 1, (j+1), 10));
+            }
+            listOCKmeansNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalKmeans).getValue0() + 1);
+            listOCKmeansDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousKmeans).getValue0() + 1);
 
             // Find optimum Cluster for EM Algorithm
             List<Double> listAvgPerClusterNormalEM = new ArrayList<Double>();
             List<Double> listAvgPerClusterDangerousEM = new ArrayList<Double>();
             for (int j=0;j<maxCluster;j++) {
-                listAvgPerClusterNormalEM.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 2, j, 10));
-                listAvgPerClusterDangerousEM.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 2, j, 10));
+                listAvgPerClusterNormalEM.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 2, (j+1), 10));
+                listAvgPerClusterDangerousEM.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 2, (j+1), 10));
             }
-            optimumClusterEMNormal = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterNormalEM).getValue0() + 1;
-            optimumClusterEMDangerous = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 1;
+            listOCEMNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalEM).getValue0() + 1);
+            listOCEMDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 1);
 
-            // Find Optimum Cluster for KMeans Algorithm
-            List<Double> listAvgPerClusterNormalKmeans = new ArrayList<Double>();
-            List<Double> listAvgPerClusterDangerousKmeans = new ArrayList<Double>();
+            // Find optimum Cluster for HIerarchical Clustering Algorithm
+            List<Double> listAvgPerClusterNormalHC = new ArrayList<Double>();
+            List<Double> listAvgPerClusterDangerousHC = new ArrayList<Double>();
             for (int j=0;j<maxCluster;j++) {
-                listAvgPerClusterNormalKmeans.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 1, j, 10));
-                listAvgPerClusterDangerousKmeans.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 1, j, 10));
+                listAvgPerClusterNormalHC.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 3, (j+1), 10));
+                listAvgPerClusterDangerousHC.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 3, (j+1), 10));
             }
-            optimumClusterKmeansNormal = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterNormalKmeans).getValue0() + 1;
-            optimumClusterKmeansDangerous = SitesClusterer.getMinimumValueListDouble(listAvgPerClusterDangerousKmeans).getValue0() + 1;
+            listOCHCNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalHC).getValue0() + 1);
+            listOCHCDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 1);
 
-            // Build cluster (normality type)
-            Clusterer clusterKMeansNormal = normalityClusterSite.buildKmeansReputationModel(trainingRecordSitesNormality,optimumClusterKmeansNormal);
-            normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterKMeansNormal);
-            Clusterer clusterEMNormal = normalityClusterSite.buildEMReputationModel(trainingRecordSitesNormality,optimumClusterEMNormal);
-            normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterEMNormal);
-            // Build cluster (dangerousity type)
-            Clusterer clusterKMeansDangerous = dangerousityClusterSite.buildKmeansReputationModel(trainingRecordSitesDangerousity,optimumClusterKmeansDangerous);
-            dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterKMeansDangerous);
-            Clusterer clusterEMDangerous = dangerousityClusterSite.buildEMReputationModel(trainingRecordSitesDangerousity,optimumClusterEMDangerous);
-            dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterEMDangerous);
+            // Write Statistic num Cluster
+            statisticEvaluationReport.append("Optimum Cluster KMeans Stage 1 : " + listOCKmeansNormalPerAlloc.get(listOCKmeansNormalPerAlloc.size()-1) + "\n");
+            statisticEvaluationReport.append("Optimum Cluster KMeans Stage 2 : " + listOCKmeansDangerousPerAlloc.get(listOCKmeansDangerousPerAlloc.size()-1) + "\n");
+            statisticEvaluationReport.append("Optimum Cluster EM Stage 1 : " + listOCEMNormalPerAlloc.get(listOCEMNormalPerAlloc.size()-1) + "\n");
+            statisticEvaluationReport.append("Optimum Cluster EM Stage 2 : " + listOCEMDangerousPerAlloc.get(listOCEMDangerousPerAlloc.size()-1) + "\n");
+            statisticEvaluationReport.append("Optimum Cluster Hierarchical Stage 1 : " + listOCHCNormalPerAlloc.get(listOCHCNormalPerAlloc.size()-1) + "\n");
+            statisticEvaluationReport.append("Optimum Cluster Hierarchical Stage 2 : " + listOCHCDangerousPerAlloc.get(listOCHCDangerousPerAlloc.size()-1) + "\n");
+            System.out.println("NUM SITES TRAINING : " + i);
         }
+
+        // Determine final optimum cluster for each algorithm per type
+        int aggOCKmeansNormal = Statistics.getMostFrequentValueListInteger(listOCKmeansNormalPerAlloc);
+        int aggOCKmeansDangerous = Statistics.getMostFrequentValueListInteger(listOCKmeansDangerousPerAlloc);
+        int aggOCEMNormal = Statistics.getMostFrequentValueListInteger(listOCEMNormalPerAlloc);
+        int aggOCEMDangerous = Statistics.getMostFrequentValueListInteger(listOCEMDangerousPerAlloc);
+        int aggOCHCNormal = Statistics.getMostFrequentValueListInteger(listOCHCNormalPerAlloc);
+        int aggOCHCDangerous = Statistics.getMostFrequentValueListInteger(listOCHCDangerousPerAlloc);
+        statisticEvaluationReport.append("\n\n\naggOCKMeansNormal : " + aggOCKmeansNormal + "\n");
+        statisticEvaluationReport.append("aggOCKmeansDangerous : " + aggOCKmeansDangerous + "\n");
+        statisticEvaluationReport.append("aggOCEMNormal : " + aggOCEMNormal + "\n");
+        statisticEvaluationReport.append("aggOCEMDangerous : " + aggOCEMDangerous + "\n");
+        statisticEvaluationReport.append("aggOCHCNormal : " + aggOCHCNormal + "\n");
+        statisticEvaluationReport.append("aggOCHCDangerous : " + aggOCHCDangerous + "\n\n\n");
+
+        statisticEvaluationReport.append("\n\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+        statisticEvaluationReport.append("$$$$$$$$   INCORRECTLY CLASSIFIED INSTANCE PER ALLOCATION   $$$$$$$$$\n");
+        statisticEvaluationReport.append("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n");
+
+        // Secara bertahap dari jumlah training 1-100 (iterasi 100), build cluster
+        // berdasarkan optimum cluster final per algoritma per tipe di atas
+        for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
+            statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
+
+            // Bentuk Training Record Secara Bertahap (normal, abnormal)
+            Instances trainingRecordSitesNormality = new Instances("mixed_instances_normality", instancesAttributesNormality, 0);
+            for (int j = 0; j < i; j++) {
+                trainingRecordSitesNormality.add(normalInstances.instance(j));
+                trainingRecordSitesNormality.add(abnormalInstances.instance(j));
+            }
+            trainingRecordSitesNormality.setClassIndex(trainingRecordSitesNormality.numAttributes() - 1);
+            // Bentuk Training Record Secara Bertahap (normal, abnormal)
+            Instances trainingRecordSitesDangerousity = new Instances("mixed_instances_dangerousity", instancesAttributesDangerousity, 0);
+            int numDangerousSites = i / 3;
+            for (int j = 0; j < numDangerousSites; j++) {
+                trainingRecordSitesDangerousity.add(malwareInstances.instance(j));
+                trainingRecordSitesDangerousity.add(phishingInstances.instance(j));
+                trainingRecordSitesDangerousity.add(spammingInstances.instance(j));
+            }
+            trainingRecordSitesDangerousity.setClassIndex(trainingRecordSitesDangerousity.numAttributes() - 1);
+
+            // Build cluster KMeans
+            Clusterer clusterKMeansNormal = normalityClusterSite.buildKmeansReputationModel(trainingRecordSitesNormality,aggOCKmeansNormal);
+            ClusterEvaluation evalKMeans1 = normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterKMeansNormal);
+            Clusterer clusterKMeansDangerous = dangerousityClusterSite.buildKmeansReputationModel(trainingRecordSitesDangerousity,aggOCKmeansDangerous);
+            ClusterEvaluation evalKMeans2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity, clusterKMeansDangerous);
+
+            // Build cluster EM
+            Clusterer clusterEMNormal = normalityClusterSite.buildEMReputationModel(trainingRecordSitesNormality,aggOCEMNormal);
+            ClusterEvaluation evalEM1 = normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterEMNormal);
+            Clusterer clusterEMDangerous = dangerousityClusterSite.buildEMReputationModel(trainingRecordSitesDangerousity,aggOCEMDangerous);
+            ClusterEvaluation evalEM2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterEMDangerous);
+
+            // Build cluster Hierarchical Clustering
+            Clusterer clusterHCNormal = normalityClusterSite.buildEMReputationModel(trainingRecordSitesNormality,aggOCHCNormal);
+            ClusterEvaluation evalHC1 = normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterHCNormal);
+            Clusterer clusterHCDangerous = dangerousityClusterSite.buildEMReputationModel(trainingRecordSitesDangerousity,aggOCHCDangerous);
+            ClusterEvaluation evalHC2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterHCDangerous);
+
+            // Write Statistic About Error Statistic
+            statisticEvaluationReport.append("Error KMeans Stage 1 : " + normalityClusterSite.getIncorreclyClassifiedInstance(evalKMeans1,trainingRecordSitesNormality) + "\n");
+            statisticEvaluationReport.append("Error KMeans Stage 1 : " + dangerousityClusterSite.getIncorreclyClassifiedInstance(evalKMeans2,trainingRecordSitesDangerousity) + "\n");
+            statisticEvaluationReport.append("Error EM Stage 1 : " + normalityClusterSite.getIncorreclyClassifiedInstance(evalEM1,trainingRecordSitesNormality) + "\n");
+            statisticEvaluationReport.append("Error EM Stage 1 : " + dangerousityClusterSite.getIncorreclyClassifiedInstance(evalEM2,trainingRecordSitesDangerousity) + "\n");
+            statisticEvaluationReport.append("Error Hierarchical Stage 1 : " + normalityClusterSite.getIncorreclyClassifiedInstance(evalHC1,trainingRecordSitesNormality) + "\n");
+            statisticEvaluationReport.append("Error Hierarchical Stage 1 : " + dangerousityClusterSite.getIncorreclyClassifiedInstance(evalHC2,trainingRecordSitesDangerousity) + "\n");
+        }
+
         // Write evaluation statistic result
         String fileNameEvaluation = "evaluationStatisticUnsupervisedLearning.type_" + typeReputation + ".txt";
         String pathNameEvaluation = "database/weka/statistic/" + fileNameEvaluation;
