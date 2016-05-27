@@ -243,7 +243,7 @@ public class SitesClusterer extends SitesMLProcessor{
             } else {
                 clusterer = buildHCReputationModel(trainingInstances,clusterNumber);
             }
-            double errorCluster = getIncorreclyClassifiedInstance(evaluateClusterReputationModel(testInstances, clusterer), testInstances);
+            double errorCluster = getIncorrectlyClassifiedInstance(evaluateClusterReputationModel(testInstances, clusterer), testInstances);
             listErrorsPerFold.add(errorCluster);
         }
 
@@ -256,7 +256,7 @@ public class SitesClusterer extends SitesMLProcessor{
      * @param testSet
      * @return
      */
-    public double getIncorreclyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
+    public static double getIncorrectlyClassifiedInstance(ClusterEvaluation eval, Instances testSet) {
         int[] classesToCluster = eval.getClassesToClusters();
         double[] clusterAssignment = eval.getClusterAssignments();
 
@@ -681,12 +681,12 @@ public class SitesClusterer extends SitesMLProcessor{
             ClusterEvaluation evalHC2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterHCDangerous);
 
             // Write Statistic About Error Statistic
-            statisticEvaluationReport.append("Error KMeans Stage 1 : " + normalityClusterSite.getIncorreclyClassifiedInstance(evalKMeans1,trainingRecordSitesNormality) + "\n");
-            statisticEvaluationReport.append("Error KMeans Stage 1 : " + dangerousityClusterSite.getIncorreclyClassifiedInstance(evalKMeans2,trainingRecordSitesDangerousity) + "\n");
-            statisticEvaluationReport.append("Error EM Stage 1 : " + normalityClusterSite.getIncorreclyClassifiedInstance(evalEM1,trainingRecordSitesNormality) + "\n");
-            statisticEvaluationReport.append("Error EM Stage 1 : " + dangerousityClusterSite.getIncorreclyClassifiedInstance(evalEM2,trainingRecordSitesDangerousity) + "\n");
-            statisticEvaluationReport.append("Error Hierarchical Stage 1 : " + normalityClusterSite.getIncorreclyClassifiedInstance(evalHC1,trainingRecordSitesNormality) + "\n");
-            statisticEvaluationReport.append("Error Hierarchical Stage 1 : " + dangerousityClusterSite.getIncorreclyClassifiedInstance(evalHC2,trainingRecordSitesDangerousity) + "\n");
+            statisticEvaluationReport.append("Error KMeans Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalKMeans1, trainingRecordSitesNormality) + "\n");
+            statisticEvaluationReport.append("Error KMeans Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalKMeans2, trainingRecordSitesDangerousity) + "\n");
+            statisticEvaluationReport.append("Error EM Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalEM1, trainingRecordSitesNormality) + "\n");
+            statisticEvaluationReport.append("Error EM Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalEM2, trainingRecordSitesDangerousity) + "\n");
+            statisticEvaluationReport.append("Error Hierarchical Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalHC1, trainingRecordSitesNormality) + "\n");
+            statisticEvaluationReport.append("Error Hierarchical Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalHC2, trainingRecordSitesDangerousity) + "\n");
         }
 
         // Write evaluation statistic result
