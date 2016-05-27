@@ -129,7 +129,7 @@ public class SitesLabeler extends SitesMLProcessor {
 
     public static void main(String[] args) {
         // Labeled sites dengan tipe reputasi 3
-        int typeReputation = 3;
+        int typeReputation = 2;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
@@ -151,7 +151,7 @@ public class SitesLabeler extends SitesMLProcessor {
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
-        int numSitesEachType = 100;
+        int numSitesEachType = 1000;
         for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
             List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
             for (int i = 0; i < numSitesEachType; i++) {
@@ -427,7 +427,7 @@ public class SitesLabeler extends SitesMLProcessor {
             EksternalFile.saveClassifierToExternalModel(normalityClassifier,normalPathName);
 
             // Evaluasi Hasil Pembelajaran Untuk Kategori Situs Berbahaya (Malware / Phishing / Spamming)
-            for (int j=1;j<=numNearestNeighbor;j++) {
+            for (int j=1;j<=numNearestNeighbor;j=j+2) {
                 Classifier dangerousityClassifier = labeledSite.buildLabelReputationModel(trainingRecordSites,2,j);
                 try {
                     // Cross Validation (Situs Malware / Phishing / Spamming)

@@ -134,14 +134,23 @@ public class Statistics {
 //        tes.add(2);
 //        tes.add(2);
 //        System.out.println(Statistics.getMostFrequentValueListInteger(tes));
-        List<Double> tes2 = new ArrayList<Double>();
-        tes2.add(10.0);
-        tes2.add(20.0);
-        tes2.add(30.0);
-        tes2.add(40.0);
-        tes2.add(50.0);
-        tes2.add(60.0);
-        tes2.add(70.0);
-        System.out.println(Statistics.getAverageListDouble(tes2));
+        List<Integer> tes2 = new ArrayList<Integer>();
+        int[] array = new int[] {3, 5
+                ,3, 5
+                ,11, 15, 17
+                ,5, 7, 11
+                ,7, 9
+                ,7, 9
+                ,9, 11, 15, 19
+                ,7, 11, 13
+                ,5, 13
+                ,9, 13, 17, 19
+        };
+        for (int e : array) {
+            tes2.add(e);
+        }
+        tes2.remove(0); tes2.remove(0);
+
+        System.out.println(Statistics.getMostFrequentValueListInteger(tes2));
     }
 }

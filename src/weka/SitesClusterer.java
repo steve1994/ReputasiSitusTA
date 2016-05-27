@@ -314,7 +314,7 @@ public class SitesClusterer extends SitesMLProcessor{
 //        List<Long> listTimeLookupTime = new ArrayList<Long>();
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
-        int numSitesMaxAllocation = 1000;
+        int numSitesMaxAllocation = 100;
         for (int k=0;k<4;k++) {
             List<String> listSites = EksternalFile.loadSitesTrainingList(k+1).getKey();
             for (int i = 0; i < numSitesMaxAllocation; i++) {
@@ -505,6 +505,8 @@ public class SitesClusterer extends SitesMLProcessor{
         // Save data static (cluster normality and dangerousity)
         Instances allInstancesNormality = normalityClusterSite.getSiteReputationRecord();
         Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
+//        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_100.ratio_3111.type_3.normal.staticdata.arff");
+//        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_100.ratio_3111.type_3.dangerous.staticdata.arff");
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
         FastVector instancesAttributesNormality = normalityClusterSite.getAttributesVector(allInstancesNormality);
@@ -585,32 +587,38 @@ public class SitesClusterer extends SitesMLProcessor{
             // Find Optimum Cluster for KMeans Algorithm
             List<Double> listAvgPerClusterNormalKmeans = new ArrayList<Double>();
             List<Double> listAvgPerClusterDangerousKmeans = new ArrayList<Double>();
-            for (int j=0;j<maxCluster;j++) {
-                listAvgPerClusterNormalKmeans.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 1, (j+1), 10));
-                listAvgPerClusterDangerousKmeans.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 1, (j+1), 10));
+            for (int j=1;j<maxCluster;j++) {
+                listAvgPerClusterNormalKmeans.add(normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 1, (j+1), 10));
             }
-            listOCKmeansNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalKmeans).getValue0() + 1);
-            listOCKmeansDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousKmeans).getValue0() + 1);
+            for (int j=2;j<maxCluster;j++) {
+                listAvgPerClusterDangerousKmeans.add(dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 1, (j+1), 10));
+            }
+            listOCKmeansNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalKmeans).getValue0() + 2);
+            listOCKmeansDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousKmeans).getValue0() + 3);
 
             // Find optimum Cluster for EM Algorithm
             List<Double> listAvgPerClusterNormalEM = new ArrayList<Double>();
             List<Double> listAvgPerClusterDangerousEM = new ArrayList<Double>();
-            for (int j=0;j<maxCluster;j++) {
-                listAvgPerClusterNormalEM.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 2, (j+1), 10));
-                listAvgPerClusterDangerousEM.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 2, (j+1), 10));
+            for (int j=1;j<maxCluster;j++) {
+                listAvgPerClusterNormalEM.add(normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 2, (j+1), 10));
             }
-            listOCEMNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalEM).getValue0() + 1);
-            listOCEMDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 1);
+            for (int j=2;j<maxCluster;j++) {
+                listAvgPerClusterDangerousEM.add(dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 2, (j+1), 10));
+            }
+            listOCEMNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalEM).getValue0() + 2);
+            listOCEMDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 3);
 
             // Find optimum Cluster for HIerarchical Clustering Algorithm
             List<Double> listAvgPerClusterNormalHC = new ArrayList<Double>();
             List<Double> listAvgPerClusterDangerousHC = new ArrayList<Double>();
-            for (int j=0;j<maxCluster;j++) {
-                listAvgPerClusterNormalHC.add(j, normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 3, (j+1), 10));
-                listAvgPerClusterDangerousHC.add(j, dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 3, (j+1), 10));
+            for (int j=1;j<maxCluster;j++) {
+                listAvgPerClusterNormalHC.add(normalityClusterSite.getAverageTestErrorsCV(trainingRecordSitesNormality, 3, (j+1), 10));
             }
-            listOCHCNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalHC).getValue0() + 1);
-            listOCHCDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 1);
+            for (int j=2;j<maxCluster;j++) {
+                listAvgPerClusterDangerousHC.add(dangerousityClusterSite.getAverageTestErrorsCV(trainingRecordSitesDangerousity, 3, (j+1), 10));
+            }
+            listOCHCNormalPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterNormalHC).getValue0() + 2);
+            listOCHCDangerousPerAlloc.add(Statistics.getMinimumValueListDouble(listAvgPerClusterDangerousEM).getValue0() + 3);
 
             // Write Statistic num Cluster
             statisticEvaluationReport.append("Optimum Cluster KMeans Stage 1 : " + listOCKmeansNormalPerAlloc.get(listOCKmeansNormalPerAlloc.size()-1) + "\n");
@@ -629,6 +637,7 @@ public class SitesClusterer extends SitesMLProcessor{
         int aggOCEMDangerous = Statistics.getMostFrequentValueListInteger(listOCEMDangerousPerAlloc);
         int aggOCHCNormal = Statistics.getMostFrequentValueListInteger(listOCHCNormalPerAlloc);
         int aggOCHCDangerous = Statistics.getMostFrequentValueListInteger(listOCHCDangerousPerAlloc);
+        // Write statistic about final optimum Cluster
         statisticEvaluationReport.append("\n\n\naggOCKMeansNormal : " + aggOCKmeansNormal + "\n");
         statisticEvaluationReport.append("aggOCKmeansDangerous : " + aggOCKmeansDangerous + "\n");
         statisticEvaluationReport.append("aggOCEMNormal : " + aggOCEMNormal + "\n");
