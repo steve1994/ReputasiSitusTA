@@ -26,7 +26,7 @@ public class SitesMLProcessor {
         return listCombinationRecordType;
     }
 
-    protected FastVector getAttributesVector(Instances dataset) {
+    protected static FastVector getAttributesVector(Instances dataset) {
         dataset.setClassIndex(dataset.numAttributes()-1);
 
         FastVector attributesVectorDataset = new FastVector();
