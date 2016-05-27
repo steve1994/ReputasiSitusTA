@@ -117,6 +117,16 @@ public class SitesLabeler extends SitesMLProcessor {
         return classifier;
     }
 
+    /**
+     * Get correctly classified instances from evalClassifier and testSet Instances
+     * @param evalClassifier
+     * @param testSet
+     * @return
+     */
+    public static double getCorrectlyClassifiedInstances(Evaluation evalClassifier, Instances testSet) {
+        return (evalClassifier.correct() / (double) testSet.numInstances()) * 100;
+    }
+
     public static void main(String[] args) {
         // Labeled sites dengan tipe reputasi 3
         int typeReputation = 3;
@@ -407,7 +417,7 @@ public class SitesLabeler extends SitesMLProcessor {
                 // Cross Validation (Situs Normal / Tidak Normal)
                 Evaluation evalLabeledSiteNormality = new Evaluation(trainingRecordSites2);
                 evalLabeledSiteNormality.crossValidateModel(normalityClassifier, trainingRecordSites2, numFoldCrossValidation, new Random(1));
-                statisticEvaluationReport.append(evalLabeledSiteNormality.toSummaryString("\nResults Cross-Validation for Normality\n\n", false));
+                statisticEvaluationReport.append("\nResults Cross-Validation for Normality : " + SitesLabeler.getCorrectlyClassifiedInstances(evalLabeledSiteNormality,trainingRecordSites2) + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -423,7 +433,7 @@ public class SitesLabeler extends SitesMLProcessor {
                     // Cross Validation (Situs Malware / Phishing / Spamming)
                     Evaluation evalLabeledSiteDangerousity = new Evaluation(trainingRecordSites);
                     evalLabeledSiteDangerousity.crossValidateModel(dangerousityClassifier, trainingRecordSites, numFoldCrossValidation, new Random(1));
-                    statisticEvaluationReport.append(evalLabeledSiteDangerousity.toSummaryString("\nResults Cross-Validation for Dangerousity with nearest neighbor value : " + j + "\n\n", false));
+                    statisticEvaluationReport.append("\nResults Cross-Validation for Dangerousity with nearest neighbor " + j + " : " + SitesLabeler.getCorrectlyClassifiedInstances(evalLabeledSiteDangerousity,trainingRecordSites) + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
