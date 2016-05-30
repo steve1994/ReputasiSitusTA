@@ -7,9 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -51,34 +53,34 @@ public class reputationHistoryController implements Initializable {
                 new PropertyValueFactory<historyReputationRowTableView,String>("domainName"));
 
         TableColumn labelColumn = new TableColumn("Status");
-        nameColumn.setMinWidth(100);
-        nameColumn.setCellValueFactory(
+        labelColumn.setMinWidth(100);
+        labelColumn.setCellValueFactory(
                 new PropertyValueFactory<historyReputationRowTableView,String>("domainStatus"));
 
         TableColumn responseTimeColumn = new TableColumn("Response Time");
-        nameColumn.setMinWidth(100);
-        nameColumn.setCellValueFactory(
+        responseTimeColumn.setMinWidth(100);
+        responseTimeColumn.setCellValueFactory(
                 new PropertyValueFactory<historyReputationRowTableView,String>("domainResponseTime"));
 
         TableColumn dateMeasuredColumn = new TableColumn("Date Measured");
-        nameColumn.setMinWidth(100);
-        nameColumn.setCellValueFactory(
+        dateMeasuredColumn.setMinWidth(100);
+        dateMeasuredColumn.setCellValueFactory(
                 new PropertyValueFactory<historyReputationRowTableView,String>("domainDateMeasured"));
 
         TableColumn malwareCompositionColumn = new TableColumn("Malware Probability");
-        nameColumn.setMinWidth(100);
-        nameColumn.setCellValueFactory(
-                new PropertyValueFactory<historyReputationRowTableView,String>("domainMalComp"));
+        malwareCompositionColumn.setMinWidth(100);
+        malwareCompositionColumn.setCellValueFactory(
+                new PropertyValueFactory<historyReputationRowTableView, String>("domainMalComp"));
 
         TableColumn phishingCompositionColumn = new TableColumn("Phishing Probability");
-        nameColumn.setMinWidth(100);
-        nameColumn.setCellValueFactory(
-                new PropertyValueFactory<historyReputationRowTableView,String>("domainPhisComp"));
+        phishingCompositionColumn.setMinWidth(100);
+        phishingCompositionColumn.setCellValueFactory(
+                new PropertyValueFactory<historyReputationRowTableView, String>("domainPhisComp"));
 
         TableColumn spammingCompositionColumn = new TableColumn("Spamming Probability");
-        nameColumn.setMinWidth(100);
-        nameColumn.setCellValueFactory(
-                new PropertyValueFactory<historyReputationRowTableView,String>("domainSpamComp"));
+        spammingCompositionColumn.setMinWidth(100);
+        spammingCompositionColumn.setCellValueFactory(
+                new PropertyValueFactory<historyReputationRowTableView, String>("domainSpamComp"));
 
         historyReputationTableView.getColumns().addAll(nameColumn,labelColumn,responseTimeColumn,
                 malwareCompositionColumn,phishingCompositionColumn,spammingCompositionColumn);
