@@ -1,6 +1,14 @@
 package sample;
 
+import Utils.API.WOT_API_Loader;
+import Utils.DNS.DNSExtractor;
 import Utils.Database.EksternalFile;
+import Utils.Spesific.ContentExtractor;
+import data_structure.feature.DNS_Feature;
+import data_structure.feature.Spesific_Feature;
+import data_structure.feature.Trust_Feature;
+import data_structure.instance_ML.SiteRecordReputation;
+import data_structure.instance_ML.historySitesReputation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +21,18 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import org.javatuples.Sextet;
+import org.javatuples.Triplet;
+import weka.SitesLabeler;
+import weka.SitesMLProcessor;
+import weka.classifiers.Classifier;
+import weka.core.Instance;
+import weka.core.Instances;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -31,6 +48,7 @@ public class Controller implements Initializable {
     public RadioButton dnsSpesificTrustRadioButton;
     private final ToggleGroup methodRadioButton;
     private final ToggleGroup featuresRadioButton;
+    public TextField domainSitesTextField;
 
     public Controller() {
         methodRadioButton = new ToggleGroup();
@@ -90,19 +108,111 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        malwareRadioButton.setToggleGroup(siteListRadioButton);
-//        phishingRadioButton.setToggleGroup(siteListRadioButton);
-//        spammingRadioButton.setToggleGroup(siteListRadioButton);
-//        popularRadioButton.setToggleGroup(siteListRadioButton);
-//        malwareRadioButton.setSelected(true);
-        
+        supervisedRadioButton.setToggleGroup(methodRadioButton);
+        unsupervisedRadioButton.setToggleGroup(methodRadioButton);
+        hybridRadioButton.setToggleGroup(methodRadioButton);
+        dnsRadioButton.setToggleGroup(featuresRadioButton);
+        spesificRadioButton.setToggleGroup(featuresRadioButton);
+        trustRadioButton.setToggleGroup(featuresRadioButton);
+        dnsSpesificRadioButton.setToggleGroup(featuresRadioButton);
+        dnsTrustRadioButton.setToggleGroup(featuresRadioButton);
+        spesificTrustRadioButton.setToggleGroup(featuresRadioButton);
+        dnsSpesificTrustRadioButton.setToggleGroup(featuresRadioButton);
     }
 
     public void handleDiagnoseButton(ActionEvent actionEvent) {
-        
+        // Save static vars (method option and reputation option)
+        if (dnsRadioButton.isSelected()) {
+            StaticVars.reputationType = 1;
+        }
+        else if (spesificRadioButton.isSelected()) {
+            StaticVars.reputationType = 2;
+        }
+        else if (trustRadioButton.isSelected()) {
+            StaticVars.reputationType = 3;
+        }
+        else if (dnsSpesificRadioButton.isSelected()) {
+            StaticVars.reputationType = 4;
+        }
+        else if (dnsTrustRadioButton.isSelected()) {
+            StaticVars.reputationType = 5;
+        }
+        else if (spesificTrustRadioButton.isSelected()) {
+            StaticVars.reputationType = 6;
+        }
+        else if (dnsSpesificTrustRadioButton.isSelected()) {
+            StaticVars.reputationType = 7;
+        }
+
+        if (supervisedRadioButton.isSelected()) {
+            StaticVars.methodType = 1;
+        }
+        else if (unsupervisedRadioButton.isSelected()) {
+            StaticVars.methodType = 2;
+        }
+        else if (hybridRadioButton.isSelected()) {
+            StaticVars.methodType = 3;
+        }
+
+        // Extract Features From Domain Name and Process Based on Its method
+        String domainName = domainSitesTextField.getText();
+
+        long startResponseTime = System.currentTimeMillis();
+
+        SiteRecordReputation thisDomainNameFeatures = SitesMLProcessor.extractFeaturesFromDomain(domainName,StaticVars.reputationType);
+        if (supervisedRadioButton.isSelected()) {
+            // Convert extracted feature into instance weka
+            SitesLabeler sitesLabeler = new SitesLabeler(StaticVars.reputationType);
+            sitesLabeler.configARFFInstance(new String[]{"normal","abnormal"});
+            sitesLabeler.fillDataIntoInstanceRecord(thisDomainNameFeatures,"normal");
+            Instances convertedFeature = sitesLabeler.getSiteReputationRecord();
+
+            // Classified site into two stages (SVM and kNN)
+            String pathClassifier1 = "database/weka/model/num_1000.type_" + StaticVars.reputationType + ".normalitySVM.model";
+            Classifier optimumSupervisedClassifier1 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier1);
+            try {
+                // Do classification stage I (SVM)
+                double classValue = optimumSupervisedClassifier1.classifyInstance(convertedFeature.instance(0));
+                String normalityLabel = convertedFeature.classAttribute().value((int) classValue);
+                if (normalityLabel.equals("abnormal")) {
+                    // Convert instance label first into dangerous label
+                    Instances dangerousConvertedFeature = sitesLabeler.convertNormalityToDangerousityLabel(convertedFeature);
+                    // Do classification stage II (kNN)
+                    String pathClassifier2 = "database/weka/model/num_1000.type_" + StaticVars.reputationType + ".dangerousityKNN_10.model";
+                    Classifier optimumSupervisedClassifier2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier2);
+                    double classValueDangerousity = optimumSupervisedClassifier2.classifyInstance(dangerousConvertedFeature.instance(0));
+                    StaticVars.currentLabel = dangerousConvertedFeature.classAttribute().value((int) classValueDangerousity);
+                } else {
+                    StaticVars.currentLabel = "normal";
+                }
+                System.out.println("CURRENT LABEL RESULT : " + StaticVars.currentLabel);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if (unsupervisedRadioButton.isSelected()) {
+
+        }
+        else if (hybridRadioButton.isSelected()) {
+
+        }
+
+        long endResponseTime = System.currentTimeMillis();
+
+
+        historySitesReputation thisDomainNameHistory = new historySitesReputation();
+        thisDomainNameHistory.setLabelNormality(StaticVars.currentLabel);
+        thisDomainNameHistory.setResponseTime((endResponseTime - startResponseTime) / 1000);
+        thisDomainNameHistory.setMeasureDate(new Date());
+        if (unsupervisedRadioButton.isSelected() || hybridRadioButton.isSelected()) {
+            thisDomainNameHistory.setCompositionDangerousity(new Triplet<Double,Double,Double>(0.0,0.0,0.0));
+        } else {
+            thisDomainNameHistory.setCompositionDangerousity(new Triplet<Double,Double,Double>(0.0,0.0,0.0));
+        }
+        StaticVars.historyReputation.put(domainName,thisDomainNameHistory);
     }
 
     public void handleHistoryButton(ActionEvent actionEvent) {
-
+        
     }
 }

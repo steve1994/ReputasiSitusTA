@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="423.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
           <Label layoutX="26.0" layoutY="79.0" text="Sites Domain Name :" />
-          <TextField fx:id="numSitesTextField" layoutX="158.0" layoutY="75.0" prefHeight="25.0" prefWidth="327.0" />
+          <TextField fx:id="domainSitesTextField" layoutX="158.0" layoutY="75.0" prefHeight="25.0" prefWidth="327.0" />
           <Label layoutX="25.0" layoutY="122.0" text="Reputation Features :" />
           <Button layoutX="158.0" layoutY="364.0" mnemonicParsing="false" onAction="#handleDiagnoseButton" text="DIAGNOSE" />
       <Label layoutX="79.0" layoutY="21.0" text="WEBSITE REPUTATION SYSTEM">
