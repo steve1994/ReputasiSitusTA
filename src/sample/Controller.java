@@ -23,6 +23,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import org.javatuples.Sextet;
 import org.javatuples.Triplet;
+import weka.SitesClusterer;
 import weka.SitesLabeler;
 import weka.SitesMLProcessor;
 import weka.classifiers.Classifier;
@@ -160,6 +161,8 @@ public class Controller implements Initializable {
         long startResponseTime = System.currentTimeMillis();
 
         SiteRecordReputation thisDomainNameFeatures = SitesMLProcessor.extractFeaturesFromDomain(domainName,StaticVars.reputationType);
+        String labelDomainNameResult = "";
+        Triplet<Double,Double,Double> compositionDangerousity = null;
         if (supervisedRadioButton.isSelected()) {
             // Convert extracted feature into instance weka
             SitesLabeler sitesLabeler = new SitesLabeler(StaticVars.reputationType);
@@ -181,16 +184,22 @@ public class Controller implements Initializable {
                     String pathClassifier2 = "database/weka/model/num_1000.type_" + StaticVars.reputationType + ".dangerousityKNN_10.model";
                     Classifier optimumSupervisedClassifier2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier2);
                     double classValueDangerousity = optimumSupervisedClassifier2.classifyInstance(dangerousConvertedFeature.instance(0));
-                    StaticVars.currentLabel = dangerousConvertedFeature.classAttribute().value((int) classValueDangerousity);
+                    labelDomainNameResult = dangerousConvertedFeature.classAttribute().value((int) classValueDangerousity);
                 } else {
-                    StaticVars.currentLabel = "normal";
+                    labelDomainNameResult = "normal";
                 }
-                System.out.println("CURRENT LABEL RESULT : " + StaticVars.currentLabel);
+                System.out.println("CURRENT LABEL RESULT SUPERVISED : " + labelDomainNameResult);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         else if (unsupervisedRadioButton.isSelected()) {
+            // Convert extracted feature into instance weka
+            SitesClusterer sitesClusterer = new SitesClusterer(StaticVars.reputationType);
+            sitesClusterer.configARFFInstance(new String[]{"normal","abnormal"});
+            sitesClusterer.fillDataIntoInstanceRecord(thisDomainNameFeatures,"normal");
+            Instances convertedFeature = sitesClusterer.getSiteReputationRecord();
+
 
         }
         else if (hybridRadioButton.isSelected()) {
@@ -199,20 +208,48 @@ public class Controller implements Initializable {
 
         long endResponseTime = System.currentTimeMillis();
 
-
-        historySitesReputation thisDomainNameHistory = new historySitesReputation();
-        thisDomainNameHistory.setLabelNormality(StaticVars.currentLabel);
-        thisDomainNameHistory.setResponseTime((endResponseTime - startResponseTime) / 1000);
-        thisDomainNameHistory.setMeasureDate(new Date());
+        // Catat waktu response time dan tanggal sekarang
+        Long responseTime = (endResponseTime - startResponseTime) / 1000;
+        Date currentDate = new Date();
+        // Simpan hasil pengukuran ke static variable
+        StaticVars.currentDomainName = domainName;
+        StaticVars.currentLabel = labelDomainNameResult;
+        StaticVars.currentResponseTime = String.valueOf(responseTime);
+        StaticVars.currentDate = currentDate;
         if (unsupervisedRadioButton.isSelected() || hybridRadioButton.isSelected()) {
-            thisDomainNameHistory.setCompositionDangerousity(new Triplet<Double,Double,Double>(0.0,0.0,0.0));
+            StaticVars.currentComposition = compositionDangerousity;
         } else {
-            thisDomainNameHistory.setCompositionDangerousity(new Triplet<Double,Double,Double>(0.0,0.0,0.0));
+            StaticVars.currentComposition = new Triplet<Double,Double,Double>(0.0,0.0,0.0);
         }
-        StaticVars.historyReputation.put(domainName,thisDomainNameHistory);
+        System.out.println(StaticVars.currentDomainName);
+        System.out.println(StaticVars.currentLabel);
+        System.out.println(StaticVars.currentResponseTime);
+        System.out.println(StaticVars.currentDate);
+
+        // Pindah ke layar hasil pengukuran
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("reputation_result.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("css/main_page.css").toExternalForm());
+        stage.setScene(scene);
     }
 
     public void handleHistoryButton(ActionEvent actionEvent) {
-        
+        // Pindah ke layar hasil pengukuran
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("reputation_history.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("css/main_page.css").toExternalForm());
+        stage.setScene(scene);
     }
 }

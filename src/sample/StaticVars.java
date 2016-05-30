@@ -5,6 +5,7 @@ import data_structure.instance_ML.historySitesReputation;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,8 +17,9 @@ public class StaticVars {
     public static int numSitesTraining;
     public static int reputationType;
     public static int methodType;
-    public static HashMap<String,historySitesReputation> historyReputation = new HashMap<String, historySitesReputation>();
     public static String currentDomainName;
     public static String currentLabel;
+    public static String currentResponseTime;
+    public static Date currentDate;
     public static Triplet<Double,Double,Double> currentComposition;
 }
