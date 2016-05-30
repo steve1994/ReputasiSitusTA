@@ -17,6 +17,8 @@ import java.util.List;
  * Created by steve on 21/03/2016.
  */
 public class MXToolbox_API_Loader {
+    private static final String mxToolboxAPIKey = "b2ad9c46-f001-4cc5-b685-8a7b33e111e8";
+
     private static String getRawJsonResponse(String urlRequest) {
         StringBuffer response = new StringBuffer();
         try {
@@ -93,7 +95,7 @@ public class MXToolbox_API_Loader {
      * @return
      */
     public static List<Integer> listNameServerTimeToLive(String url) {
-        String urlRequest = "http://api.mxtoolbox.com/api/v1/lookup/dns/" + url + "?authorization=b2ad9c46-f001-4cc5-b685-8a7b33e111e8";
+        String urlRequest = "http://api.mxtoolbox.com/api/v1/lookup/dns/" + url + "?authorization=" + mxToolboxAPIKey;
         String jsonResponse = getRawJsonResponse(urlRequest);
         return parseNameServerTTLArgument(jsonResponse);
     }
@@ -104,7 +106,7 @@ public class MXToolbox_API_Loader {
      * @return
      */
     public static List<Integer> listIPAddressTimeToLive(String url) {
-        String urlRequest = "http://api.mxtoolbox.com/api/v1/lookup/a/" + url + "?authorization=b2ad9c46-f001-4cc5-b685-8a7b33e111e8";
+        String urlRequest = "http://api.mxtoolbox.com/api/v1/lookup/a/" + url + "?authorization=" + mxToolboxAPIKey;
         String jsonResponse = getRawJsonResponse(urlRequest);
         return parseNameServerTTLArgument(jsonResponse);
     }
@@ -115,7 +117,7 @@ public class MXToolbox_API_Loader {
      * @return
      */
     public static String HostNameToIPAddress(String url) {
-        String urlRequest = "http://api.mxtoolbox.com/api/v1/lookup/a/" + url + "?authorization=b2ad9c46-f001-4cc5-b685-8a7b33e111e8";
+        String urlRequest = "http://api.mxtoolbox.com/api/v1/lookup/a/" + url + "?authorization=" + mxToolboxAPIKey;
         String jsonResponse = getRawJsonResponse(urlRequest);
         List<String> IPAddresses = parseIPAddressArgument(jsonResponse);
         if (IPAddresses.size() > 0) {
