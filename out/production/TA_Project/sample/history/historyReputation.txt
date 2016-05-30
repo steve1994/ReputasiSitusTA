@@ -1,2 +1,3 @@
 facebook.com*normal*2*Mon May 30 22:36:46 ICT 2016*0.0*0.0*0.0*supervised*Trust
 cutscenes.net*malware*9*Mon May 30 22:37:12 ICT 2016*0.0*0.0*0.0*supervised*Spesific
+pornhub.com*normal*8*Mon May 30 22:42:35 ICT 2016*0.0*0.0*0.0*supervised*Spesific+Trust
