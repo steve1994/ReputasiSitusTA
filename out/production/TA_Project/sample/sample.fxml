@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -8,19 +9,28 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane prefHeight="423.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
-          <RadioButton fx:id="malwareRadioButton" layoutX="45.0" layoutY="52.0" mnemonicParsing="false" text="Malware Sites" />
-          <Label layoutX="25.0" layoutY="29.0" text="Sites Training Type :" />
-          <RadioButton fx:id="phishingRadioButton" layoutX="45.0" layoutY="76.0" mnemonicParsing="false" text="Phishing Sites" />
-          <RadioButton fx:id="spammingRadioButton" layoutX="45.0" layoutY="100.0" mnemonicParsing="false" text="Spamming Sites" />
-          <Label layoutX="25.0" layoutY="151.0" text="Site Number Proceed :" />
-          <TextField fx:id="numSitesTextField" layoutX="159.0" layoutY="147.0" prefHeight="25.0" prefWidth="327.0" />
-          <Label layoutX="25.0" layoutY="179.0" text="Reputation Features :" />
-          <RadioButton fx:id="popularRadioButton" layoutX="45.0" layoutY="123.0" mnemonicParsing="false" text="Popular Sites" />
-          <CheckBox fx:id="optionDNSCheckBox" layoutX="42.0" layoutY="205.0" mnemonicParsing="false" text="DNS " />
-          <CheckBox fx:id="optionSpesificCheckBox" layoutX="42.0" layoutY="233.0" mnemonicParsing="false" text="Site's Spesific Info" />
-          <CheckBox fx:id="optionTrustCheckBox" layoutX="42.0" layoutY="262.0" mnemonicParsing="false" text="Trust Collaboration" />
-          <Button layoutX="25.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleTrainingDataFeatures" text="SUBMIT" />
+          <Label layoutX="26.0" layoutY="79.0" text="Sites Domain Name :" />
+          <TextField fx:id="numSitesTextField" layoutX="158.0" layoutY="75.0" prefHeight="25.0" prefWidth="327.0" />
+          <Label layoutX="25.0" layoutY="122.0" text="Reputation Features :" />
+          <Button layoutX="158.0" layoutY="364.0" mnemonicParsing="false" onAction="#handleDiagnoseButton" text="DIAGNOSE" />
+      <Label layoutX="79.0" layoutY="21.0" text="WEBSITE REPUTATION SYSTEM">
+         <font>
+            <Font name="Calibri" size="29.0" />
+         </font>
+      </Label>
+      <Button layoutX="290.0" layoutY="364.0" mnemonicParsing="false" onAction="#handleHistoryButton" text="HISTORY" />
+      <Label layoutX="338.0" layoutY="122.0" text="Method :" />
+      <RadioButton fx:id="supervisedRadioButton" layoutX="338.0" layoutY="148.0" mnemonicParsing="false" text="Supervised" />
+      <RadioButton fx:id="unsupervisedRadioButton" layoutX="338.0" layoutY="176.0" mnemonicParsing="false" text="Unsupervised" />
+      <RadioButton fx:id="hybridRadioButton" layoutX="338.0" layoutY="205.0" mnemonicParsing="false" text="Hybrid" />
+      <RadioButton fx:id="trustRadioButton" layoutX="26.0" layoutY="205.0" mnemonicParsing="false" text="Trust Collaborative" />
+      <RadioButton fx:id="spesificRadioButton" layoutX="26.0" layoutY="176.0" mnemonicParsing="false" text="Site's Spesific Info" />
+      <RadioButton fx:id="dnsRadioButton" layoutX="26.0" layoutY="148.0" mnemonicParsing="false" text="DNS" />
+      <RadioButton fx:id="dnsSpesificRadioButton" layoutX="27.0" layoutY="233.0" mnemonicParsing="false" text="DNS + Site's Spesific Info" />
+      <RadioButton fx:id="dnsTrustRadioButton" layoutX="27.0" layoutY="261.0" mnemonicParsing="false" text="DNS + Trust Collaborative" />
+      <RadioButton fx:id="spesificTrustRadioButton" layoutX="27.0" layoutY="290.0" mnemonicParsing="false" text="Site's Spesific Info + Trust Collaborative" />
+      <RadioButton fx:id="dnsSpesificTrustRadioButton" layoutX="28.0" layoutY="318.0" mnemonicParsing="false" text="DNS + Site's Spesific Info + Trust Collaborative" />
     </children>
 </AnchorPane>
