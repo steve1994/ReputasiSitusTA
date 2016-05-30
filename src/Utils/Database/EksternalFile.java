@@ -167,6 +167,16 @@ public class EksternalFile {
         return instances;
     }
 
+    public static Classifier loadClassifierWekaFromEksternalModel(String path) {
+        Classifier classifier = null;
+        try {
+            classifier = (Classifier) SerializationHelper.read(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classifier;
+    }
+
     public static void main(String[] args) {
         Pair<List<String>,Integer> sites = EksternalFile.loadSitesTrainingList(4);
         List<String> listSites = sites.getKey();
