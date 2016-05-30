@@ -83,7 +83,7 @@ public class reputationHistoryController implements Initializable {
                 new PropertyValueFactory<historyReputationRowTableView, String>("domainSpamComp"));
 
         historyReputationTableView.getColumns().addAll(nameColumn,labelColumn,responseTimeColumn,
-                malwareCompositionColumn,phishingCompositionColumn,spammingCompositionColumn);
+                dateMeasuredColumn, malwareCompositionColumn,phishingCompositionColumn,spammingCompositionColumn);
 
         // Insert history reputation data into tableview
         ObservableList <historyReputationRowTableView> data = FXCollections.observableArrayList();

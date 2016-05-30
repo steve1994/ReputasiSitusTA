@@ -116,9 +116,9 @@ public class reputationResultController implements Initializable {
                         case 3  :
                             thisHistoryReputation.setResponseTime(Long.parseLong(element)); break;
                         case 4  :
-                            DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                            SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH);
                             try {
-                                Date measureDate = (Date)formatter.parse(element);
+                                Date measureDate = formatter.parse(element);
                                 thisHistoryReputation.setMeasureDate(measureDate);
                             } catch (ParseException e) {
                                 e.printStackTrace();
@@ -131,6 +131,7 @@ public class reputationResultController implements Initializable {
                         case 7  :
                             spammingComposition = Double.parseDouble(element); break;
                     }
+                    counter++;
                 }
                 Triplet<Double,Double,Double> composition =
                         new Triplet<Double, Double, Double>(malwareComposition,phishingComposition,spammingComposition);
