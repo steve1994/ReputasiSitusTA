@@ -11,9 +11,27 @@ import java.util.List;
  */
 public class historySitesReputation {
     private String labelNormality;
-    private Triplet<Double,Double,Double> compositionDangerousity;
-    private Date measureDate;
     private Long responseTime;
+    private Date measureDate;
+    private Triplet<Double,Double,Double> compositionDangerousity;
+    private String methodType;
+    private String reputationType;
+
+    public String getMethodType() {
+        return methodType;
+    }
+
+    public void setMethodType(String methodType) {
+        this.methodType = methodType;
+    }
+
+    public String getReputationType() {
+        return reputationType;
+    }
+
+    public void setReputationType(String reputationType) {
+        this.reputationType = reputationType;
+    }
 
     public Long getResponseTime() {
         return responseTime;

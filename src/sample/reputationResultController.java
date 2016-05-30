@@ -59,6 +59,20 @@ public class reputationResultController implements Initializable {
         thisResultReputation.setLabelNormality(StaticVars.currentLabel);
         thisResultReputation.setResponseTime(Long.parseLong(StaticVars.currentResponseTime));
         thisResultReputation.setMeasureDate(StaticVars.currentDate);
+        switch (StaticVars.reputationType) {
+            case 1  :   thisResultReputation.setReputationType("DNS"); break;
+            case 2  :   thisResultReputation.setReputationType("Spesific"); break;
+            case 3  :   thisResultReputation.setReputationType("Trust"); break;
+            case 4  :   thisResultReputation.setReputationType("DNS+Spesific"); break;
+            case 5  :   thisResultReputation.setReputationType("DNS+Trust"); break;
+            case 6  :   thisResultReputation.setReputationType("Spesific+Trust"); break;
+            case 7  :   thisResultReputation.setReputationType("DNS+Spesific+Trust"); break;
+        }
+        switch (StaticVars.methodType) {
+            case 1  :   thisResultReputation.setMethodType("supervised"); break;
+            case 2  :   thisResultReputation.setMethodType("unsupervised"); break;
+            case 3  :   thisResultReputation.setMethodType("hybrid"); break;
+        }
         reputationResultController.saveHistoryReputation(StaticVars.currentDomainName,thisResultReputation);
     }
 
@@ -84,8 +98,11 @@ public class reputationResultController implements Initializable {
             Double malwareComposition = sitesComposition.getValue0();
             Double phishingComposition = sitesComposition.getValue0();
             Double spammingComposition = sitesComposition.getValue0();
+            String methodType = historyReputation.getMethodType();
+            String reputationType = historyReputation.getReputationType();
             rawContent.append(sitesName + "*" + sitesLabel + "*" + sitesResponseTime + "*" + sitesDateMeasure
-                    + "*" + malwareComposition + "*" + phishingComposition + "*" + spammingComposition + "\n");
+                    + "*" + malwareComposition + "*" + phishingComposition + "*" + spammingComposition
+                    + "*" + methodType + "*" + reputationType + "\n");
         }
         EksternalFile.saveRawContentToEksternalFile(rawContent.toString(), "src/sample/history/historyReputation.txt");
     }
@@ -130,6 +147,10 @@ public class reputationResultController implements Initializable {
                             phishingComposition = Double.parseDouble(element); break;
                         case 7  :
                             spammingComposition = Double.parseDouble(element); break;
+                        case 8  :
+                            thisHistoryReputation.setMethodType(element); break;
+                        case 9  :
+                            thisHistoryReputation.setReputationType(element); break;
                     }
                     counter++;
                 }

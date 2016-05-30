@@ -1,7 +1,6 @@
 package sample;
 
 import data_structure.instance_ML.SiteRecordReputation;
-import data_structure.instance_ML.historySitesReputation;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;

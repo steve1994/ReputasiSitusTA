@@ -82,8 +82,19 @@ public class reputationHistoryController implements Initializable {
         spammingCompositionColumn.setCellValueFactory(
                 new PropertyValueFactory<historyReputationRowTableView, String>("domainSpamComp"));
 
+        TableColumn methodColumn = new TableColumn("Method");
+        methodColumn.setMinWidth(100);
+        methodColumn.setCellValueFactory(
+                new PropertyValueFactory<historyReputationRowTableView, String>("domainMethod"));
+
+        TableColumn reputationColumn = new TableColumn("Reputation Type");
+        reputationColumn.setMinWidth(100);
+        reputationColumn.setCellValueFactory(
+                new PropertyValueFactory<historyReputationRowTableView, String>("domainReputation"));
+
         historyReputationTableView.getColumns().addAll(nameColumn,labelColumn,responseTimeColumn,
-                dateMeasuredColumn, malwareCompositionColumn,phishingCompositionColumn,spammingCompositionColumn);
+                dateMeasuredColumn, malwareCompositionColumn,phishingCompositionColumn,
+                spammingCompositionColumn,methodColumn,reputationColumn);
 
         // Insert history reputation data into tableview
         ObservableList <historyReputationRowTableView> data = FXCollections.observableArrayList();
@@ -99,8 +110,11 @@ public class reputationHistoryController implements Initializable {
             String domainMalComp = String.valueOf(domainComposition.getValue0());
             String domainPhisComp = String.valueOf(domainComposition.getValue1());
             String domainSpamComp = String.valueOf(domainComposition.getValue2());
+            String domainMethod = domainReputation.getMethodType();
+            String domainReputationType = domainReputation.getReputationType();
             data.add(new historyReputationRowTableView
-                    (domainName,domainStatus,domainResponseTime,domainDateMeasured,domainMalComp,domainPhisComp,domainSpamComp));
+                    (domainName,domainStatus,domainResponseTime,domainDateMeasured,domainMalComp,
+                            domainPhisComp,domainSpamComp,domainMethod,domainReputationType));
         }
         historyReputationTableView.setItems(data);
     }
@@ -113,8 +127,12 @@ public class reputationHistoryController implements Initializable {
         private final SimpleStringProperty domainMalComp;
         private final SimpleStringProperty domainPhisComp;
         private final SimpleStringProperty domainSpamComp;
+        private final SimpleStringProperty domainMethod;
+        private final SimpleStringProperty domainReputation;
 
-        public historyReputationRowTableView(String domainName, String domainStatus, String domainResponseTime, String domainDateMeasured, String domainMalComp, String domainPhisComp, String domainSpamComp) {
+        public historyReputationRowTableView(String domainName, String domainStatus, String domainResponseTime,
+                                             String domainDateMeasured, String domainMalComp, String domainPhisComp,
+                                             String domainSpamComp, String domainMethod, String domainReputation) {
             this.domainName = new SimpleStringProperty(domainName);
             this.domainStatus = new SimpleStringProperty(domainStatus);
             this.domainResponseTime = new SimpleStringProperty(domainResponseTime);
@@ -122,6 +140,8 @@ public class reputationHistoryController implements Initializable {
             this.domainMalComp = new SimpleStringProperty(domainMalComp);
             this.domainPhisComp = new SimpleStringProperty(domainPhisComp);
             this.domainSpamComp = new SimpleStringProperty(domainSpamComp);
+            this.domainReputation = new SimpleStringProperty(domainReputation);
+            this.domainMethod = new SimpleStringProperty(domainMethod);
         }
 
         public String getDomainSpamComp() {
@@ -206,6 +226,22 @@ public class reputationHistoryController implements Initializable {
 
         public void setDomainName(String domainName) {
             this.domainName.set(domainName);
+        }
+
+        public String getDomainMethod() {
+            return domainMethod.get();
+        }
+
+        public SimpleStringProperty domainMethodProperty() {
+            return domainMethod;
+        }
+
+        public String getDomainReputation() {
+            return domainReputation.get();
+        }
+
+        public SimpleStringProperty domainReputationProperty() {
+            return domainReputation;
         }
     }
 }

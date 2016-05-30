@@ -1,1 +1,2 @@
-google.com*normal*3*Mon May 30 21:51:20 ICT 2016*0.0*0.0*0.0
+facebook.com*normal*2*Mon May 30 22:36:46 ICT 2016*0.0*0.0*0.0*supervised*Trust
+cutscenes.net*malware*9*Mon May 30 22:37:12 ICT 2016*0.0*0.0*0.0*supervised*Spesific

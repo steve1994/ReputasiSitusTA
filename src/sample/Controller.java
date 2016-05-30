@@ -8,7 +8,6 @@ import data_structure.feature.DNS_Feature;
 import data_structure.feature.Spesific_Feature;
 import data_structure.feature.Trust_Feature;
 import data_structure.instance_ML.SiteRecordReputation;
-import data_structure.instance_ML.historySitesReputation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
