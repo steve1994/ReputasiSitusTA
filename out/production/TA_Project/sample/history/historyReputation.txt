@@ -1,3 +1,13 @@
 facebook.com*normal*2*Mon May 30 22:36:46 ICT 2016*0.0*0.0*0.0*supervised*Trust
 cutscenes.net*malware*9*Mon May 30 22:37:12 ICT 2016*0.0*0.0*0.0*supervised*Spesific
 pornhub.com*normal*8*Mon May 30 22:42:35 ICT 2016*0.0*0.0*0.0*supervised*Spesific+Trust
+stackoverflow.com*normal*12*Mon May 30 23:38:43 ICT 2016*0.0*0.0*0.0*supervised*Spesific
+cutscenes.net*normal*6*Mon May 30 23:39:11 ICT 2016*0.0*0.0*0.0*supervised*Spesific+Trust
+facebook.com*normal*1*Tue May 31 12:05:50 ICT 2016*0.0*0.0*0.0*unsupervised*Trust
+cutscenes.net*malware*5*Tue May 31 12:06:33 ICT 2016*0.8125*0.1875*0.0*unsupervised*Trust
+cutscenes.net*malware*2*Tue May 31 12:16:30 ICT 2016*0.8125*0.1875*0.0*unsupervised*Trust
+mista.eu*spamming*2*Tue May 31 12:19:03 ICT 2016*0.022727272727272728*0.22727272727272727*0.75*unsupervised*Trust
+mista.eu*spamming*1*Tue May 31 12:22:14 ICT 2016*0.022727272727272728*0.22727272727272727*0.75*unsupervised*Trust
+pornhub.com*normal*2*Tue May 31 12:23:36 ICT 2016*0.0*0.0*0.0*unsupervised*Trust
+mista.eu*spamming*3*Tue May 31 12:24:01 ICT 2016*0.022727272727272728*0.22727272727272727*0.75*unsupervised*Trust
+0000love.net*spamming*3*Tue May 31 12:32:23 ICT 2016*0.022727272727272728*0.22727272727272727*0.75*unsupervised*Trust
