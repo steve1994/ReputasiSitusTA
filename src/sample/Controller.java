@@ -73,6 +73,7 @@ public class Controller implements Initializable {
         spesificTrustRadioButton.setToggleGroup(featuresRadioButton);
         dnsSpesificTrustRadioButton.setToggleGroup(featuresRadioButton);
         numberTrainingChoiceBox.setItems(FXCollections.observableArrayList(100,200,300,400,500,600,700,800,900,1000));
+        numberTrainingChoiceBox.getSelectionModel().selectFirst();
     }
 
     public void handleDiagnoseButton(ActionEvent actionEvent) {
@@ -210,7 +211,83 @@ public class Controller implements Initializable {
             }
         }
         else if (hybridRadioButton.isSelected()) {
+            // Convert extracted feature into instance weka
+            SitesClusterer sitesClusterer = new SitesClusterer(StaticVars.reputationType);
+            sitesClusterer.configARFFInstance(new String[]{"normal","abnormal"});
+            sitesClusterer.fillDataIntoInstanceRecord(thisDomainNameFeatures,"normal");
+            Instances convertedFeature = sitesClusterer.getSiteReputationRecord();
 
+            // STAGE 1 (Classification SVM)
+            String pathClassifier1 = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normalitySVM.model";
+            Classifier optimumSupervisedClassifier1 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier1);
+            double classValueClassified = 0;
+            try {
+                classValueClassified = optimumSupervisedClassifier1.classifyInstance(convertedFeature.instance(0));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            convertedFeature.instance(0).setClassValue(classValueClassified);
+
+            // STAGE 1 (Clustering KMeans Normality)
+            String pathTrainingNormalKmeans = "database/weka/data/num_100.type_" + StaticVars.reputationType + ".normality_category.unsupervised.arff";
+            Instances trainingNormalKmeans = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingNormalKmeans);
+            trainingNormalKmeans.setClassIndex(trainingNormalKmeans.numAttributes()-1);
+            String pathClustererNormalKmeans = "database/weka/model/num_100.type_" + StaticVars.reputationType + ".normalityKmeans.model";
+            Clusterer KmeansNormalClusterer = EksternalFile.loadClustererWekaFromEksternalModel(pathClustererNormalKmeans);
+
+            trainingNormalKmeans.add(convertedFeature.instance(0));
+            ClusterEvaluation evalNormalKmeans = sitesClusterer.evaluateClusterReputationModel(trainingNormalKmeans,KmeansNormalClusterer);
+            double[] clusterAssigment1 = evalNormalKmeans.getClusterAssignments();
+            int[] classesToCluster1 = evalNormalKmeans.getClassesToClusters();
+            String labelNormality = "";
+            for (int i=0;i<trainingNormalKmeans.numInstances();i++) {
+                if (trainingNormalKmeans.instance(i).toString().equals(convertedFeature.instance(0).toString())) {
+                    double clusterNumber = clusterAssigment1[i];
+                    int classValueCluster = classesToCluster1[(int) clusterNumber];
+                    labelNormality = trainingNormalKmeans.classAttribute().value(classValueCluster);
+                }
+            }
+
+            if (labelNormality.equals("normal")) {
+                labelDomainNameResult = "normal";
+            } else {
+                // STAGE II (Classification kNN)
+                Instances dangerousConvertedFeature = SitesMLProcessor.convertNormalityToDangerousityLabel(convertedFeature);
+                String pathClassifier2 = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerousityKNN_10.model";
+                Classifier optimumSupervisedClassifier2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier2);
+                double classValueDangerousity = 0;
+                try {
+                    classValueDangerousity = optimumSupervisedClassifier2.classifyInstance(dangerousConvertedFeature.instance(0));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dangerousConvertedFeature.instance(0).setClassValue(classValueDangerousity);
+
+                // STAGE II (Clustering Kmeans Dangerousity)
+                String pathTrainingDangerousKmeans = "database/weka/data/num_100.type_" + StaticVars.reputationType + ".dangerous_category.unsupervised.arff";
+                Instances trainingDangerousKmeans = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingDangerousKmeans);
+                trainingDangerousKmeans.setClassIndex(trainingDangerousKmeans.numAttributes()-1);
+                String pathClustererDangerousKmeans = "database/weka/model/num_100.type_" + StaticVars.reputationType + ".dangerousityKmeans.model";
+                Clusterer KmeansDangerousClusterer = EksternalFile.loadClustererWekaFromEksternalModel(pathClustererDangerousKmeans);
+
+                trainingDangerousKmeans.add(dangerousConvertedFeature.instance(0));
+                try {
+                    ClusterEvaluation evalDangerousKmeans = sitesClusterer.evaluateClusterReputationModel(trainingDangerousKmeans,KmeansDangerousClusterer);
+                    double[] clusterAssignment2 = evalDangerousKmeans.getClusterAssignments();
+                    int[] classesToCluster2 = evalDangerousKmeans.getClassesToClusters();
+                    double clusterNumber = 0;
+                    for (int i=0;i<trainingDangerousKmeans.numInstances();i++) {
+                        if (trainingDangerousKmeans.instance(i).toString().equals(dangerousConvertedFeature.instance(0).toString())) {
+                            clusterNumber = clusterAssignment2[i];
+                            int classValueCluster = classesToCluster2[(int) clusterNumber];
+                            labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueCluster);
+                        }
+                    }
+                    compositionDangerousity = SitesHybrid.getClusterPercentageDangerousity(evalDangerousKmeans,trainingDangerousKmeans).get((int) clusterNumber);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         long endResponseTime = System.currentTimeMillis();
