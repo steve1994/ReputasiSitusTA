@@ -16,10 +16,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.InitialDirContext;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by steve on 11/03/2016.
@@ -106,15 +103,65 @@ public class DNSExtractor {
         int hitASCounter = 0;
         int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
         if (thisURLASN > 0) {  // Sites not detected or null
-            List<String> listSites = EksternalFile.loadSitesTrainingList(type).getKey();
-            for (int i = 0; i < 100; i++) {
-                int siteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(listSites.get(i)));
-                if (siteASN == thisURLASN) {
+            List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(type);
+            for (int i=0;i<listASNSitesThisType.size();i++) {
+                if (listASNSitesThisType.get(i) == thisURLASN) {
                     hitASCounter++;
                 }
             }
         }
         return (double) hitASCounter / (double) 100;
+    }
+
+    /**
+     * Update AS Number List of this typeSites into external file
+     * @param typeSites
+     */
+    public static void saveASNSitesToExternalFile(int typeSites) {
+        List<String> listSites = EksternalFile.loadSitesTrainingList(typeSites).getKey();
+        StringBuffer stringBuffer = new StringBuffer();
+        System.out.println("TYPE SITES : " + typeSites);
+        for (int i=0;i<listSites.size();i++) {
+            int ASNumberThisSite = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(listSites.get(i)));
+            stringBuffer.append(ASNumberThisSite + "\n");
+            System.out.println("SITUS KE-" + (i + 1));
+        }
+        switch (typeSites) {
+            default:
+            case 1:
+                EksternalFile.saveRawContentToEksternalFile(stringBuffer.toString(),"src/Utils/DNS/database/ASNumberListMalware.txt"); break;
+            case 2:
+                EksternalFile.saveRawContentToEksternalFile(stringBuffer.toString(),"src/Utils/DNS/database/ASNumberListPhishing.txt"); break;
+            case 3:
+                EksternalFile.saveRawContentToEksternalFile(stringBuffer.toString(),"src/Utils/DNS/database/ASNumberListSpamming.txt"); break;
+        }
+    }
+
+    /**
+     * Load
+     * @param typeSites
+     * @return
+     */
+    private static List<Integer> loadASNSitesFromExternalFile(int typeSites) {
+        String rawContent;
+        switch (typeSites) {
+            default:
+            case 1:
+                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListMalware.txt"); break;
+            case 2:
+                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListPhishing.txt"); break;
+            case 3:
+                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListSpamming.txt"); break;
+        }
+        List<Integer> listASNThisSites = new ArrayList<Integer>();
+        if (!rawContent.isEmpty()) {
+            StringTokenizer rawContentPerRow = new StringTokenizer(rawContent, "\n");
+            while (rawContentPerRow.hasMoreTokens()) {
+                String row = rawContentPerRow.nextToken();
+                listASNThisSites.add(Integer.parseInt(row));
+            }
+        }
+        return listASNThisSites;
     }
 
     /**
@@ -264,7 +311,7 @@ public class DNSExtractor {
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
 
-        String hostName = "0000love.net";
+        String hostName = "mista.eu";
         List<Object> fiturs = new ArrayList<Object>();
 
         long before = System.currentTimeMillis();
