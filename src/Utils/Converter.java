@@ -126,8 +126,10 @@ public class Converter {
                 while ((line = commandReader.readLine()) != null) {
                     outputCommand.append(line + "\n");
                 }
-                String[] token = outputCommand.toString().split(" ");
-                ASNNumber = Integer.parseInt(token[0].replace("AS", ""));
+                if (!outputCommand.toString().contains("undefined")) {
+                    String[] token = outputCommand.toString().split(" ");
+                    ASNNumber = Integer.parseInt(token[0].replace("AS", ""));
+                }
             } catch (UnknownHostException e) {
                 System.out.println(e.getMessage());
             } catch (NumberFormatException e) {
@@ -160,9 +162,13 @@ public class Converter {
 //
 //        System.out.println("Waktu eksekusi : " + (end-begin));
 
-        long begin = System.currentTimeMillis();
-        System.out.println("IP ADDRESS : " + Converter.convertHostNameIntoIPAddress("facebook.com"));
-        long end = System.currentTimeMillis();
-        System.out.println("EXECUTION TIME : " + (end-begin));
+//        long begin = System.currentTimeMillis();
+//        System.out.println("ASNumber : " + Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("facebook.com")));
+//        long end = System.currentTimeMillis();
+//        System.out.println("EXECUTION TIME : " + (end-begin));
+
+        for (int i=1;i<=3;i++) {
+            DNSExtractor.saveASNSitesToExternalFile(i);
+        }
     }
 }
