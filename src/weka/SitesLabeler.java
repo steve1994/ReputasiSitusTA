@@ -60,29 +60,6 @@ public class SitesLabeler extends SitesMLProcessor {
     }
 
     /**
-     * Convert instance's class label from normal / abnormal
-     * into malware / phishing / spamming class
-     * @param normalInstances
-     * @return
-     */
-    public Instances convertNormalityToDangerousityLabel(Instances normalInstances) {
-        // Remove old class attribute first
-        Instances dangerousInstances = new Instances(normalInstances);
-        dangerousInstances.setClassIndex(0);
-        dangerousInstances.deleteAttributeAt(dangerousInstances.numAttributes()-1);
-        // Create new class attribute dangerousity
-        FastVector dangerousityLabel = new FastVector();
-        dangerousityLabel.addElement("malware");
-        dangerousityLabel.addElement("phishing");
-        dangerousityLabel.addElement("spamming");
-        // Insert new class attribute into instance
-        dangerousInstances.insertAttributeAt(new Attribute("dangerousity_class",dangerousityLabel),dangerousInstances.numAttributes());
-        dangerousInstances.setClassIndex(dangerousInstances.numAttributes()-1);
-
-        return dangerousInstances;
-    }
-
-    /**
      * Insert new reputation record into instances
      * Assumption : instances have been set properly
      *

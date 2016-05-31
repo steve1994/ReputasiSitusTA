@@ -48,6 +48,29 @@ public class SitesMLProcessor {
         return attributesVectorDataset;
     }
 
+    /**
+     * Convert instance's class label from normal / abnormal
+     * into malware / phishing / spamming class
+     * @param normalInstances
+     * @return
+     */
+    public static Instances convertNormalityToDangerousityLabel(Instances normalInstances) {
+        // Remove old class attribute first
+        Instances dangerousInstances = new Instances(normalInstances);
+        dangerousInstances.setClassIndex(0);
+        dangerousInstances.deleteAttributeAt(dangerousInstances.numAttributes()-1);
+        // Create new class attribute dangerousity
+        FastVector dangerousityLabel = new FastVector();
+        dangerousityLabel.addElement("malware");
+        dangerousityLabel.addElement("phishing");
+        dangerousityLabel.addElement("spamming");
+        // Insert new class attribute into instance
+        dangerousInstances.insertAttributeAt(new Attribute("dangerousity_class",dangerousityLabel),dangerousInstances.numAttributes());
+        dangerousInstances.setClassIndex(dangerousInstances.numAttributes()-1);
+
+        return dangerousInstances;
+    }
+
     protected SitesMLProcessor(int typeReputation) {
         listCombinationRecordType = new Boolean[3];         // DNS, Spesific, Trust
         for (int i=0;i<3;i++) {
