@@ -504,9 +504,13 @@ public class SitesClusterer extends SitesMLProcessor{
 
         // Save data static (cluster normality and dangerousity)
         Instances allInstancesNormality = normalityClusterSite.getSiteReputationRecord();
+        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
         Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
+        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
 //        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_100.ratio_3111.type_3.normal.staticdata.arff");
+//        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
 //        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_100.ratio_3111.type_3.dangerous.staticdata.arff");
+//        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
         FastVector instancesAttributesNormality = normalityClusterSite.getAttributesVector(allInstancesNormality);
@@ -671,23 +675,52 @@ public class SitesClusterer extends SitesMLProcessor{
             }
             trainingRecordSitesDangerousity.setClassIndex(trainingRecordSitesDangerousity.numAttributes() - 1);
 
+            // Save both training data (normality and dangerousity)
+            String fileNameNormal = "num_" + i + ".type_" + typeReputation + ".normality_category.unsupervised.arff";
+            String pathNameNormal = "database/weka/data/" + fileNameNormal;
+            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesNormality, pathNameNormal);
+            String fileNameDangerous = "num_" + i + ".type_" + typeReputation + ".dangerous_category.unsupervised.arff";
+            String pathNameDangerous = "database/weka/data/" + fileNameDangerous;
+            EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesDangerousity, pathNameDangerous);
+
             // Build cluster KMeans
             Clusterer clusterKMeansNormal = normalityClusterSite.buildKmeansReputationModel(trainingRecordSitesNormality,aggOCKmeansNormal);
             ClusterEvaluation evalKMeans1 = normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterKMeansNormal);
             Clusterer clusterKMeansDangerous = dangerousityClusterSite.buildKmeansReputationModel(trainingRecordSitesDangerousity,aggOCKmeansDangerous);
             ClusterEvaluation evalKMeans2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity, clusterKMeansDangerous);
+            // Save clusterer KMeans
+            String normalFileKmeansNormal = "num_" + i + ".type_" + typeReputation + ".normalityKmeans.model";
+            String normalPathKmeansNormal = "database/weka/model/" + normalFileKmeansNormal;
+            EksternalFile.saveClustererToExternalModel(clusterKMeansNormal, normalPathKmeansNormal);
+            String normalFileKmeansDangerous = "num_" + i + ".type_" + typeReputation + ".dangerousityKmeans.model";
+            String normalPathKmeansDangerous = "database/weka/model/" + normalFileKmeansDangerous;
+            EksternalFile.saveClustererToExternalModel(clusterKMeansDangerous,normalPathKmeansDangerous);
 
             // Build cluster EM
             Clusterer clusterEMNormal = normalityClusterSite.buildEMReputationModel(trainingRecordSitesNormality,aggOCEMNormal);
             ClusterEvaluation evalEM1 = normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterEMNormal);
             Clusterer clusterEMDangerous = dangerousityClusterSite.buildEMReputationModel(trainingRecordSitesDangerousity,aggOCEMDangerous);
             ClusterEvaluation evalEM2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterEMDangerous);
+            // Save clusterer EM
+            String normalFileEMNormal = "num_" + i + ".type_" + typeReputation + ".normalityEM.model";
+            String normalPathEMNormal = "database/weka/model/" + normalFileEMNormal;
+            EksternalFile.saveClustererToExternalModel(clusterEMNormal, normalPathEMNormal);
+            String normalFileEMDangerous = "num_" + i + ".type_" + typeReputation + ".dangerousityEM.model";
+            String normalPathEMDangerous = "database/weka/model/" + normalFileEMDangerous;
+            EksternalFile.saveClustererToExternalModel(clusterEMDangerous,normalPathEMDangerous);
 
             // Build cluster Hierarchical Clustering
             Clusterer clusterHCNormal = normalityClusterSite.buildEMReputationModel(trainingRecordSitesNormality,aggOCHCNormal);
             ClusterEvaluation evalHC1 = normalityClusterSite.evaluateClusterReputationModel(trainingRecordSitesNormality,clusterHCNormal);
             Clusterer clusterHCDangerous = dangerousityClusterSite.buildEMReputationModel(trainingRecordSitesDangerousity,aggOCHCDangerous);
             ClusterEvaluation evalHC2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterHCDangerous);
+            // Save clusterer Hierarchical Clustering
+            String normalFileHCNormal = "num_" + i + ".type_" + typeReputation + ".normalityHC.model";
+            String normalPathHCNormal = "database/weka/model/" + normalFileHCNormal;
+            EksternalFile.saveClustererToExternalModel(clusterHCNormal, normalPathHCNormal);
+            String normalFileHCDangerous = "num_" + i + ".type_" + typeReputation + ".dangerousityHC.model";
+            String normalPathHCDangerous = "database/weka/model/" + normalFileHCDangerous;
+            EksternalFile.saveClustererToExternalModel(clusterHCDangerous,normalPathHCDangerous);
 
             // Write Statistic About Error Statistic
             statisticEvaluationReport.append("Error KMeans Stage 1 : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalKMeans1, trainingRecordSitesNormality) + "\n");
