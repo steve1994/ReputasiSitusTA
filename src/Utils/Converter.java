@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by steve on 28/01/2016.
@@ -35,7 +36,47 @@ public class Converter {
 //            e.printStackTrace();
 //        }
 //        return IPAddress;
-        return MXToolbox_API_Loader.HostNameToIPAddress(hostName);
+//        return MXToolbox_API_Loader.HostNameToIPAddress(hostName);
+
+        // Delete path from hostname
+        String pureHostName = hostName.split("/")[0];
+        // Execute command ping for that domain
+        Runtime rt = Runtime.getRuntime();
+        String commandExec = "ping " + pureHostName;
+        // Get raw string buffer result
+        String ipAddress = "1.1.1.1";
+        try {
+            Process pr = rt.exec(commandExec);
+            BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            StringBuffer outputCommand = new StringBuffer();
+            String rawContent = "";
+            int rowSize = 0;
+            while ((rawContent = commandReader.readLine()) != null) {
+                outputCommand.append(rawContent + "\n");
+                rowSize++;
+            }
+            if (rowSize > 1) {
+                StringTokenizer stringPerLine = new StringTokenizer(outputCommand.toString(),"\n");
+                while (stringPerLine.hasMoreTokens()) {
+                    String stringThisLine = stringPerLine.nextToken();
+                    if (stringThisLine.contains("Pinging ")) {
+                        StringTokenizer words = new StringTokenizer(stringThisLine," ");
+                        int counter = 1;
+                        while (words.hasMoreTokens()) {
+                            String ipAddressWord = words.nextToken();
+                            if (counter == 3) {
+                                ipAddress = ipAddressWord.replace("[","").replace("]","");
+                            }
+                            counter++;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ipAddress;
     }
 
     public static Boolean checkIfDomainResolved(String hostName) {
@@ -113,10 +154,15 @@ public class Converter {
 //
 //        System.out.println((after_1-before));
 
-        long begin = System.currentTimeMillis();
-        System.out.println("Is Domain Name Available? " + Converter.checkIfDomainResolved("facebook.com"));
-        long end = System.currentTimeMillis();
+//        long begin = System.currentTimeMillis();
+//        System.out.println("Is Domain Name Available? " + Converter.checkIfDomainResolved("facebook.com"));
+//        long end = System.currentTimeMillis();
+//
+//        System.out.println("Waktu eksekusi : " + (end-begin));
 
-        System.out.println("Waktu eksekusi : " + (end-begin));
+        long begin = System.currentTimeMillis();
+        System.out.println("IP ADDRESS : " + Converter.convertHostNameIntoIPAddress("facebook.com"));
+        long end = System.currentTimeMillis();
+        System.out.println("EXECUTION TIME : " + (end-begin));
     }
 }
