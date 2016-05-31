@@ -3,6 +3,7 @@ package Utils.Database;
 import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
 import weka.classifiers.Classifier;
+import weka.clusterers.Clusterer;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
 import weka.core.converters.ConverterUtils;
@@ -138,6 +139,19 @@ public class EksternalFile {
     }
 
     /**
+     * Save clusterer model to external file
+     * @param clusterer
+     * @param path
+     */
+    public static void saveClustererToExternalModel(Clusterer clusterer, String path) {
+        try {
+            SerializationHelper.write(path,clusterer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Save raw content (anything) into eksternal file in spesific path
      * @param rawContent
      * @param path
@@ -167,6 +181,11 @@ public class EksternalFile {
         return instances;
     }
 
+    /**
+     * Load classifier from eksternal model
+     * @param path
+     * @return
+     */
     public static Classifier loadClassifierWekaFromEksternalModel(String path) {
         Classifier classifier = null;
         try {
@@ -175,6 +194,21 @@ public class EksternalFile {
             e.printStackTrace();
         }
         return classifier;
+    }
+
+    /**
+     * Load clusterer from eksternal model
+     * @param path
+     * @return
+     */
+    public static Clusterer loadClustererWekaFromEksternalModel(String path) {
+        Clusterer clusterer = null;
+        try {
+            clusterer = (Clusterer) SerializationHelper.read(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return clusterer;
     }
 
     public static void main(String[] args) {
