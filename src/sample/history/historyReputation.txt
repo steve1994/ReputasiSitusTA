@@ -1,2 +1,0 @@
-flashscore.com*normal*2*Thu Jun 02 12:37:27 ICT 2016*0.0*0.0*0.0*supervised*Trust
-flashscore.com*normal*5*Thu Jun 02 13:10:37 ICT 2016*0.0*0.0*0.0*hybrid*Trust
