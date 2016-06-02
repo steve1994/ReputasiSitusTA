@@ -167,7 +167,7 @@ public class Converter {
 //        long end = System.currentTimeMillis();
 //        System.out.println("EXECUTION TIME : " + (end-begin));
 
-        for (int i=1;i<=3;i++) {
+        for (int i=2;i<=3;i++) {
             DNSExtractor.saveASNSitesToExternalFile(i);
         }
     }
