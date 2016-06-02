@@ -1,0 +1,1524 @@
+
+
+=================================================================
+
+ NUM SITES TRAINING : 100
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances         173               86.5    %
+Incorrectly Classified Instances        27               13.5    %
+Kappa statistic                          0.73  
+Mean absolute error                      0.135 
+Root mean squared error                  0.3674
+Relative absolute error                 27      %
+Root relative squared error             73.4847 %
+Total Number of Instances              200     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances          62               62.6263 %
+Incorrectly Classified Instances        37               37.3737 %
+Kappa statistic                          0.4394
+Mean absolute error                      0.3224
+Root mean squared error                  0.4276
+Relative absolute error                 72.4585 %
+Root relative squared error             90.623  %
+Total Number of Instances               99     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances          62               62.6263 %
+Incorrectly Classified Instances        37               37.3737 %
+Kappa statistic                          0.4394
+Mean absolute error                      0.3169
+Root mean squared error                  0.4083
+Relative absolute error                 71.2297 %
+Root relative squared error             86.5328 %
+Total Number of Instances               99     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances          63               63.6364 %
+Incorrectly Classified Instances        36               36.3636 %
+Kappa statistic                          0.4545
+Mean absolute error                      0.3146
+Root mean squared error                  0.4053
+Relative absolute error                 70.7244 %
+Root relative squared error             85.8833 %
+Total Number of Instances               99     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances          64               64.6465 %
+Incorrectly Classified Instances        35               35.3535 %
+Kappa statistic                          0.4697
+Mean absolute error                      0.3139
+Root mean squared error                  0.4052
+Relative absolute error                 70.5504 %
+Root relative squared error             85.8693 %
+Total Number of Instances               99     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances          61               61.6162 %
+Incorrectly Classified Instances        38               38.3838 %
+Kappa statistic                          0.4242
+Mean absolute error                      0.3168
+Root mean squared error                  0.4104
+Relative absolute error                 71.2153 %
+Root relative squared error             86.9607 %
+Total Number of Instances               99     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 200
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances         366               91.5    %
+Incorrectly Classified Instances        34                8.5    %
+Kappa statistic                          0.83  
+Mean absolute error                      0.085 
+Root mean squared error                  0.2915
+Relative absolute error                 17      %
+Root relative squared error             58.3095 %
+Total Number of Instances              400     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         139               70.202  %
+Incorrectly Classified Instances        59               29.798  %
+Kappa statistic                          0.553 
+Mean absolute error                      0.2706
+Root mean squared error                  0.3799
+Relative absolute error                 60.8617 %
+Root relative squared error             80.566  %
+Total Number of Instances              198     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         139               70.202  %
+Incorrectly Classified Instances        59               29.798  %
+Kappa statistic                          0.553 
+Mean absolute error                      0.278 
+Root mean squared error                  0.3843
+Relative absolute error                 62.536  %
+Root relative squared error             81.4895 %
+Total Number of Instances              198     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         139               70.202  %
+Incorrectly Classified Instances        59               29.798  %
+Kappa statistic                          0.553 
+Mean absolute error                      0.2818
+Root mean squared error                  0.3798
+Relative absolute error                 63.3914 %
+Root relative squared error             80.5386 %
+Total Number of Instances              198     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         138               69.697  %
+Incorrectly Classified Instances        60               30.303  %
+Kappa statistic                          0.5455
+Mean absolute error                      0.2809
+Root mean squared error                  0.3792
+Relative absolute error                 63.1765 %
+Root relative squared error             80.4255 %
+Total Number of Instances              198     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         139               70.202  %
+Incorrectly Classified Instances        59               29.798  %
+Kappa statistic                          0.553 
+Mean absolute error                      0.2809
+Root mean squared error                  0.3813
+Relative absolute error                 63.175  %
+Root relative squared error             80.8623 %
+Total Number of Instances              198     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         137               69.1919 %
+Incorrectly Classified Instances        61               30.8081 %
+Kappa statistic                          0.5379
+Mean absolute error                      0.2818
+Root mean squared error                  0.3813
+Relative absolute error                 63.377  %
+Root relative squared error             80.8725 %
+Total Number of Instances              198     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         137               69.1919 %
+Incorrectly Classified Instances        61               30.8081 %
+Kappa statistic                          0.5379
+Mean absolute error                      0.28  
+Root mean squared error                  0.3825
+Relative absolute error                 62.991  %
+Root relative squared error             81.1064 %
+Total Number of Instances              198     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 300
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances         564               94      %
+Incorrectly Classified Instances        36                6      %
+Kappa statistic                          0.88  
+Mean absolute error                      0.06  
+Root mean squared error                  0.2449
+Relative absolute error                 12      %
+Root relative squared error             48.9898 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         215               71.6667 %
+Incorrectly Classified Instances        85               28.3333 %
+Kappa statistic                          0.575 
+Mean absolute error                      0.2589
+Root mean squared error                  0.3675
+Relative absolute error                 58.2545 %
+Root relative squared error             77.9602 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         211               70.3333 %
+Incorrectly Classified Instances        89               29.6667 %
+Kappa statistic                          0.555 
+Mean absolute error                      0.2659
+Root mean squared error                  0.3745
+Relative absolute error                 59.8255 %
+Root relative squared error             79.4441 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         207               69      %
+Incorrectly Classified Instances        93               31      %
+Kappa statistic                          0.535 
+Mean absolute error                      0.2713
+Root mean squared error                  0.3768
+Relative absolute error                 61.0491 %
+Root relative squared error             79.9301 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         207               69      %
+Incorrectly Classified Instances        93               31      %
+Kappa statistic                          0.535 
+Mean absolute error                      0.2798
+Root mean squared error                  0.3797
+Relative absolute error                 62.9515 %
+Root relative squared error             80.5436 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         205               68.3333 %
+Incorrectly Classified Instances        95               31.6667 %
+Kappa statistic                          0.525 
+Mean absolute error                      0.281 
+Root mean squared error                  0.3782
+Relative absolute error                 63.2349 %
+Root relative squared error             80.2281 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         203               67.6667 %
+Incorrectly Classified Instances        97               32.3333 %
+Kappa statistic                          0.515 
+Mean absolute error                      0.2825
+Root mean squared error                  0.3804
+Relative absolute error                 63.5553 %
+Root relative squared error             80.6928 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         200               66.6667 %
+Incorrectly Classified Instances       100               33.3333 %
+Kappa statistic                          0.5   
+Mean absolute error                      0.2838
+Root mean squared error                  0.3798
+Relative absolute error                 63.8642 %
+Root relative squared error             80.56   %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         200               66.6667 %
+Incorrectly Classified Instances       100               33.3333 %
+Kappa statistic                          0.5   
+Mean absolute error                      0.2897
+Root mean squared error                  0.3834
+Relative absolute error                 65.1892 %
+Root relative squared error             81.3247 %
+Total Number of Instances              300     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         201               67      %
+Incorrectly Classified Instances        99               33      %
+Kappa statistic                          0.505 
+Mean absolute error                      0.2889
+Root mean squared error                  0.3832
+Relative absolute error                 64.9917 %
+Root relative squared error             81.2923 %
+Total Number of Instances              300     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 400
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances         758               94.75   %
+Incorrectly Classified Instances        42                5.25   %
+Kappa statistic                          0.895 
+Mean absolute error                      0.0525
+Root mean squared error                  0.2291
+Relative absolute error                 10.5    %
+Root relative squared error             45.8258 %
+Total Number of Instances              800     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         272               68.1704 %
+Incorrectly Classified Instances       127               31.8296 %
+Kappa statistic                          0.5226
+Mean absolute error                      0.2996
+Root mean squared error                  0.3935
+Relative absolute error                 67.4087 %
+Root relative squared error             83.4615 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         270               67.6692 %
+Incorrectly Classified Instances       129               32.3308 %
+Kappa statistic                          0.515 
+Mean absolute error                      0.3021
+Root mean squared error                  0.3954
+Relative absolute error                 67.9663 %
+Root relative squared error             83.8783 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         266               66.6667 %
+Incorrectly Classified Instances       133               33.3333 %
+Kappa statistic                          0.5   
+Mean absolute error                      0.3083
+Root mean squared error                  0.3998
+Relative absolute error                 69.3595 %
+Root relative squared error             84.7943 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         264               66.1654 %
+Incorrectly Classified Instances       135               33.8346 %
+Kappa statistic                          0.4925
+Mean absolute error                      0.312 
+Root mean squared error                  0.401 
+Relative absolute error                 70.1973 %
+Root relative squared error             85.0699 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         262               65.6642 %
+Incorrectly Classified Instances       137               34.3358 %
+Kappa statistic                          0.485 
+Mean absolute error                      0.3133
+Root mean squared error                  0.4019
+Relative absolute error                 70.4917 %
+Root relative squared error             85.2552 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         266               66.6667 %
+Incorrectly Classified Instances       133               33.3333 %
+Kappa statistic                          0.5   
+Mean absolute error                      0.3111
+Root mean squared error                  0.3981
+Relative absolute error                 70.001  %
+Root relative squared error             84.4349 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         264               66.1654 %
+Incorrectly Classified Instances       135               33.8346 %
+Kappa statistic                          0.4925
+Mean absolute error                      0.312 
+Root mean squared error                  0.3997
+Relative absolute error                 70.1959 %
+Root relative squared error             84.7908 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         264               66.1654 %
+Incorrectly Classified Instances       135               33.8346 %
+Kappa statistic                          0.4925
+Mean absolute error                      0.3135
+Root mean squared error                  0.4001
+Relative absolute error                 70.5258 %
+Root relative squared error             84.8581 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         261               65.4135 %
+Incorrectly Classified Instances       138               34.5865 %
+Kappa statistic                          0.4812
+Mean absolute error                      0.3167
+Root mean squared error                  0.4014
+Relative absolute error                 71.2459 %
+Root relative squared error             85.1449 %
+Total Number of Instances              399     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         260               65.1629 %
+Incorrectly Classified Instances       139               34.8371 %
+Kappa statistic                          0.4774
+Mean absolute error                      0.3177
+Root mean squared error                  0.4019
+Relative absolute error                 71.4675 %
+Root relative squared error             85.2508 %
+Total Number of Instances              399     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 500
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances         955               95.5    %
+Incorrectly Classified Instances        45                4.5    %
+Kappa statistic                          0.91  
+Mean absolute error                      0.045 
+Root mean squared error                  0.2121
+Relative absolute error                  9      %
+Root relative squared error             42.4264 %
+Total Number of Instances             1000     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         304               61.0442 %
+Incorrectly Classified Instances       194               38.9558 %
+Kappa statistic                          0.4157
+Mean absolute error                      0.3156
+Root mean squared error                  0.4011
+Relative absolute error                 71.0068 %
+Root relative squared error             85.0924 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         306               61.4458 %
+Incorrectly Classified Instances       192               38.5542 %
+Kappa statistic                          0.4217
+Mean absolute error                      0.316 
+Root mean squared error                  0.4009
+Relative absolute error                 71.0915 %
+Root relative squared error             85.0498 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         297               59.6386 %
+Incorrectly Classified Instances       201               40.3614 %
+Kappa statistic                          0.3946
+Mean absolute error                      0.3227
+Root mean squared error                  0.4053
+Relative absolute error                 72.594  %
+Root relative squared error             85.9656 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         294               59.0361 %
+Incorrectly Classified Instances       204               40.9639 %
+Kappa statistic                          0.3855
+Mean absolute error                      0.3258
+Root mean squared error                  0.4062
+Relative absolute error                 73.3085 %
+Root relative squared error             86.1691 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         295               59.2369 %
+Incorrectly Classified Instances       203               40.7631 %
+Kappa statistic                          0.3886
+Mean absolute error                      0.3264
+Root mean squared error                  0.4058
+Relative absolute error                 73.4287 %
+Root relative squared error             86.0864 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         295               59.2369 %
+Incorrectly Classified Instances       203               40.7631 %
+Kappa statistic                          0.3886
+Mean absolute error                      0.3275
+Root mean squared error                  0.4071
+Relative absolute error                 73.6793 %
+Root relative squared error             86.3571 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         296               59.4378 %
+Incorrectly Classified Instances       202               40.5622 %
+Kappa statistic                          0.3916
+Mean absolute error                      0.3271
+Root mean squared error                  0.4071
+Relative absolute error                 73.6054 %
+Root relative squared error             86.3453 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         296               59.4378 %
+Incorrectly Classified Instances       202               40.5622 %
+Kappa statistic                          0.3916
+Mean absolute error                      0.3275
+Root mean squared error                  0.4078
+Relative absolute error                 73.6883 %
+Root relative squared error             86.5049 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         296               59.4378 %
+Incorrectly Classified Instances       202               40.5622 %
+Kappa statistic                          0.3916
+Mean absolute error                      0.3272
+Root mean squared error                  0.4073
+Relative absolute error                 73.622  %
+Root relative squared error             86.3967 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         296               59.4378 %
+Incorrectly Classified Instances       202               40.5622 %
+Kappa statistic                          0.3916
+Mean absolute error                      0.331 
+Root mean squared error                  0.4085
+Relative absolute error                 74.4808 %
+Root relative squared error             86.6591 %
+Total Number of Instances              498     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 21
+
+
+Correctly Classified Instances         296               59.4378 %
+Incorrectly Classified Instances       202               40.5622 %
+Kappa statistic                          0.3916
+Mean absolute error                      0.3317
+Root mean squared error                  0.4089
+Relative absolute error                 74.6218 %
+Root relative squared error             86.742  %
+Total Number of Instances              498     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 600
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances        1149               95.75   %
+Incorrectly Classified Instances        51                4.25   %
+Kappa statistic                          0.915 
+Mean absolute error                      0.0425
+Root mean squared error                  0.2062
+Relative absolute error                  8.5    %
+Root relative squared error             41.2311 %
+Total Number of Instances             1200     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         363               60.5    %
+Incorrectly Classified Instances       237               39.5    %
+Kappa statistic                          0.4075
+Mean absolute error                      0.3254
+Root mean squared error                  0.4081
+Relative absolute error                 73.2064 %
+Root relative squared error             86.5762 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         365               60.8333 %
+Incorrectly Classified Instances       235               39.1667 %
+Kappa statistic                          0.4125
+Mean absolute error                      0.3257
+Root mean squared error                  0.4075
+Relative absolute error                 73.2873 %
+Root relative squared error             86.4512 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3285
+Root mean squared error                  0.409 
+Relative absolute error                 73.9131 %
+Root relative squared error             86.7595 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         365               60.8333 %
+Incorrectly Classified Instances       235               39.1667 %
+Kappa statistic                          0.4125
+Mean absolute error                      0.3292
+Root mean squared error                  0.409 
+Relative absolute error                 74.0649 %
+Root relative squared error             86.765  %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         358               59.6667 %
+Incorrectly Classified Instances       242               40.3333 %
+Kappa statistic                          0.395 
+Mean absolute error                      0.3319
+Root mean squared error                  0.4106
+Relative absolute error                 74.6698 %
+Root relative squared error             87.0974 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3319
+Root mean squared error                  0.4111
+Relative absolute error                 74.6886 %
+Root relative squared error             87.2091 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         364               60.6667 %
+Incorrectly Classified Instances       236               39.3333 %
+Kappa statistic                          0.41  
+Mean absolute error                      0.3311
+Root mean squared error                  0.4103
+Relative absolute error                 74.4891 %
+Root relative squared error             87.0335 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3303
+Root mean squared error                  0.41  
+Relative absolute error                 74.3137 %
+Root relative squared error             86.9758 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3315
+Root mean squared error                  0.4103
+Relative absolute error                 74.5795 %
+Root relative squared error             87.0354 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3319
+Root mean squared error                  0.4099
+Relative absolute error                 74.6795 %
+Root relative squared error             86.9545 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 21
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3335
+Root mean squared error                  0.4105
+Relative absolute error                 75.0294 %
+Root relative squared error             87.0724 %
+Total Number of Instances              600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 23
+
+
+Correctly Classified Instances         362               60.3333 %
+Incorrectly Classified Instances       238               39.6667 %
+Kappa statistic                          0.405 
+Mean absolute error                      0.3341
+Root mean squared error                  0.4108
+Relative absolute error                 75.1653 %
+Root relative squared error             87.1472 %
+Total Number of Instances              600     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 700
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances        1346               96.1429 %
+Incorrectly Classified Instances        54                3.8571 %
+Kappa statistic                          0.9229
+Mean absolute error                      0.0386
+Root mean squared error                  0.1964
+Relative absolute error                  7.7143 %
+Root relative squared error             39.2792 %
+Total Number of Instances             1400     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         432               61.8026 %
+Incorrectly Classified Instances       267               38.1974 %
+Kappa statistic                          0.427 
+Mean absolute error                      0.3243
+Root mean squared error                  0.4071
+Relative absolute error                 72.9556 %
+Root relative squared error             86.3666 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         432               61.8026 %
+Incorrectly Classified Instances       267               38.1974 %
+Kappa statistic                          0.427 
+Mean absolute error                      0.3239
+Root mean squared error                  0.4052
+Relative absolute error                 72.8713 %
+Root relative squared error             85.9629 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         432               61.8026 %
+Incorrectly Classified Instances       267               38.1974 %
+Kappa statistic                          0.427 
+Mean absolute error                      0.3259
+Root mean squared error                  0.4059
+Relative absolute error                 73.3173 %
+Root relative squared error             86.1017 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         432               61.8026 %
+Incorrectly Classified Instances       267               38.1974 %
+Kappa statistic                          0.427 
+Mean absolute error                      0.3267
+Root mean squared error                  0.4061
+Relative absolute error                 73.5101 %
+Root relative squared error             86.1386 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         427               61.0873 %
+Incorrectly Classified Instances       272               38.9127 %
+Kappa statistic                          0.4163
+Mean absolute error                      0.329 
+Root mean squared error                  0.4077
+Relative absolute error                 74.0246 %
+Root relative squared error             86.4847 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         427               61.0873 %
+Incorrectly Classified Instances       272               38.9127 %
+Kappa statistic                          0.4163
+Mean absolute error                      0.3295
+Root mean squared error                  0.4082
+Relative absolute error                 74.128  %
+Root relative squared error             86.5846 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         430               61.5165 %
+Incorrectly Classified Instances       269               38.4835 %
+Kappa statistic                          0.4227
+Mean absolute error                      0.3289
+Root mean squared error                  0.4083
+Relative absolute error                 74.0044 %
+Root relative squared error             86.6092 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         431               61.6595 %
+Incorrectly Classified Instances       268               38.3405 %
+Kappa statistic                          0.4249
+Mean absolute error                      0.3289
+Root mean squared error                  0.4087
+Relative absolute error                 74.0002 %
+Root relative squared error             86.6981 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         431               61.6595 %
+Incorrectly Classified Instances       268               38.3405 %
+Kappa statistic                          0.4249
+Mean absolute error                      0.3275
+Root mean squared error                  0.4076
+Relative absolute error                 73.6802 %
+Root relative squared error             86.4627 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         431               61.6595 %
+Incorrectly Classified Instances       268               38.3405 %
+Kappa statistic                          0.4249
+Mean absolute error                      0.3284
+Root mean squared error                  0.4082
+Relative absolute error                 73.8986 %
+Root relative squared error             86.5856 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 21
+
+
+Correctly Classified Instances         431               61.6595 %
+Incorrectly Classified Instances       268               38.3405 %
+Kappa statistic                          0.4249
+Mean absolute error                      0.3289
+Root mean squared error                  0.4083
+Relative absolute error                 73.9951 %
+Root relative squared error             86.6198 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 23
+
+
+Correctly Classified Instances         431               61.6595 %
+Incorrectly Classified Instances       268               38.3405 %
+Kappa statistic                          0.4249
+Mean absolute error                      0.3298
+Root mean squared error                  0.4083
+Relative absolute error                 74.2083 %
+Root relative squared error             86.6169 %
+Total Number of Instances              699     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 25
+
+
+Correctly Classified Instances         431               61.6595 %
+Incorrectly Classified Instances       268               38.3405 %
+Kappa statistic                          0.4249
+Mean absolute error                      0.3305
+Root mean squared error                  0.4085
+Relative absolute error                 74.3711 %
+Root relative squared error             86.6527 %
+Total Number of Instances              699     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 800
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances        1541               96.3125 %
+Incorrectly Classified Instances        59                3.6875 %
+Kappa statistic                          0.9263
+Mean absolute error                      0.0369
+Root mean squared error                  0.192 
+Relative absolute error                  7.375  %
+Root relative squared error             38.4057 %
+Total Number of Instances             1600     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3206
+Root mean squared error                  0.4033
+Relative absolute error                 72.1287 %
+Root relative squared error             85.5588 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         494               61.9048 %
+Incorrectly Classified Instances       304               38.0952 %
+Kappa statistic                          0.4286
+Mean absolute error                      0.3224
+Root mean squared error                  0.4043
+Relative absolute error                 72.5467 %
+Root relative squared error             85.76   %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         492               61.6541 %
+Incorrectly Classified Instances       306               38.3459 %
+Kappa statistic                          0.4248
+Mean absolute error                      0.3236
+Root mean squared error                  0.4047
+Relative absolute error                 72.8179 %
+Root relative squared error             85.839  %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         492               61.6541 %
+Incorrectly Classified Instances       306               38.3459 %
+Kappa statistic                          0.4248
+Mean absolute error                      0.3244
+Root mean squared error                  0.4052
+Relative absolute error                 72.9842 %
+Root relative squared error             85.962  %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         490               61.4035 %
+Incorrectly Classified Instances       308               38.5965 %
+Kappa statistic                          0.4211
+Mean absolute error                      0.326 
+Root mean squared error                  0.4061
+Relative absolute error                 73.3501 %
+Root relative squared error             86.1513 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         490               61.4035 %
+Incorrectly Classified Instances       308               38.5965 %
+Kappa statistic                          0.4211
+Mean absolute error                      0.326 
+Root mean squared error                  0.406 
+Relative absolute error                 73.3428 %
+Root relative squared error             86.1263 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         493               61.7794 %
+Incorrectly Classified Instances       305               38.2206 %
+Kappa statistic                          0.4267
+Mean absolute error                      0.3253
+Root mean squared error                  0.4057
+Relative absolute error                 73.1876 %
+Root relative squared error             86.0648 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3241
+Root mean squared error                  0.4048
+Relative absolute error                 72.9301 %
+Root relative squared error             85.8593 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3234
+Root mean squared error                  0.4045
+Relative absolute error                 72.7634 %
+Root relative squared error             85.8001 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.324 
+Root mean squared error                  0.4047
+Relative absolute error                 72.9068 %
+Root relative squared error             85.8398 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 21
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3242
+Root mean squared error                  0.4051
+Relative absolute error                 72.9459 %
+Root relative squared error             85.9252 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 23
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3249
+Root mean squared error                  0.4051
+Relative absolute error                 73.0966 %
+Root relative squared error             85.9369 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 25
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3257
+Root mean squared error                  0.4054
+Relative absolute error                 73.2922 %
+Root relative squared error             85.9986 %
+Total Number of Instances              798     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 27
+
+
+Correctly Classified Instances         496               62.1554 %
+Incorrectly Classified Instances       302               37.8446 %
+Kappa statistic                          0.4323
+Mean absolute error                      0.3259
+Root mean squared error                  0.4054
+Relative absolute error                 73.3249 %
+Root relative squared error             85.9972 %
+Total Number of Instances              798     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 900
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances        1731               96.1667 %
+Incorrectly Classified Instances        69                3.8333 %
+Kappa statistic                          0.9233
+Mean absolute error                      0.0383
+Root mean squared error                  0.1958
+Relative absolute error                  7.6667 %
+Root relative squared error             39.1578 %
+Total Number of Instances             1800     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         563               62.5556 %
+Incorrectly Classified Instances       337               37.4444 %
+Kappa statistic                          0.4383
+Mean absolute error                      0.3152
+Root mean squared error                  0.4014
+Relative absolute error                 70.9269 %
+Root relative squared error             85.1424 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3149
+Root mean squared error                  0.4   
+Relative absolute error                 70.8466 %
+Root relative squared error             84.8478 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         563               62.5556 %
+Incorrectly Classified Instances       337               37.4444 %
+Kappa statistic                          0.4383
+Mean absolute error                      0.3166
+Root mean squared error                  0.4004
+Relative absolute error                 71.2448 %
+Root relative squared error             84.933  %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         563               62.5556 %
+Incorrectly Classified Instances       337               37.4444 %
+Kappa statistic                          0.4383
+Mean absolute error                      0.3177
+Root mean squared error                  0.4008
+Relative absolute error                 71.4815 %
+Root relative squared error             85.0211 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         562               62.4444 %
+Incorrectly Classified Instances       338               37.5556 %
+Kappa statistic                          0.4367
+Mean absolute error                      0.3185
+Root mean squared error                  0.4012
+Relative absolute error                 71.6542 %
+Root relative squared error             85.1171 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         558               62      %
+Incorrectly Classified Instances       342               38      %
+Kappa statistic                          0.43  
+Mean absolute error                      0.3196
+Root mean squared error                  0.402 
+Relative absolute error                 71.9109 %
+Root relative squared error             85.2751 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         560               62.2222 %
+Incorrectly Classified Instances       340               37.7778 %
+Kappa statistic                          0.4333
+Mean absolute error                      0.3191
+Root mean squared error                  0.4018
+Relative absolute error                 71.7967 %
+Root relative squared error             85.2433 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3182
+Root mean squared error                  0.4013
+Relative absolute error                 71.5987 %
+Root relative squared error             85.125  %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3177
+Root mean squared error                  0.4012
+Relative absolute error                 71.4727 %
+Root relative squared error             85.1139 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3168
+Root mean squared error                  0.4009
+Relative absolute error                 71.2743 %
+Root relative squared error             85.0518 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 21
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3171
+Root mean squared error                  0.4009
+Relative absolute error                 71.3379 %
+Root relative squared error             85.0469 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 23
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3177
+Root mean squared error                  0.401 
+Relative absolute error                 71.488  %
+Root relative squared error             85.0672 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 25
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3186
+Root mean squared error                  0.4012
+Relative absolute error                 71.6908 %
+Root relative squared error             85.1092 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 27
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.319 
+Root mean squared error                  0.4012
+Relative absolute error                 71.7799 %
+Root relative squared error             85.1112 %
+Total Number of Instances              900     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 29
+
+
+Correctly Classified Instances         564               62.6667 %
+Incorrectly Classified Instances       336               37.3333 %
+Kappa statistic                          0.44  
+Mean absolute error                      0.3193
+Root mean squared error                  0.4014
+Relative absolute error                 71.8498 %
+Root relative squared error             85.1395 %
+Total Number of Instances              900     
+
+
+=================================================================
+
+ NUM SITES TRAINING : 1000
+
+
+Results Cross-Validation for Normality
+
+
+Correctly Classified Instances        1930               96.5    %
+Incorrectly Classified Instances        70                3.5    %
+Kappa statistic                          0.93  
+Mean absolute error                      0.035 
+Root mean squared error                  0.1871
+Relative absolute error                  7      %
+Root relative squared error             37.4166 %
+Total Number of Instances             2000     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 1
+
+
+Correctly Classified Instances         631               63.1632 %
+Incorrectly Classified Instances       368               36.8368 %
+Kappa statistic                          0.4474
+Mean absolute error                      0.3111
+Root mean squared error                  0.3975
+Relative absolute error                 69.9995 %
+Root relative squared error             84.3315 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 3
+
+
+Correctly Classified Instances         632               63.2633 %
+Incorrectly Classified Instances       367               36.7367 %
+Kappa statistic                          0.4489
+Mean absolute error                      0.3112
+Root mean squared error                  0.3972
+Relative absolute error                 70.0223 %
+Root relative squared error             84.2524 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 5
+
+
+Correctly Classified Instances         632               63.2633 %
+Incorrectly Classified Instances       367               36.7367 %
+Kappa statistic                          0.4489
+Mean absolute error                      0.3115
+Root mean squared error                  0.3969
+Relative absolute error                 70.0902 %
+Root relative squared error             84.1973 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 7
+
+
+Correctly Classified Instances         632               63.2633 %
+Incorrectly Classified Instances       367               36.7367 %
+Kappa statistic                          0.4489
+Mean absolute error                      0.3135
+Root mean squared error                  0.3977
+Relative absolute error                 70.5475 %
+Root relative squared error             84.3682 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 9
+
+
+Correctly Classified Instances         631               63.1632 %
+Incorrectly Classified Instances       368               36.8368 %
+Kappa statistic                          0.4474
+Mean absolute error                      0.3141
+Root mean squared error                  0.3981
+Relative absolute error                 70.6623 %
+Root relative squared error             84.4517 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 11
+
+
+Correctly Classified Instances         627               62.7628 %
+Incorrectly Classified Instances       372               37.2372 %
+Kappa statistic                          0.4414
+Mean absolute error                      0.3153
+Root mean squared error                  0.3985
+Relative absolute error                 70.9366 %
+Root relative squared error             84.5289 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 13
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.315 
+Root mean squared error                  0.3987
+Relative absolute error                 70.883  %
+Root relative squared error             84.5858 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 15
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3143
+Root mean squared error                  0.3984
+Relative absolute error                 70.7194 %
+Root relative squared error             84.506  %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 17
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3133
+Root mean squared error                  0.3978
+Relative absolute error                 70.5022 %
+Root relative squared error             84.386  %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 19
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3127
+Root mean squared error                  0.3978
+Relative absolute error                 70.35   %
+Root relative squared error             84.3786 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 21
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3125
+Root mean squared error                  0.3979
+Relative absolute error                 70.3025 %
+Root relative squared error             84.4021 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 23
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3128
+Root mean squared error                  0.398 
+Relative absolute error                 70.3868 %
+Root relative squared error             84.4219 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 25
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3138
+Root mean squared error                  0.3982
+Relative absolute error                 70.5936 %
+Root relative squared error             84.4606 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 27
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3143
+Root mean squared error                  0.3983
+Relative absolute error                 70.7164 %
+Root relative squared error             84.5015 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 29
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3145
+Root mean squared error                  0.3982
+Relative absolute error                 70.7508 %
+Root relative squared error             84.4771 %
+Total Number of Instances              999     
+
+Results Cross-Validation for Dangerousity with nearest neighbor value : 31
+
+
+Correctly Classified Instances         628               62.8629 %
+Incorrectly Classified Instances       371               37.1371 %
+Kappa statistic                          0.4429
+Mean absolute error                      0.3147
+Root mean squared error                  0.3983
+Relative absolute error                 70.8021 %
+Root relative squared error             84.4911 %
+Total Number of Instances              999     

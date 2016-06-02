@@ -1,0 +1,304 @@
+
+
+=================================================================
+
+ NUM SITES TRAINING : 100
+
+
+Results Cross-Validation for Normality : 86.5
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 76.76767676767676
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 68.68686868686868
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 68.68686868686868
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 66.66666666666666
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 64.64646464646465
+
+
+=================================================================
+
+ NUM SITES TRAINING : 200
+
+
+Results Cross-Validation for Normality : 82.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 82.82828282828282
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 77.77777777777779
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 72.72727272727273
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 73.23232323232324
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 72.22222222222221
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 73.23232323232324
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 72.72727272727273
+
+
+=================================================================
+
+ NUM SITES TRAINING : 300
+
+
+Results Cross-Validation for Normality : 80.16666666666666
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 82.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 80.33333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 75.33333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 74.66666666666667
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 73.66666666666667
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 73.33333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 71.33333333333334
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 71.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 69.0
+
+
+=================================================================
+
+ NUM SITES TRAINING : 400
+
+
+Results Cross-Validation for Normality : 79.375
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 82.45614035087719
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 76.94235588972431
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 76.19047619047619
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 72.93233082706767
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 73.93483709273183
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 72.18045112781954
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 72.18045112781954
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 70.67669172932331
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 69.92481203007519
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 69.92481203007519
+
+
+=================================================================
+
+ NUM SITES TRAINING : 500
+
+
+Results Cross-Validation for Normality : 78.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 84.73895582329317
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 80.72289156626506
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 77.71084337349397
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 76.70682730923694
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 75.1004016064257
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 75.70281124497991
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 73.89558232931726
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 72.28915662650603
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 73.29317269076306
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 73.29317269076306
+
+Results Cross-Validation for Dangerousity with nearest neighbor 21 : 72.28915662650603
+
+
+=================================================================
+
+ NUM SITES TRAINING : 600
+
+
+Results Cross-Validation for Normality : 78.33333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 86.5
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 82.83333333333334
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 79.5
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 79.16666666666666
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 79.16666666666666
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 76.33333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 75.83333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 75.83333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 75.83333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 74.66666666666667
+
+Results Cross-Validation for Dangerousity with nearest neighbor 21 : 73.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 23 : 72.16666666666667
+
+
+=================================================================
+
+ NUM SITES TRAINING : 700
+
+
+Results Cross-Validation for Normality : 79.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 86.69527896995707
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 83.69098712446352
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 80.82975679542204
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 78.96995708154506
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 78.39771101573677
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 77.6824034334764
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 77.1101573676681
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 75.67954220314735
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 76.96709585121603
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 76.96709585121603
+
+Results Cross-Validation for Dangerousity with nearest neighbor 21 : 76.96709585121603
+
+Results Cross-Validation for Dangerousity with nearest neighbor 23 : 75.3934191702432
+
+Results Cross-Validation for Dangerousity with nearest neighbor 25 : 72.96137339055794
+
+
+=================================================================
+
+ NUM SITES TRAINING : 800
+
+
+Results Cross-Validation for Normality : 78.6875
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 88.59649122807018
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 84.58646616541353
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 82.45614035087719
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 79.9498746867168
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 79.57393483709274
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 79.57393483709274
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 78.69674185463658
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 78.32080200501254
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 77.69423558897243
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 77.19298245614034
+
+Results Cross-Validation for Dangerousity with nearest neighbor 21 : 77.19298245614034
+
+Results Cross-Validation for Dangerousity with nearest neighbor 23 : 77.5689223057644
+
+Results Cross-Validation for Dangerousity with nearest neighbor 25 : 77.31829573934837
+
+Results Cross-Validation for Dangerousity with nearest neighbor 27 : 76.44110275689223
+
+
+=================================================================
+
+ NUM SITES TRAINING : 900
+
+
+Results Cross-Validation for Normality : 77.83333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 87.55555555555556
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 84.88888888888889
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 82.22222222222221
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 79.88888888888889
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 79.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 78.33333333333333
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 77.66666666666666
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 77.66666666666666
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 76.22222222222223
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 76.11111111111111
+
+Results Cross-Validation for Dangerousity with nearest neighbor 21 : 76.0
+
+Results Cross-Validation for Dangerousity with nearest neighbor 23 : 75.77777777777777
+
+Results Cross-Validation for Dangerousity with nearest neighbor 25 : 75.77777777777777
+
+Results Cross-Validation for Dangerousity with nearest neighbor 27 : 75.22222222222223
+
+Results Cross-Validation for Dangerousity with nearest neighbor 29 : 74.8888888888889
+
+
+=================================================================
+
+ NUM SITES TRAINING : 1000
+
+
+Results Cross-Validation for Normality : 78.60000000000001
+
+Results Cross-Validation for Dangerousity with nearest neighbor 1 : 87.98798798798799
+
+Results Cross-Validation for Dangerousity with nearest neighbor 3 : 85.58558558558559
+
+Results Cross-Validation for Dangerousity with nearest neighbor 5 : 83.78378378378379
+
+Results Cross-Validation for Dangerousity with nearest neighbor 7 : 82.08208208208208
+
+Results Cross-Validation for Dangerousity with nearest neighbor 9 : 80.68068068068068
+
+Results Cross-Validation for Dangerousity with nearest neighbor 11 : 79.27927927927928
+
+Results Cross-Validation for Dangerousity with nearest neighbor 13 : 78.47847847847848
+
+Results Cross-Validation for Dangerousity with nearest neighbor 15 : 77.17717717717719
+
+Results Cross-Validation for Dangerousity with nearest neighbor 17 : 77.77777777777779
+
+Results Cross-Validation for Dangerousity with nearest neighbor 19 : 77.27727727727728
+
+Results Cross-Validation for Dangerousity with nearest neighbor 21 : 76.07607607607608
+
+Results Cross-Validation for Dangerousity with nearest neighbor 23 : 76.37637637637637
+
+Results Cross-Validation for Dangerousity with nearest neighbor 25 : 77.27727727727728
+
+Results Cross-Validation for Dangerousity with nearest neighbor 27 : 77.37737737737737
+
+Results Cross-Validation for Dangerousity with nearest neighbor 29 : 76.47647647647648
+
+Results Cross-Validation for Dangerousity with nearest neighbor 31 : 76.27627627627628

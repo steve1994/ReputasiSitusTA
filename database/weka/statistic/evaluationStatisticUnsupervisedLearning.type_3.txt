@@ -1,0 +1,47 @@
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$   NUMBER CLUSTER EACH TRAINING ALLOCATION   $$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+===================================================================
+
+ NUM SITES TRAINING : 100
+
+Optimum Cluster KMeans Stage 1 : 2
+Optimum Cluster KMeans Stage 2 : 5
+Optimum Cluster EM Stage 1 : 2
+Optimum Cluster EM Stage 2 : 5
+Optimum Cluster Hierarchical Stage 1 : 2
+Optimum Cluster Hierarchical Stage 2 : 5
+
+
+
+aggOCKMeansNormal : 2
+aggOCKmeansDangerous : 5
+aggOCEMNormal : 2
+aggOCEMDangerous : 5
+aggOCHCNormal : 2
+aggOCHCDangerous : 5
+
+
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$   INCORRECTLY CLASSIFIED INSTANCE PER ALLOCATION   $$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+===================================================================
+
+ NUM SITES TRAINING : 100
+
+Error KMeans Stage 1 : 2.5
+Error KMeans Stage 1 : 30.303030303030305
+Error EM Stage 1 : 3.0
+Error EM Stage 1 : 26.262626262626267
+Error Hierarchical Stage 1 : 3.0
+Error Hierarchical Stage 1 : 26.262626262626267

@@ -1,0 +1,57 @@
+@relation mixed_instances_1
+
+@attribute trust_score_1 numeric
+@attribute trust_score_2 numeric
+@attribute safety_score_1 numeric
+@attribute safety_score_2 numeric
+@attribute category_negative numeric
+@attribute category_questionable numeric
+@attribute category_neutral numeric
+@attribute category_positive numeric
+@attribute blacklist_mal numeric
+@attribute blacklist_phis numeric
+@attribute blacklist_scam numeric
+@attribute blacklist_spam numeric
+@attribute class {malware,phishing,spamming,normal}
+
+@data
+2,14,6,9,4,0,0,0,0,0,0,0,malware
+50,4,0,0,0,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+94,73,92,66,0,0,46,99,0,0,0,0,normal
+37,7,8,7,0,0,0,0,0,0,0,0,malware
+0,0,0,0,0,0,0,0,0,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+85,54,77,39,0,0,17,96,0,0,0,0,normal
+37,7,8,7,0,0,0,0,0,0,0,0,malware
+91,61,91,54,0,0,43,99,0,0,0,0,phishing
+5,13,11,6,0,30,0,0,0,0,0,0,spamming
+92,63,83,46,0,0,14,100,0,0,0,0,normal
+37,7,8,7,0,0,0,0,0,0,0,0,malware
+50,4,0,0,0,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+84,44,82,39,0,0,25,96,0,0,0,0,normal
+37,7,8,7,0,0,0,0,0,0,0,0,malware
+2,13,1,14,4,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+94,75,93,69,0,0,10,99,0,0,0,0,normal
+5,12,8,7,5,0,0,0,0,0,0,0,malware
+2,13,1,14,4,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+94,81,94,72,0,0,5,100,0,0,0,0,normal
+44,6,8,6,0,4,0,0,0,0,0,0,malware
+26,8,0,0,0,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+94,66,93,59,0,0,10,99,0,0,0,0,normal
+37,7,8,7,0,0,0,0,0,0,0,0,malware
+50,4,0,0,6,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+78,40,74,34,0,0,0,99,0,0,0,0,normal
+37,7,8,7,0,0,0,0,0,0,0,0,malware
+0,0,0,0,0,0,0,0,0,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+94,56,91,51,0,0,27,98,0,0,0,0,normal
+37,7,8,6,4,0,0,0,0,0,0,0,malware
+12,10,0,0,8,0,0,0,1,0,0,0,phishing
+0,0,0,0,0,0,0,0,0,0,0,0,spamming
+93,67,88,53,0,0,12,92,0,0,0,0,normal
