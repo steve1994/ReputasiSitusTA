@@ -5,12 +5,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,6 +31,8 @@ import java.util.ResourceBundle;
  */
 public class reputationHistoryController implements Initializable {
     public TableView historyReputationTableView = new TableView();
+    final private ObservableList <historyReputationRowTableView> data = FXCollections.observableArrayList();
+    public Button deleteButton;
 
     public void handleBackButton(ActionEvent actionEvent) {
         // Back into main page
@@ -46,6 +50,22 @@ public class reputationHistoryController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Set delete button action event
+
+        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (historyReputationTableView.getItems().size() > 0) {
+                    int indexRow = historyReputationTableView.getSelectionModel().getSelectedIndex();
+                    data.remove(indexRow);
+                    // Update history.txt external file
+                    List<Pair<String,historySitesReputation>> listHistory = reputationResultController.loadHistoryReputation();
+                    listHistory.remove(indexRow);
+                    reputationResultController.saveHistoryReputation(listHistory);
+                }
+            }
+        });
+
         // Define columns tableview
         TableColumn nameColumn = new TableColumn("Domain Name");
         nameColumn.setMinWidth(100);
@@ -97,7 +117,6 @@ public class reputationHistoryController implements Initializable {
                 spammingCompositionColumn,methodColumn,reputationColumn);
 
         // Insert history reputation data into tableview
-        ObservableList <historyReputationRowTableView> data = FXCollections.observableArrayList();
         List<Pair<String,historySitesReputation>> listHistoryReputation = reputationResultController.loadHistoryReputation();
         for (int i=0;i<listHistoryReputation.size();i++) {
             Pair<String,historySitesReputation> reputationData = listHistoryReputation.get(i);
