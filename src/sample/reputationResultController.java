@@ -34,6 +34,7 @@ public class reputationResultController implements Initializable {
     public Label domainNameDateMeasured;
     public PieChart chartCompositionDangerousity;
     public Label labelSiteComposition;
+    private final static String pathHistoryReputation = "src/sample/history/historyReputation.txt";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,18 +79,17 @@ public class reputationResultController implements Initializable {
             case 2  :   thisResultReputation.setMethodType("unsupervised"); break;
             case 3  :   thisResultReputation.setMethodType("hybrid"); break;
         }
-        reputationResultController.saveHistoryReputation(StaticVars.currentDomainName,thisResultReputation);
+        List<Pair<String,historySitesReputation>> oldHistoryReputation = reputationResultController.loadHistoryReputation();
+        Pair<String,historySitesReputation> addedHistoryReputation = new Pair<String, historySitesReputation>(StaticVars.currentDomainName,thisResultReputation);
+        oldHistoryReputation.add(addedHistoryReputation);
+        reputationResultController.saveHistoryReputation(oldHistoryReputation);
     }
 
     /**
      * Method for save a site's reputation result into external file
-     * @param domainName
-     * @param siteReputation
+     * @param listHistoryReputation
      */
-    public static void saveHistoryReputation(String domainName, historySitesReputation siteReputation) {
-        List<Pair<String,historySitesReputation>> listHistoryReputation = reputationResultController.loadHistoryReputation();
-        Pair<String,historySitesReputation> addedHistoryReputation = new Pair<String, historySitesReputation>(domainName,siteReputation);
-        listHistoryReputation.add(addedHistoryReputation);
+    public static void saveHistoryReputation(List<Pair<String,historySitesReputation>> listHistoryReputation) {
         // Write again into external file
         StringBuffer rawContent = new StringBuffer();
         for (int i=0;i<listHistoryReputation.size();i++) {
@@ -109,7 +109,7 @@ public class reputationResultController implements Initializable {
                     + "*" + malwareComposition + "*" + phishingComposition + "*" + spammingComposition
                     + "*" + methodType + "*" + reputationType + "\n");
         }
-        EksternalFile.saveRawContentToEksternalFile(rawContent.toString(), "src/sample/history/historyReputation.txt");
+        EksternalFile.saveRawContentToEksternalFile(rawContent.toString(), pathHistoryReputation);
     }
 
     /**
@@ -118,7 +118,7 @@ public class reputationResultController implements Initializable {
      */
     public static List<Pair<String,historySitesReputation>> loadHistoryReputation() {
         List<Pair<String,historySitesReputation>> listHistoryReputation = new ArrayList<Pair<String, historySitesReputation>>();
-        String rawContent = EksternalFile.getRawFileContent("src/sample/history/historyReputation.txt");
+        String rawContent = EksternalFile.getRawFileContent(pathHistoryReputation);
         if (!rawContent.isEmpty()) {
             StringTokenizer stringPerLine = new StringTokenizer(rawContent,"\n");
             while (stringPerLine.hasMoreTokens()) {
