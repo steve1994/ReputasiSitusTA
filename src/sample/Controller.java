@@ -1,6 +1,7 @@
 package sample;
 
 import Utils.API.WOT_API_Loader;
+import Utils.Converter;
 import Utils.DNS.DNSExtractor;
 import Utils.Database.EksternalFile;
 import Utils.Spesific.ContentExtractor;
@@ -104,7 +105,7 @@ public class Controller implements Initializable {
             }
 
             // Extract Features From Domain Name and Process Based on Its method
-            String domainName = domainSitesTextField.getText();
+            String domainName = Converter.getBaseHostURL(domainSitesTextField.getText());
             int numTrainingSites = (Integer) numberTrainingChoiceBox.getSelectionModel().getSelectedItem();
 
             long startResponseTime = System.currentTimeMillis();

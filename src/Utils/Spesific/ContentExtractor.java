@@ -170,7 +170,7 @@ public class ContentExtractor {
     public static long getDomainLookupTimeSite(String url) {
         long before = System.currentTimeMillis();
         try {
-            InetAddress addr = InetAddress.getByName(getBaseHostURL(url));
+            InetAddress addr = InetAddress.getByName(Converter.getBaseHostURL(url));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -187,7 +187,7 @@ public class ContentExtractor {
      */
     public static String getSLDFromURL(String url) {
         String SLD = null;
-        url = getBaseHostURL(url);
+        url = Converter.getBaseHostURL(url);
 
 //        if (InternetDomainName.isValid(url)) {
 //            InternetDomainName idn = InternetDomainName.from(url);
@@ -243,24 +243,6 @@ public class ContentExtractor {
         }
 
         return totalSitesSLDMatch / totalSites;
-    }
-
-    /**
-     * Convert URL sites into its base host name
-     * @param url
-     * @return
-     */
-    private static String getBaseHostURL(String url) {
-        if (!url.contains("http://") && !url.contains("https://")) {
-            url = "http://" + url;
-        }
-        String host = "";
-        try {
-            host = new URL(url).getHost();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return host;
     }
 
     public static void main(String[] args) {

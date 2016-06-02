@@ -1,5 +1,6 @@
 package Utils.Database;
 
+import Utils.Converter;
 import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
 import weka.classifiers.Classifier;
@@ -23,24 +24,6 @@ public class EksternalFile {
     private static final String spammingPath = "database/spamming_websites/spamming.txt";
     private static final String popularPath = "database/top_popular_websites/top-1m.csv";
     private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
-
-    /**
-     * Convert URL sites into its base host name
-     * @param url
-     * @return
-     */
-    private static String getBaseHostURL(String url) {
-        if (!url.contains("http://") && !url.contains("https://")) {
-            url = "http://" + url;
-        }
-        String host = "";
-        try {
-            host = new URL(url).getHost();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return host;
-    }
 
     /**
      * Get raw content of string from external file
@@ -104,7 +87,7 @@ public class EksternalFile {
         StringTokenizer token = new StringTokenizer(rawTrainingList.toString(),"\n");
         while (token.hasMoreTokens()) {
             String oneRow = (String) token.nextToken();
-            SitesTrainingList.add(getBaseHostURL(oneRow));
+            SitesTrainingList.add(Converter.getBaseHostURL(oneRow));
             numSitesReturn++;
         }
 

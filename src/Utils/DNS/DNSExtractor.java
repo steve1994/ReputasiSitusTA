@@ -25,24 +25,6 @@ public class DNSExtractor {
     private static final String A_ATTRIB = "A";
     private static final String[] A_ATTRIBS = {A_ATTRIB};
 
-    /**
-     * Convert URL sites into its base host name
-     * @param url
-     * @return
-     */
-    private static String getBaseHostURL(String url) {
-        if (!url.contains("http://") && !url.contains("https://")) {
-            url = "http://" + url;
-        }
-        String host = "";
-        try {
-            host = new URL(url).getHost();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return host;
-    }
-
     private static InitialDirContext getInitialDirContext() {
         Properties env = new Properties();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.dns.DnsContextFactory");
@@ -64,7 +46,7 @@ public class DNSExtractor {
         List<String> servers = new ArrayList<String>();
         Attributes attrs = null;
         try {
-            attrs = DNSExtractor.getInitialDirContext().getAttributes(DNSExtractor.getBaseHostURL(url),A_ATTRIBS);
+            attrs = DNSExtractor.getInitialDirContext().getAttributes(Converter.getBaseHostURL(url),A_ATTRIBS);
         } catch (NamingException e) {
             e.printStackTrace();
         }
