@@ -1,1 +1,4 @@
-cutscenes.net*normal*1*Thu Jun 02 14:09:20 ICT 2016*0.0*0.0*0.0*supervised*Trust
+ligaindonesia.co.id*normal*11*Fri Jun 03 13:23:07 ICT 2016*0.0*0.0*0.0*supervised*Spesific
+ligaindonesia.co.id*malware*7*Fri Jun 03 14:23:20 ICT 2016*0.0*0.0*0.0*supervised*Spesific
+facebook.com*normal*5*Fri Jun 03 14:49:20 ICT 2016*0.0*0.0*0.0*unsupervised*Trust
+porngif.org*malware*0*Fri Jun 03 14:50:11 ICT 2016*0.8125*0.1875*0.0*unsupervised*Trust
