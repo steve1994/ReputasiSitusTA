@@ -86,10 +86,11 @@ public class ContentExtractor {
                 default:
                 case 1:
                     try {
-                        if (doc.hasAttr("resultStats")) {
+                        if (doc.toString().contains("About ")) {
                             Element numResults1 = doc.getElementById("resultStats");
                             String[] tokenResults1 = numResults1.text().split(" ");
                             inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
+                            System.out.println("GOOGLE");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
@@ -99,9 +100,10 @@ public class ContentExtractor {
                     break;
                 case 2:
                     try {
-                        if (doc.hasClass("compPagination")) {
+                        if (doc.toString().contains("compPagination")) {
                             Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
                             inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya", "").replace(" hasil", "").replace(",", ""));
+                            System.out.println("YAHOO");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
@@ -111,10 +113,11 @@ public class ContentExtractor {
                     break;
                 case 3:
                     try {
-                        if (doc.hasClass("sb_count")) {
+                        if (doc.toString().contains("<span class=\"sb_count\">")) {
                             Elements numResults4 = doc.getElementsByClass("sb_count");
                             String[] tokenResults4 = numResults4.text().split(" ");
                             inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
+                            System.out.println("BING");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
@@ -264,7 +267,7 @@ public class ContentExtractor {
 
         // SPESIFIC FEATURES
         List<Object> fiturs = new ArrayList<Object>();
-        String hostName = "0000love.net";
+        String hostName = "ligaindonesia.co.id";
 
         long before = System.currentTimeMillis();
         // Token Count URL
