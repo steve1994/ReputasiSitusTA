@@ -26,6 +26,9 @@ import weka.SitesHybrid;
 import weka.SitesLabeler;
 import weka.SitesMLProcessor;
 import weka.classifiers.Classifier;
+import weka.classifiers.functions.LibLINEAR;
+import weka.classifiers.functions.LibSVM;
+import weka.classifiers.lazy.IBk;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.Clusterer;
 import weka.core.Instance;
@@ -123,18 +126,33 @@ public class Controller implements Initializable {
                 // Classified site into two stages (SVM and kNN)
                 String pathClassifier1 = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normalitySVM.model";
                 Classifier optimumSupervisedClassifier1 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier1);
+                double classValue = 0;
                 try {
                     // Do classification stage I (SVM)
-                    double classValue = optimumSupervisedClassifier1.classifyInstance(convertedFeature.instance(0));
+                    classValue = optimumSupervisedClassifier1.classifyInstance(convertedFeature.instance(0));
                     String normalityLabel = convertedFeature.classAttribute().value((int) classValue);
                     if (normalityLabel.equals("abnormal")) {
                         // Convert instance label first into dangerous label
                         Instances dangerousConvertedFeature = SitesMLProcessor.convertNormalityToDangerousityLabel(convertedFeature);
                         // Do classification stage II (kNN)
-                        String pathClassifier2 = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerousityKNN_10.model";
+                        int optimumKNN = 10;
+                        String pathClassifier2 = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerousityKNN_" + optimumKNN + ".model";
                         Classifier optimumSupervisedClassifier2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier2);
                         double classValueDangerousity = optimumSupervisedClassifier2.classifyInstance(dangerousConvertedFeature.instance(0));
                         labelDomainNameResult = dangerousConvertedFeature.classAttribute().value((int) classValueDangerousity);
+
+                        // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
+                        String pathTrainingClassifierKNN = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerous_category.supervised.arff";
+                        Instances trainingClassifierKNN = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingClassifierKNN);
+                        trainingClassifierKNN.setClassIndex(trainingClassifierKNN.numAttributes()-1);
+                        convertedFeature.instance(0).setClassValue(classValueDangerousity);
+                        trainingClassifierKNN.add(convertedFeature.instance(0));
+                        EksternalFile.saveInstanceWekaToExternalARFF(trainingClassifierKNN,pathTrainingClassifierKNN);
+                        // REBUILD CLASSIFIER KNN AGAIN AND SAVE AGAIN TO FILE
+                        Classifier updatedClassifierKNN = new IBk(optimumKNN);
+                        updatedClassifierKNN.buildClassifier(trainingClassifierKNN);
+                        EksternalFile.saveClassifierToExternalModel(updatedClassifierKNN,pathClassifier2);
+
                     } else {
                         labelDomainNameResult = "normal";
                     }
@@ -142,6 +160,23 @@ public class Controller implements Initializable {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                // UPDATE CURRENT TRAINING INSTANCES (NORMALITY)
+                String pathTrainingClassifierSVM = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normality_category.supervised.arff";
+                Instances trainingClassifierSVM = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingClassifierSVM);
+                trainingClassifierSVM.setClassIndex(trainingClassifierSVM.numAttributes()-1);
+                convertedFeature.instance(0).setClassValue(classValue);
+                trainingClassifierSVM.add(convertedFeature.instance(0));
+                EksternalFile.saveInstanceWekaToExternalARFF(trainingClassifierSVM,pathTrainingClassifierSVM);
+                // REBUILD CLASSIFIER SVM AND SAVE AGAIN TO FILE
+                Classifier updatedClassifierSVM = new LibSVM();
+                try {
+                    updatedClassifierSVM.buildClassifier(trainingClassifierSVM);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                EksternalFile.saveClassifierToExternalModel(updatedClassifierSVM,pathClassifier1);
+
             } else if (unsupervisedRadioButton.isSelected()) {
                 // Convert extracted feature into instance weka
                 SitesClusterer sitesClusterer = new SitesClusterer(StaticVars.reputationType);
@@ -158,6 +193,7 @@ public class Controller implements Initializable {
 
                 trainingNormalKmeans.add(convertedFeature.instance(0));
                 String labelNormalityKmeans = "";
+                int classValueCluster = 0;
                 try {
                     ClusterEvaluation evalNormalKmeans = sitesClusterer.evaluateClusterReputationModel(trainingNormalKmeans, KmeansNormalClusterer);
                     double[] clusterAssigment1 = evalNormalKmeans.getClusterAssignments();
@@ -165,7 +201,7 @@ public class Controller implements Initializable {
                     for (int i = 0; i < trainingNormalKmeans.numInstances(); i++) {
                         if (trainingNormalKmeans.instance(i).toString().equals(convertedFeature.instance(0).toString())) {
                             double clusterNumber = clusterAssigment1[i];
-                            int classValueCluster = classesToCluster1[(int) clusterNumber];
+                            classValueCluster = classesToCluster1[(int) clusterNumber];
                             labelNormalityKmeans = trainingNormalKmeans.classAttribute().value(classValueCluster);
                         }
                     }
@@ -190,18 +226,45 @@ public class Controller implements Initializable {
                         double[] clusterAssignment2 = evalDangerousKmeans.getClusterAssignments();
                         int[] classesToCluster2 = evalDangerousKmeans.getClassesToClusters();
                         double clusterNumber = 0;
+                        int classValueClusterDangerous = 0;
                         for (int i = 0; i < trainingDangerousKmeans.numInstances(); i++) {
                             if (trainingDangerousKmeans.instance(i).toString().equals(convertedFeatureDangerous.instance(0).toString())) {
                                 clusterNumber = clusterAssignment2[i];
-                                int classValueCluster = classesToCluster2[(int) clusterNumber];
-                                labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueCluster);
+                                classValueClusterDangerous = classesToCluster2[(int) clusterNumber];
+                                labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous);
                             }
                         }
                         compositionDangerousity = SitesHybrid.getClusterPercentageDangerousity(evalDangerousKmeans, trainingDangerousKmeans).get((int) clusterNumber);
+
+                        // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
+                        convertedFeatureDangerous.instance(0).setClassValue(classValueClusterDangerous);
+                        trainingDangerousKmeans.add(convertedFeatureDangerous.instance(0));
+                        EksternalFile.saveInstanceWekaToExternalARFF(trainingDangerousKmeans,pathTrainingDangerousKmeans);
+                        // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
+                        try {
+                            Clusterer updatedClustererDangerousity = sitesClusterer.buildKmeansReputationModel(trainingDangerousKmeans,KmeansDangerousClusterer.numberOfClusters());
+                            EksternalFile.saveClustererToExternalModel(updatedClustererDangerousity,pathClustererDangerousKmeans);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
+                // UPDATE CURRENT TRAINING INSTANCES (NORMALITY)
+                convertedFeature.instance(0).setClassValue(classValueCluster);
+                trainingNormalKmeans.add(convertedFeature.instance(0));
+                EksternalFile.saveInstanceWekaToExternalARFF(trainingNormalKmeans,pathTrainingNormalKmeans);
+                // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
+                try {
+                    Clusterer updatedClustererNormality = sitesClusterer.buildKmeansReputationModel(trainingNormalKmeans,KmeansNormalClusterer.numberOfClusters());
+                    EksternalFile.saveClustererToExternalModel(updatedClustererNormality,pathClustererNormalKmeans);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             } else if (hybridRadioButton.isSelected()) {
                 // Convert extracted feature into instance weka
                 SitesClusterer sitesClusterer = new SitesClusterer(StaticVars.reputationType);
