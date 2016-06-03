@@ -101,9 +101,30 @@ public class EksternalFile {
      * @param path
      */
     public static void saveInstanceWekaToExternalARFF(Instances instances, String path) {
+//        try {
+//            ConverterUtils.DataSink.write(path,instances);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        BufferedWriter writer = null;
         try {
-            ConverterUtils.DataSink.write(path,instances);
-        } catch (Exception e) {
+            writer = new BufferedWriter(new FileWriter(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            writer.write(instances.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            writer.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
