@@ -13,6 +13,11 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+database/weka/data/*
+database/weka/data_static/*
+database/weka/model/*
+database/weka/statistic/*
+
 src/sample/history/*
 
 out/*
