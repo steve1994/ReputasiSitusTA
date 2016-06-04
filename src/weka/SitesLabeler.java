@@ -129,7 +129,7 @@ public class SitesLabeler extends SitesMLProcessor {
 
     public static void main(String[] args) {
         // Labeled sites dengan tipe reputasi 3
-        int typeReputation = 2;
+        int typeReputation = 3;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
