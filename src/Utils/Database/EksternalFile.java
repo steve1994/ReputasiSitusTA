@@ -105,17 +105,17 @@ public class EksternalFile {
      * @param path
      */
     public static void saveInstanceWekaToExternalARFF(Instances instances, String path) {
-//        try {
-//            ConverterUtils.DataSink.write(path,instances);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        BufferedWriter writer = null;
+        File file = new File(path);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+        }
+        FileWriter writer1 = null;
         try {
-            writer = new BufferedWriter(new FileWriter(path));
+            writer1 = new FileWriter(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        BufferedWriter writer = new BufferedWriter(writer1);
         try {
             writer.write(instances.toString());
         } catch (IOException e) {
@@ -139,6 +139,10 @@ public class EksternalFile {
      * @param path
      */
     public static void saveClassifierToExternalModel(Classifier classifier, String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+        }
         try {
             SerializationHelper.write(path,classifier);
         } catch (Exception e) {
@@ -152,6 +156,10 @@ public class EksternalFile {
      * @param path
      */
     public static void saveClustererToExternalModel(Clusterer clusterer, String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+        }
         try {
             SerializationHelper.write(path,clusterer);
         } catch (Exception e) {
@@ -166,10 +174,10 @@ public class EksternalFile {
      */
     public static void saveRawContentToEksternalFile(String rawContent, String path) {
         File file = new File(path);
-        FileWriter writer = null;
         if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
+        FileWriter writer = null;
         try {
             writer = new FileWriter(file);
         } catch (IOException e) {
@@ -230,13 +238,17 @@ public class EksternalFile {
     }
 
     public static void main(String[] args) {
-        Pair<List<String>,Integer> sites = EksternalFile.loadSitesTrainingList(4);
-        List<String> listSites = sites.getKey();
-        int numSites = sites.getValue();
+//        Pair<List<String>,Integer> sites = EksternalFile.loadSitesTrainingList(4);
+//        List<String> listSites = sites.getKey();
+//        int numSites = sites.getValue();
+//
+//        for (int i=0;i<listSites.size();i++) {
+//            System.out.println(listSites.get(i));
+//        }
+//        System.out.println("Total Sites : " + numSites);
 
-        for (int i=0;i<listSites.size();i++) {
-            System.out.println(listSites.get(i));
-        }
-        System.out.println("Total Sites : " + numSites);
+        Clusterer classifier = EksternalFile.loadClustererWekaFromEksternalModel("database/weka/model/num_100.type_3.normalityKmeans.model");
+        EksternalFile.saveClustererToExternalModel(classifier, "database/weka/sample/dddd1.model");
+
     }
 }
