@@ -113,7 +113,7 @@ public class Controller implements Initializable {
         if (!domainSitesTextField.getText().isEmpty() && !numberTrainingChoiceBox.getSelectionModel().isEmpty() && featuresRadioButton.getSelectedToggle().isSelected() && methodRadioButton.getSelectedToggle().isSelected()) {
             String domainName = Converter.getBaseHostURL(domainSitesTextField.getText());
             int numTrainingSites = (Integer) numberTrainingChoiceBox.getSelectionModel().getSelectedItem();
-            int optimumKNN = 10;
+            int optimumKNN = 9;
 
             long startResponseTime = System.currentTimeMillis();
 
