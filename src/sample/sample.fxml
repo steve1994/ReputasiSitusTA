@@ -34,5 +34,15 @@
       <RadioButton fx:id="dnsSpesificTrustRadioButton" layoutX="28.0" layoutY="318.0" mnemonicParsing="false" text="DNS + Site's Spesific Info + Trust Collaborative" />
       <Label layoutX="28.0" layoutY="357.0" text="Number Training Data : " />
       <ChoiceBox fx:id="numberTrainingChoiceBox" layoutX="163.0" layoutY="353.0" prefHeight="25.0" prefWidth="327.0" />
+      <Label fx:id="keterangan" layoutX="308.0" layoutY="286.0" text="Label" textFill="#e11111">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="keterangan1" layoutX="308.0" layoutY="257.0" text="Keterangan :" textFill="#1e1d1d">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
