@@ -3,7 +3,9 @@ package Utils.Database;
 import Utils.Converter;
 import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
+import sample.StaticVars;
 import weka.classifiers.Classifier;
+import weka.classifiers.functions.LibSVM;
 import weka.clusterers.Clusterer;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
@@ -200,7 +202,7 @@ public class EksternalFile {
     public static Instances loadInstanceWekaFromExternalARFF(String path) {
         Instances instances = null;
         File file = new File(path);
-        if (!file.exists()) {
+        if (file.exists()) {
             try {
                 instances = ConverterUtils.DataSource.read(path);
             } catch (Exception e) {
@@ -218,7 +220,7 @@ public class EksternalFile {
     public static Classifier loadClassifierWekaFromEksternalModel(String path) {
         Classifier classifier = null;
         File file = new File(path);
-        if (!file.exists()) {
+        if (file.exists()) {
             try {
                 classifier = (Classifier) SerializationHelper.read(path);
             } catch (Exception e) {
@@ -236,7 +238,7 @@ public class EksternalFile {
     public static Clusterer loadClustererWekaFromEksternalModel(String path) {
         Clusterer clusterer = null;
         File file = new File(path);
-        if (!file.exists()) {
+        if (file.exists()) {
             try {
                 clusterer = (Clusterer) SerializationHelper.read(path);
             } catch (Exception e) {
@@ -256,8 +258,23 @@ public class EksternalFile {
 //        }
 //        System.out.println("Total Sites : " + numSites);
 
-        Clusterer classifier = EksternalFile.loadClustererWekaFromEksternalModel("database/weka/model/num_100.type_3.normalityKmeans.model");
-        EksternalFile.saveClustererToExternalModel(classifier, "database/weka/sample/dddd1.model");
+        String trainingClassifier1 = "database/weka/data/num_200.type_3.normality_category.supervised.arff";
 
+//        String pathClassifier1 = "database/weka/model/ffffff.model";
+        String pathClassifier1 = "database/weka/model/num_100.type_3.normalitySVM.model";
+        Classifier classifier = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier1);
+        Instances instances = EksternalFile.loadInstanceWekaFromExternalARFF(trainingClassifier1);
+
+        try {
+            classifier.classifyInstance(instances.instance(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (classifier != null) {
+            System.out.println("SAY, HI!");
+        } else {
+            System.out.println("SAY, HELLO!");
+        }
     }
 }
