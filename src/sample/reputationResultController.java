@@ -47,16 +47,21 @@ public class reputationResultController implements Initializable {
             labelSiteComposition.setVisible(false);
             chartCompositionDangerousity.setVisible(false);
         } else {
-            if (!StaticVars.currentLabel.equals("normal")) {
-                Triplet<Double, Double, Double> compositionDangerousity = StaticVars.currentComposition;
-                ObservableList<PieChart.Data> pieChartElements = FXCollections.observableArrayList();
-                pieChartElements.addAll(new PieChart.Data("Malware", compositionDangerousity.getValue0()),
-                        new PieChart.Data("Phishing", compositionDangerousity.getValue1()),
-                        new PieChart.Data("Spamming", compositionDangerousity.getValue2()));
-                chartCompositionDangerousity.setData(pieChartElements);
-            } else {
+            if (StaticVars.currentLabel.equals("normal")) {
                 labelSiteComposition.setVisible(false);
                 chartCompositionDangerousity.setVisible(false);
+            } else {
+                if (!StaticVars.currentLabel.equals("malicious (unknown type)") && !StaticVars.currentLabel.equals("unknown")) {
+                    Triplet<Double, Double, Double> compositionDangerousity = StaticVars.currentComposition;
+                    ObservableList<PieChart.Data> pieChartElements = FXCollections.observableArrayList();
+                    pieChartElements.addAll(new PieChart.Data("Malware", compositionDangerousity.getValue0()),
+                            new PieChart.Data("Phishing", compositionDangerousity.getValue1()),
+                            new PieChart.Data("Spamming", compositionDangerousity.getValue2()));
+                    chartCompositionDangerousity.setData(pieChartElements);
+                } else {
+                    labelSiteComposition.setVisible(false);
+                    chartCompositionDangerousity.setVisible(false);
+                }
             }
         }
         // Save this reputation result into eksternal file

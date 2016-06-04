@@ -34,17 +34,21 @@ public class EksternalFile {
         StringBuffer rawFileContent = new StringBuffer();
         String  thisLine;
         BufferedReader br = null;
+        Boolean isFileExist = true;
         try {
             br = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
+            isFileExist = false;
             e.printStackTrace();
         }
-        try {
-            while ((thisLine = br.readLine()) != null) {
-                rawFileContent.append(thisLine + "\n");
+        if (isFileExist) {
+            try {
+                while ((thisLine = br.readLine()) != null) {
+                    rawFileContent.append(thisLine + "\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return rawFileContent.toString();
     }

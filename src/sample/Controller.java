@@ -432,7 +432,7 @@ public class Controller implements Initializable {
                 StaticVars.currentResponseTime = String.valueOf(responseTime);
                 StaticVars.currentDate = currentDate;
                 if (unsupervisedRadioButton.isSelected() || hybridRadioButton.isSelected()) {
-                    if (StaticVars.currentLabel.equals("normal")) {
+                    if (StaticVars.currentLabel.equals("normal") || StaticVars.currentLabel.equals("unknown") || StaticVars.currentLabel.equals("malicious (unknown type)")) {
                         StaticVars.currentComposition = new Triplet<Double, Double, Double>(0.0, 0.0, 0.0);
                     } else {
                         StaticVars.currentComposition = compositionDangerousity;
