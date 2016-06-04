@@ -165,13 +165,23 @@ public class EksternalFile {
      * @param path
      */
     public static void saveRawContentToEksternalFile(String rawContent, String path) {
-        FileOutputStream fout = null;
+        File file = new File(path);
+        FileWriter writer = null;
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+        }
         try {
-            fout = new FileOutputStream(path);
-        } catch (FileNotFoundException e) {
+            writer = new FileWriter(file);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        new PrintStream(fout).print(rawContent);
+        try {
+            writer.write(rawContent);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
