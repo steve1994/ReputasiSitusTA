@@ -199,10 +199,13 @@ public class EksternalFile {
      */
     public static Instances loadInstanceWekaFromExternalARFF(String path) {
         Instances instances = null;
-        try {
-            instances = ConverterUtils.DataSource.read(path);
-        } catch (Exception e) {
-            e.printStackTrace();
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                instances = ConverterUtils.DataSource.read(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return instances;
     }
@@ -214,10 +217,13 @@ public class EksternalFile {
      */
     public static Classifier loadClassifierWekaFromEksternalModel(String path) {
         Classifier classifier = null;
-        try {
-            classifier = (Classifier) SerializationHelper.read(path);
-        } catch (Exception e) {
-            e.printStackTrace();
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                classifier = (Classifier) SerializationHelper.read(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return classifier;
     }
@@ -229,10 +235,13 @@ public class EksternalFile {
      */
     public static Clusterer loadClustererWekaFromEksternalModel(String path) {
         Clusterer clusterer = null;
-        try {
-            clusterer = (Clusterer) SerializationHelper.read(path);
-        } catch (Exception e) {
-            e.printStackTrace();
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                clusterer = (Clusterer) SerializationHelper.read(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return clusterer;
     }
