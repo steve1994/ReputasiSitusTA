@@ -203,11 +203,11 @@ public class Controller implements Initializable {
                 // Cluster sites stage I (normality sites) incrementally
                 String pathTrainingNormalKmeans = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normality_category.unsupervised.arff";
                 Instances trainingNormalKmeans = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingNormalKmeans);
-                trainingNormalKmeans.setClassIndex(trainingNormalKmeans.numAttributes() - 1);
                 String pathClustererNormalKmeans = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normalityKmeans.model";
                 Clusterer KmeansNormalClusterer = EksternalFile.loadClustererWekaFromEksternalModel(pathClustererNormalKmeans);
 
                 if (trainingNormalKmeans != null && KmeansNormalClusterer != null) {
+                    trainingNormalKmeans.setClassIndex(trainingNormalKmeans.numAttributes() - 1);
                     trainingNormalKmeans.add(convertedFeature.instance(0));
                     String labelNormalityKmeans = "";
                     int classValueCluster = 0;
@@ -238,11 +238,11 @@ public class Controller implements Initializable {
                         // Cluster Site Stage II (dangerousity sites) incrementally
                         String pathTrainingDangerousKmeans = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerous_category.unsupervised.arff";
                         Instances trainingDangerousKmeans = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingDangerousKmeans);
-                        trainingDangerousKmeans.setClassIndex(trainingDangerousKmeans.numAttributes() - 1);
                         String pathClustererDangerousKmeans = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerousityKmeans.model";
                         Clusterer KmeansDangerousClusterer = EksternalFile.loadClustererWekaFromEksternalModel(pathClustererDangerousKmeans);
 
                         if (trainingDangerousKmeans != null && KmeansDangerousClusterer != null) {
+                            trainingDangerousKmeans.setClassIndex(trainingDangerousKmeans.numAttributes() - 1);
                             Instances convertedFeatureDangerous = SitesMLProcessor.convertNormalityToDangerousityLabel(convertedFeature);
                             trainingDangerousKmeans.add(convertedFeatureDangerous.instance(0));
                             try {
@@ -327,11 +327,11 @@ public class Controller implements Initializable {
                     // STAGE 1 (Clustering KMeans Normality)
                     String pathTrainingNormalKmeans = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normality_category.hybrid.arff";
                     Instances trainingNormalKmeans = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingNormalKmeans);
-                    trainingNormalKmeans.setClassIndex(trainingNormalKmeans.numAttributes() - 1);
                     String pathClustererNormalKmeans = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normalityKmeansStageI.hybrid.model";
                     Clusterer KmeansNormalClusterer = EksternalFile.loadClustererWekaFromEksternalModel(pathClustererNormalKmeans);
 
                     if (trainingNormalKmeans != null && KmeansNormalClusterer != null) {
+                        trainingNormalKmeans.setClassIndex(trainingNormalKmeans.numAttributes() - 1);
                         trainingNormalKmeans.add(convertedFeature.instance(0));
                         ClusterEvaluation evalNormalKmeans = sitesClusterer.evaluateClusterReputationModel(trainingNormalKmeans, KmeansNormalClusterer);
                         double[] clusterAssigment1 = evalNormalKmeans.getClusterAssignments();
@@ -372,11 +372,11 @@ public class Controller implements Initializable {
                                 // STAGE II (Clustering Kmeans Dangerousity)
                                 String pathTrainingDangerousKmeans = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerous_category.hybrid.arff";
                                 Instances trainingDangerousKmeans = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingDangerousKmeans);
-                                trainingDangerousKmeans.setClassIndex(trainingDangerousKmeans.numAttributes() - 1);
                                 String pathClustererDangerousKmeans = "database/weka/model/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerousityKmeansStageII.hybrid.model";
                                 Clusterer KmeansDangerousClusterer = EksternalFile.loadClustererWekaFromEksternalModel(pathClustererDangerousKmeans);
 
                                 if (trainingDangerousKmeans != null && KmeansDangerousClusterer != null) {
+                                    trainingDangerousKmeans.setClassIndex(trainingDangerousKmeans.numAttributes() - 1);
                                     trainingDangerousKmeans.add(dangerousConvertedFeature.instance(0));
                                     try {
                                         ClusterEvaluation evalDangerousKmeans = sitesClusterer.evaluateClusterReputationModel(trainingDangerousKmeans, KmeansDangerousClusterer);
@@ -463,7 +463,6 @@ public class Controller implements Initializable {
 
             long endResponseTime = System.currentTimeMillis();
 
-            System.out.println("DATAEMPTY : " + dataEmpty);
             if (!dataEmpty) {
                 // Catat waktu response time dan tanggal sekarang
                 Long responseTime = (endResponseTime - startResponseTime) / 1000;
