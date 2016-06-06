@@ -507,9 +507,9 @@ public class SitesClusterer extends SitesMLProcessor{
         allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
         Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
         allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
-//        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_100.ratio_3111.type_3.normal.staticdata.arff");
+//        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.normal.staticdata.arff");
 //        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
-//        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_100.ratio_3111.type_3.dangerous.staticdata.arff");
+//        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.dangerous.staticdata.arff");
 //        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)

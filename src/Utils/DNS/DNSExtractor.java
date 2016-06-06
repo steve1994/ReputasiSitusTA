@@ -84,15 +84,19 @@ public class DNSExtractor {
     public static double getHitASRatio(String url, int type) {
         int hitASCounter = 0;
         int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
+        List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(type);
         if (thisURLASN > 0) {  // Sites not detected or null
-            List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(type);
             for (int i=0;i<listASNSitesThisType.size();i++) {
                 if (listASNSitesThisType.get(i) == thisURLASN) {
                     hitASCounter++;
                 }
             }
         }
-        return (double) hitASCounter / (double) 100;
+        if (listASNSitesThisType.size() > 0) {
+            return (double) hitASCounter / (double) listASNSitesThisType.size();
+        } else {
+            return 0.0;
+        }
     }
 
     /**
@@ -163,11 +167,14 @@ public class DNSExtractor {
         int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
         List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
         for (String IPPrefix : listIPPrefixes) {
+            System.out.println("IPPrefix : " + IPPrefix);
             List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
             for (String ip : resolvedIPAddress) {
+                System.out.println("Resolved IP Address : " + ip);
                 String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
+                System.out.println("Name Server : " + nameServerConverted);
                 // Cek apakah bisa dikonversi ke canonical name
-                if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (nameServerConverted != "")) {
+                if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
                     InternetDomainName idn = InternetDomainName.from(nameServerConverted);
                     if (idn.hasPublicSuffix()) {
                         List<String> parts = idn.parts();
@@ -293,7 +300,7 @@ public class DNSExtractor {
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
 
-        String hostName = "mista.eu";
+        String hostName = "facebook.com";
         List<Object> fiturs = new ArrayList<Object>();
 
         long before = System.currentTimeMillis();
