@@ -281,14 +281,14 @@ public class SitesMLProcessor {
         // DNS FEATURES
         if (Arrays.asList(1, 4, 5, 7).contains(typeReputation)) {
             // TLD ratio
-            Sextet<Double, Double, Double, Double, Double, Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(domainName);
+            Pair<Double,Sextet<Double, Double, Double, Double, Double, Double>> TLDRatio = DNSExtractor.getTLDDistributionFromAS(domainName);
             Double[] TLDRatioList = new Double[6];
-            TLDRatioList[0] = TLDRatio.getValue0();
-            TLDRatioList[1] = TLDRatio.getValue1();
-            TLDRatioList[2] = TLDRatio.getValue2();
-            TLDRatioList[3] = TLDRatio.getValue3();
-            TLDRatioList[4] = TLDRatio.getValue4();
-            TLDRatioList[5] = TLDRatio.getValue5();
+            TLDRatioList[0] = TLDRatio.getValue1().getValue0();
+            TLDRatioList[1] = TLDRatio.getValue1().getValue1();
+            TLDRatioList[2] = TLDRatio.getValue1().getValue2();
+            TLDRatioList[3] = TLDRatio.getValue1().getValue3();
+            TLDRatioList[4] = TLDRatio.getValue1().getValue4();
+            TLDRatioList[5] = TLDRatio.getValue1().getValue5();
             fiturDNS.setPopularTLDRatio(TLDRatioList);
             System.out.println("TLD Ratio");
 
@@ -301,7 +301,8 @@ public class SitesMLProcessor {
             System.out.println("Hit AS Ratio");
 
             // Name server distribution AS
-            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(domainName));
+//            fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(domainName));
+            fiturDNS.setDistributionNSAS(TLDRatio.getValue0());
             System.out.println("Name Server Distribution AS");
 
             // Name server count
