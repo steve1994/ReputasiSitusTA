@@ -7,6 +7,7 @@ import Utils.Converter;
 import Utils.Database.EksternalFile;
 import com.google.common.net.InternetDomainName;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import org.javatuples.Pair;
 import org.javatuples.Sextet;
 
 import javax.naming.Context;
@@ -155,48 +156,53 @@ public class DNSExtractor {
      * @param url
      * @return
      */
-    public static Sextet<Double,Double,Double,Double,Double,Double> getTLDDistributionFromAS(String url) {
+    public static Pair<Double,Sextet<Double,Double,Double,Double,Double,Double>> getTLDDistributionFromAS(String url) {
         HashSet<String> comTLDRetrieved = new HashSet<String>();
         HashSet<String> orgTLDRetrieved = new HashSet<String>();
         HashSet<String> eduTLDRetrieved = new HashSet<String>();
         HashSet<String> govTLDRetrieved = new HashSet<String>();
         HashSet<String> ukTLDRetrieved = new HashSet<String>();
         HashSet<String> nonPopularTLDRetrieved = new HashSet<String>();
+        HashSet<String> uniqueNameServers = new HashSet<String>();
         int numNameServersTotal = 0;
 
         int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
-        List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
-        for (String IPPrefix : listIPPrefixes) {
-            System.out.println("IPPrefix : " + IPPrefix);
-            List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
-            for (String ip : resolvedIPAddress) {
-                System.out.println("Resolved IP Address : " + ip);
-                String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
-                System.out.println("Name Server : " + nameServerConverted);
-                // Cek apakah bisa dikonversi ke canonical name
-                if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
-                    InternetDomainName idn = InternetDomainName.from(nameServerConverted);
-                    if (idn.hasPublicSuffix()) {
-                        List<String> parts = idn.parts();
-                        String TLD = parts.get(parts.size()-1);
-                        if (TLD.equals("com")) {
-                            comTLDRetrieved.add(nameServerConverted);
-                        } else if (TLD.equals("org")) {
-                            orgTLDRetrieved.add(nameServerConverted);
-                        } else if (TLD.equals("edu")) {
-                            eduTLDRetrieved.add(nameServerConverted);
-                        } else if (TLD.equals("gov")) {
-                            govTLDRetrieved.add(nameServerConverted);
-                        } else if (TLD.equals("uk")) {
-                            ukTLDRetrieved.add(nameServerConverted);
-                        } else {
-                            nonPopularTLDRetrieved.add(nameServerConverted);
+        if (ASNumberThisURL > 0) {
+            List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
+            for (String IPPrefix : listIPPrefixes) {
+                System.out.println("IPPrefix : " + IPPrefix);
+                List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
+                for (String ip : resolvedIPAddress) {
+                    System.out.println("Resolved IP Address : " + ip);
+                    String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
+                    uniqueNameServers.add(nameServerConverted);
+                    System.out.println("Name Server : " + nameServerConverted);
+                    // Cek apakah bisa dikonversi ke canonical name
+                    if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
+                        InternetDomainName idn = InternetDomainName.from(nameServerConverted);
+                        if (idn.hasPublicSuffix()) {
+                            List<String> parts = idn.parts();
+                            String TLD = parts.get(parts.size() - 1);
+                            if (TLD.equals("com")) {
+                                comTLDRetrieved.add(nameServerConverted);
+                            } else if (TLD.equals("org")) {
+                                orgTLDRetrieved.add(nameServerConverted);
+                            } else if (TLD.equals("edu")) {
+                                eduTLDRetrieved.add(nameServerConverted);
+                            } else if (TLD.equals("gov")) {
+                                govTLDRetrieved.add(nameServerConverted);
+                            } else if (TLD.equals("uk")) {
+                                ukTLDRetrieved.add(nameServerConverted);
+                            } else {
+                                nonPopularTLDRetrieved.add(nameServerConverted);
+                            }
                         }
                     }
+                    numNameServersTotal++;
                 }
-                numNameServersTotal++;
             }
         }
+        
         // Hitung rasio keenam TLD
         double comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio;
         if (numNameServersTotal > 0) {
@@ -209,9 +215,16 @@ public class DNSExtractor {
         } else {
             comRatio = orgRatio = eduRatio = govRatio = ukRatio = nonPopularRatio = 0.0;
         }
+        // Hitung distribusi name server unik AS
+        double uniqueNSDistributionAS;
+        if (numNameServersTotal > 0) {
+            uniqueNSDistributionAS = (double) uniqueNameServers.size() / (double) numNameServersTotal;
+        } else {
+            uniqueNSDistributionAS = 0.0;
+        }
 
         Sextet<Double,Double,Double,Double,Double,Double> sixRatioRetrieved = new Sextet<Double, Double, Double, Double, Double, Double>(comRatio,orgRatio,eduRatio,govRatio,ukRatio,nonPopularRatio);
-        return sixRatioRetrieved;
+        return new Pair<Double,Sextet<Double,Double,Double,Double,Double,Double>>(uniqueNSDistributionAS,sixRatioRetrieved);
     }
 
     /**
@@ -300,20 +313,20 @@ public class DNSExtractor {
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
 
-        String hostName = "facebook.com";
+        String hostName = "mista.eu";
         List<Object> fiturs = new ArrayList<Object>();
 
         long before = System.currentTimeMillis();
 
         // TLD ratio
-        Sextet<Double,Double,Double,Double,Double,Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(hostName);
+        Pair<Double,Sextet<Double,Double,Double,Double,Double,Double>> pairDistAndTLDRatio = DNSExtractor.getTLDDistributionFromAS(hostName);
         Double[] TLDRatioList = new Double[6];
-        TLDRatioList[0] = TLDRatio.getValue0(); fiturs.add(TLDRatioList[0]);
-        TLDRatioList[1] = TLDRatio.getValue1(); fiturs.add(TLDRatioList[1]);
-        TLDRatioList[2] = TLDRatio.getValue2(); fiturs.add(TLDRatioList[2]);
-        TLDRatioList[3] = TLDRatio.getValue3(); fiturs.add(TLDRatioList[3]);
-        TLDRatioList[4] = TLDRatio.getValue4(); fiturs.add(TLDRatioList[4]);
-        TLDRatioList[5] = TLDRatio.getValue5(); fiturs.add(TLDRatioList[5]);
+        TLDRatioList[0] = pairDistAndTLDRatio.getValue1().getValue0(); fiturs.add(TLDRatioList[0]);
+        TLDRatioList[1] = pairDistAndTLDRatio.getValue1().getValue1(); fiturs.add(TLDRatioList[1]);
+        TLDRatioList[2] = pairDistAndTLDRatio.getValue1().getValue2(); fiturs.add(TLDRatioList[2]);
+        TLDRatioList[3] = pairDistAndTLDRatio.getValue1().getValue3(); fiturs.add(TLDRatioList[3]);
+        TLDRatioList[4] = pairDistAndTLDRatio.getValue1().getValue4(); fiturs.add(TLDRatioList[4]);
+        TLDRatioList[5] = pairDistAndTLDRatio.getValue1().getValue5(); fiturs.add(TLDRatioList[5]);
         System.out.println("TLD Ratio : ");
         for (Double d : TLDRatioList) {
             System.out.println(d);
@@ -335,7 +348,9 @@ public class DNSExtractor {
         long afterHitRatio = System.currentTimeMillis();
 
         // Name server distribution AS
-        double distributionNS = DNSExtractor.getDistributionNSFromAS(hostName); fiturs.add(distributionNS);
+//        double distributionNS = DNSExtractor.getDistributionNSFromAS(hostName);
+        double distributionNS = pairDistAndTLDRatio.getValue0();
+        fiturs.add(distributionNS);
         System.out.println("Name Server Distribution AS : " + distributionNS);
 
         long afterNSDist = System.currentTimeMillis();
