@@ -141,7 +141,8 @@ public class ContentExtractor {
     public static double getAverageDomainTokenLengthURL(String url) {
         int domainTokenCount = 0;
         int domainTokenLengthSum = 0;
-        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
+//        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
+        StringTokenizer tokenDomain = new StringTokenizer(url,"%&\"*#@$^_<>|`+=-1234567890'(){}[]/.:;?!,\n");
         while (tokenDomain.hasMoreTokens()) {
             String token = tokenDomain.nextToken();
             domainTokenLengthSum += token.length();
@@ -157,7 +158,8 @@ public class ContentExtractor {
      */
     public static int getDomainTokenCountURL(String url) {
         int domainTokenCount = 0;
-        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
+//        StringTokenizer tokenDomain = new StringTokenizer(url,"./?=-_,");
+        StringTokenizer tokenDomain = new StringTokenizer(url,"%&\"*#@$^_<>|`+=-1234567890'(){}[]/.:;?!,\n");
         while (tokenDomain.hasMoreTokens()) {
             String token = tokenDomain.nextToken();
             domainTokenCount++;
@@ -267,7 +269,7 @@ public class ContentExtractor {
 
         // SPESIFIC FEATURES
         List<Object> fiturs = new ArrayList<Object>();
-        String hostName = "ligaindonesia.co.id";
+        String hostName = "facebook.com";
 
         long before = System.currentTimeMillis();
         // Token Count URL
