@@ -64,14 +64,14 @@ public class StatistikController implements Initializable{
                 long beforeDNS = System.currentTimeMillis();
 
                 // TLD ratio
-                Sextet<Double, Double, Double, Double, Double, Double> TLDRatio = DNSExtractor.getTLDDistributionFromAS(StaticVars.listSitesTraining.get(i));
+                Pair<Double,Sextet<Double, Double, Double, Double, Double, Double>> TLDRatio = DNSExtractor.getTLDDistributionFromAS(StaticVars.listSitesTraining.get(i));
                 Double[] TLDRatioList = new Double[6];
-                TLDRatioList[0] = TLDRatio.getValue0();
-                TLDRatioList[1] = TLDRatio.getValue1();
-                TLDRatioList[2] = TLDRatio.getValue2();
-                TLDRatioList[3] = TLDRatio.getValue3();
-                TLDRatioList[4] = TLDRatio.getValue4();
-                TLDRatioList[5] = TLDRatio.getValue5();
+                TLDRatioList[0] = TLDRatio.getValue1().getValue0();
+                TLDRatioList[1] = TLDRatio.getValue1().getValue1();
+                TLDRatioList[2] = TLDRatio.getValue1().getValue2();
+                TLDRatioList[3] = TLDRatio.getValue1().getValue3();
+                TLDRatioList[4] = TLDRatio.getValue1().getValue4();
+                TLDRatioList[5] = TLDRatio.getValue1().getValue5();
                 fiturDNS.setPopularTLDRatio(TLDRatioList);
                 System.out.println("TLD Ratio");
 
@@ -88,7 +88,8 @@ public class StatistikController implements Initializable{
                 long afterHitRatio = System.currentTimeMillis();
 
                 // Name server distribution AS
-                fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(StaticVars.listSitesTraining.get(i)));
+//                fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(StaticVars.listSitesTraining.get(i)));
+                fiturDNS.setDistributionNSAS(TLDRatio.getValue0());
                 System.out.println("Name Server Distribution AS");
 
                 long afterNSDist = System.currentTimeMillis();
