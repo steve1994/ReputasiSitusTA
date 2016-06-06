@@ -51,7 +51,6 @@ public class reputationHistoryController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Set delete button action event
-
         deleteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
