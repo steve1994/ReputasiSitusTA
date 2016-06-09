@@ -119,7 +119,7 @@ public class Converter {
 
         if (IPAddress != "") {
             Runtime rt = Runtime.getRuntime();
-            String commandExec = "curl ipinfo.io/" + IPAddress + "/org";
+            String commandExec = "D:\\steve\\Library\\curl\\curl.exe ipinfo.io/" + IPAddress + "/org";
             try {
                 Process pr = rt.exec(commandExec);
                 BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
@@ -182,7 +182,7 @@ public class Converter {
 //        long end = System.currentTimeMillis();
 //        System.out.println("EXECUTION TIME : " + (end-begin));
 
-        for (int i=2;i<=3;i++) {
+        for (int i=3;i<=3;i++) {
             DNSExtractor.saveASNSitesToExternalFile(i);
         }
     }
