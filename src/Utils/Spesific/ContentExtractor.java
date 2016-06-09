@@ -86,7 +86,7 @@ public class ContentExtractor {
                 default:
                 case 1:
                     try {
-                        if (doc.toString().contains("About")) {
+                        if (doc.toString().contains("<div id=\"resultStats\">")) {
                             Element numResults1 = doc.getElementById("resultStats");
                             String[] tokenResults1 = numResults1.text().split(" ");
                             inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
