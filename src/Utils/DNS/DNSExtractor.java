@@ -108,10 +108,10 @@ public class DNSExtractor {
         List<String> listSites = EksternalFile.loadSitesTrainingList(typeSites).getKey();
         StringBuffer stringBuffer = new StringBuffer();
         System.out.println("TYPE SITES : " + typeSites);
-        for (int i=0;i<listSites.size();i++) {
+        for (int i=0;i<1000;i++) {
             int ASNumberThisSite = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(listSites.get(i)));
             stringBuffer.append(ASNumberThisSite + "\n");
-            System.out.println("SITUS KE-" + (i + 1));
+            System.out.println(ASNumberThisSite);
         }
         switch (typeSites) {
             default:

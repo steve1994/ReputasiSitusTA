@@ -21,11 +21,17 @@ import java.util.StringTokenizer;
  * Created by steve on 28/01/2016.
  */
 public class EksternalFile {
-    private static final String malwarePath = "database/malware_websites/hosts.txt";
-    private static final String phishingPath = "database/phishing_websites/phishing.txt";
-    private static final String spammingPath = "database/spamming_websites/spamming.txt";
-    private static final String popularPath = "database/top_popular_websites/top-1m.csv";
-    private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
+//    private static final String malwarePath = "database/malware_websites/hosts.txt";
+//    private static final String phishingPath = "database/phishing_websites/phishing.txt";
+//    private static final String spammingPath = "database/spamming_websites/spamming.txt";
+//    private static final String popularPath = "database/top_popular_websites/top-1m.csv";
+//    private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
+
+    private static final String malwarePath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\malware_websites\\hosts.txt";
+    private static final String phishingPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\phishing_websites\\phishing.txt";
+    private static final String spammingPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\spamming_websites\\spamming.txt";
+    private static final String popularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_popular_websites\\top-1m.csv";
+    private static final String nonPopularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\DomainJanuary2016\\2016-01-01.txt";
 
     /**
      * Get raw content of string from external file
