@@ -1,6 +1,7 @@
 package weka;
 
 import Utils.API.WOT_API_Loader;
+import Utils.Converter;
 import Utils.DNS.DNSExtractor;
 import Utils.Spesific.ContentExtractor;
 import data_structure.feature.DNS_Feature;
@@ -294,8 +295,9 @@ public class SitesMLProcessor {
 
             // Hit AS Ratio (malware, phishing, spamming)
             Double[] HitRatioList = new Double[3];
+            int sitesASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(domainName));
             for (int j = 0; j < 3; j++) {
-                HitRatioList[j] = DNSExtractor.getHitASRatio(domainName, j + 1);
+                HitRatioList[j] = DNSExtractor.getHitASRatio(sitesASN, j + 1);
             }
             fiturDNS.setHitASRatio(HitRatioList);
             System.out.println("Hit AS Ratio");

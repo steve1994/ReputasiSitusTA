@@ -78,17 +78,16 @@ public class DNSExtractor {
     /**
      * Return hit AS ratio from certain malicious type (1 : malware, 2 : Phishing, 3 : Spamming)
      * Assumption : AS ratio is measured up to only first 100 certain sites list
-     * @param url
      * @param type
      * @return
      */
-    public static double getHitASRatio(String url, int type) {
+    public static double getHitASRatio(int numberASNURL, int type) {
         int hitASCounter = 0;
-        int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
+//        int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
         List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(type);
-        if (thisURLASN > 0) {  // Sites not detected or null
-            for (int i=0;i<listASNSitesThisType.size();i++) {
-                if (listASNSitesThisType.get(i) == thisURLASN) {
+        if (numberASNURL > 0) {  // Sites not detected or null
+            for (int i=0;i<1000;i++) {
+                if (listASNSitesThisType.get(i) == numberASNURL) {
                     hitASCounter++;
                 }
             }
@@ -336,8 +335,9 @@ public class DNSExtractor {
 
         // Hit AS Ratio (malware, phishing, spamming)
         Double[] HitRatioList = new Double[3];
+        int thisSiteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(hostName));
         for (int j=0;j<3;j++) {
-            HitRatioList[j] = DNSExtractor.getHitASRatio(hostName,j+1);
+            HitRatioList[j] = DNSExtractor.getHitASRatio(thisSiteASN,j+1);
             fiturs.add(HitRatioList[j]);
         }
         System.out.println("Hit AS Ratio : ");
@@ -391,5 +391,13 @@ public class DNSExtractor {
         System.out.println("Waktu eksekusi NS count : " + (afterNSCount-afterNSDist));
         System.out.println("Waktu eksekusi TTL NS : " + (afterTTLNS-afterNSCount));
         System.out.println("Waktu eksekusi TTL IP : " + (afterTTLIP-afterTTLNS));
+
+//        long start = System.currentTimeMillis();
+//        int thisASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("mista.eu"));
+//        for (int i=1;i<=3;i++) {
+//            DNSExtractor.getHitASRatio(thisASN, i);
+//        }
+//        long finish = System.currentTimeMillis();
+//        System.out.println("TIME : " + (finish-start));
     }
 }
