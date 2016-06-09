@@ -35,7 +35,6 @@ public class StatistikController implements Initializable{
     @FXML private TextArea responseTimeStat;
     @FXML private TextArea percentageNullStat;
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         SitesClusterer clusterSite = new SitesClusterer(StaticVars.reputationType);
