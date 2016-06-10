@@ -314,62 +314,62 @@ public class SitesClusterer extends SitesMLProcessor{
 //        List<Long> listTimeLookupTime = new ArrayList<Long>();
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
-        int numSitesMaxAllocation = 100;
-        for (int k=0;k<4;k++) {
-            List<String> listSites = EksternalFile.loadSitesTrainingList(k+1).getKey();
-            for (int i = 0; i < numSitesMaxAllocation; i++) {
-
-                // TIME LOGGER SET
-//                listTimeTLDRatioAS.add(afterTLDRatio - beforeDNS);
-//                listTimeHitRatioAS.add(afterHitRatio - afterTLDRatio);
-//                listTimeNSDistAS.add(afterNSDist - afterHitRatio);
-//                listTimeNSCount.add(afterNSCount - afterNSDist);
-//                listTimeTTLNS.add(afterTTLNS - afterNSCount);
-//                listTimeTTLIP.add(afterTTLIP - afterTTLNS);
-//                listTimeTokenCount.add(afterTokenCount - beforeSpesific);
-//                listTimeAvgToken.add(afterAvgToken - afterTokenCount);
-//                listTimeSLDRatio.add(afterSLDRatio - afterAvgToken);
-//                listTimeInboundLink.add(afterInboundLink - afterSLDRatio);
-//                listTimeLookupTime.add(afterLookupTime - afterInboundLink);
-//                listTimeTrust.add(afterTrust - beforeTrust);
-
-                // SET RECORD INSTANCE DATA STRUCTURE
-                SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),typeReputation);
-
-                // Instances for data static
-                if (k < 3) {
-                    String classLabelDangerous = "";
-                    switch (k) {
-                        default:
-                        case 0:
-                            classLabelDangerous = "malware";
-                            break;
-                        case 1:
-                            classLabelDangerous = "phishing";
-                            break;
-                        case 2:
-                            classLabelDangerous = "spamming";
-                            break;
-                    }
-                    dangerousityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelDangerous);
-                }
-                String classLabelNormality = "";
-                switch (k) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        classLabelNormality = "abnormal";
-                        break;
-                    default:
-                    case 3:
-                        classLabelNormality = "normal";
-                        break;
-                }
-                normalityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelNormality);
-
-                System.out.println("Situs ke-" + i);
-            }
-        }
+        int numSitesMaxAllocation = 1000;
+//        for (int k=0;k<4;k++) {
+//            List<String> listSites = EksternalFile.loadSitesTrainingList(k+1).getKey();
+//            for (int i = 0; i < numSitesMaxAllocation; i++) {
+//
+//                // TIME LOGGER SET
+////                listTimeTLDRatioAS.add(afterTLDRatio - beforeDNS);
+////                listTimeHitRatioAS.add(afterHitRatio - afterTLDRatio);
+////                listTimeNSDistAS.add(afterNSDist - afterHitRatio);
+////                listTimeNSCount.add(afterNSCount - afterNSDist);
+////                listTimeTTLNS.add(afterTTLNS - afterNSCount);
+////                listTimeTTLIP.add(afterTTLIP - afterTTLNS);
+////                listTimeTokenCount.add(afterTokenCount - beforeSpesific);
+////                listTimeAvgToken.add(afterAvgToken - afterTokenCount);
+////                listTimeSLDRatio.add(afterSLDRatio - afterAvgToken);
+////                listTimeInboundLink.add(afterInboundLink - afterSLDRatio);
+////                listTimeLookupTime.add(afterLookupTime - afterInboundLink);
+////                listTimeTrust.add(afterTrust - beforeTrust);
+//
+//                // SET RECORD INSTANCE DATA STRUCTURE
+//                SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),typeReputation);
+//
+//                // Instances for data static
+//                if (k < 3) {
+//                    String classLabelDangerous = "";
+//                    switch (k) {
+//                        default:
+//                        case 0:
+//                            classLabelDangerous = "malware";
+//                            break;
+//                        case 1:
+//                            classLabelDangerous = "phishing";
+//                            break;
+//                        case 2:
+//                            classLabelDangerous = "spamming";
+//                            break;
+//                    }
+//                    dangerousityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelDangerous);
+//                }
+//                String classLabelNormality = "";
+//                switch (k) {
+//                    case 0:
+//                    case 1:
+//                    case 2:
+//                        classLabelNormality = "abnormal";
+//                        break;
+//                    default:
+//                    case 3:
+//                        classLabelNormality = "normal";
+//                        break;
+//                }
+//                normalityClusterSite.fillDataIntoInstanceRecord(recordML, classLabelNormality);
+//
+//                System.out.println("Situs ke-" + i);
+//            }
+//        }
 
 //        System.out.println("FITUR DNS : ");
 //        System.out.println("Avg Time TLD Ratio AS : " + getAverageListLong(listTimeTLDRatioAS) + " ms");
@@ -388,14 +388,14 @@ public class SitesClusterer extends SitesMLProcessor{
 //        System.out.println("Avg Time Trust : " + getAverageListLong(listTimeTrust) + " ms");
 
         // Save data static (cluster normality and dangerousity)
-        Instances allInstancesNormality = normalityClusterSite.getSiteReputationRecord();
-        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
-        Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
-        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
-//        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.normal.staticdata.arff");
+//        Instances allInstancesNormality = normalityClusterSite.getSiteReputationRecord();
 //        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
-//        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.dangerous.staticdata.arff");
+//        Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
 //        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
+        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_6.normal.staticdata.arff");
+        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
+        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_6.dangerous.staticdata.arff");
+        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
         FastVector instancesAttributesNormality = normalityClusterSite.getAttributesVector(allInstancesNormality);
