@@ -312,7 +312,7 @@ public class DNSExtractor {
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
 
-        String hostName = "mista.eu";
+        String hostName = "ad-beast.com";
         List<Object> fiturs = new ArrayList<Object>();
 
         long before = System.currentTimeMillis();
