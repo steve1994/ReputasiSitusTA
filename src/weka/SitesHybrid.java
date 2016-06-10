@@ -76,7 +76,7 @@ public class SitesHybrid {
     }
     
     public static void main(String[] args) {
-        int typeReputation = 3;
+        int typeReputation = 6;
 
         // Sites Clusterer Consist Of 2 stages (normality and then dangerousity)
         SitesClusterer clusterSiteNormality = new SitesClusterer(typeReputation);
@@ -92,57 +92,57 @@ public class SitesHybrid {
 
         System.out.println("Config ARFF Done");
 
-        int numSitesMaxAllocation = 100;
-        for (int k=0;k<4;k++) {     // malware, phishing, spamming, normal
-            List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
-            for (int i = 0; i < numSitesMaxAllocation; i++) {
-                // SET RECORD INSTANCE DATA STRUCTURE
-                SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),typeReputation);
-
-                // FILL INSTANCES INTO SITE CLUSTERER / LABELER ABOVE
-                if (k < 3) {
-                    String classLabelDangerousity = "";
-                    switch (k) {
-                        default:
-                        case 0:
-                            classLabelDangerousity = "malware";
-                            break;
-                        case 1:
-                            classLabelDangerousity = "phishing";
-                            break;
-                        case 2:
-                            classLabelDangerousity = "spamming";
-                            break;
-                    }
-                    clusterSiteDangerousity.fillDataIntoInstanceRecord(recordML,classLabelDangerousity);
-                    labelSiteDangerousity.fillDataIntoInstanceRecord(recordML,classLabelDangerousity);
-                }
-                String classLabelNormality = "";
-                switch (k) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        classLabelNormality = "abnormal";
-                        break;
-                    default:
-                    case 3:
-                        classLabelNormality = "normal";
-                        break;
-                }
-                clusterSiteNormality.fillDataIntoInstanceRecord(recordML,classLabelNormality);
-                labelSiteNormality.fillDataIntoInstanceRecord(recordML,classLabelNormality);
-
-                System.out.println("Situs ke-" + (i+1));
-            }
-        }
+        int numSitesMaxAllocation = 1000;
+//        for (int k=0;k<4;k++) {     // malware, phishing, spamming, normal
+//            List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
+//            for (int i = 0; i < numSitesMaxAllocation; i++) {
+//                // SET RECORD INSTANCE DATA STRUCTURE
+//                SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),typeReputation);
+//
+//                // FILL INSTANCES INTO SITE CLUSTERER / LABELER ABOVE
+//                if (k < 3) {
+//                    String classLabelDangerousity = "";
+//                    switch (k) {
+//                        default:
+//                        case 0:
+//                            classLabelDangerousity = "malware";
+//                            break;
+//                        case 1:
+//                            classLabelDangerousity = "phishing";
+//                            break;
+//                        case 2:
+//                            classLabelDangerousity = "spamming";
+//                            break;
+//                    }
+//                    clusterSiteDangerousity.fillDataIntoInstanceRecord(recordML,classLabelDangerousity);
+//                    labelSiteDangerousity.fillDataIntoInstanceRecord(recordML,classLabelDangerousity);
+//                }
+//                String classLabelNormality = "";
+//                switch (k) {
+//                    case 0:
+//                    case 1:
+//                    case 2:
+//                        classLabelNormality = "abnormal";
+//                        break;
+//                    default:
+//                    case 3:
+//                        classLabelNormality = "normal";
+//                        break;
+//                }
+//                clusterSiteNormality.fillDataIntoInstanceRecord(recordML,classLabelNormality);
+//                labelSiteNormality.fillDataIntoInstanceRecord(recordML,classLabelNormality);
+//
+//                System.out.println("Situs ke-" + (i+1));
+//            }
+//        }
 
         // Get extracted instances result from labeler / clusterer
-//        Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_1000.type_3.normality_category.supervised.arff");
-//        allInstancesLabelNormality.setClassIndex(allInstancesLabelNormality.numAttributes()-1);
-//        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_1000.type_3.dangerous_category.supervised.arff");
-//        allInstancesLabelDangerousity.setClassIndex(allInstancesLabelDangerousity.numAttributes()-1);
-        Instances allInstancesLabelDangerousity = labelSiteDangerousity.getSiteReputationRecord();
-        Instances allInstancesLabelNormality = labelSiteNormality.getSiteReputationRecord();
+        Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_6.normal.staticdata.arff");
+        allInstancesLabelNormality.setClassIndex(allInstancesLabelNormality.numAttributes()-1);
+        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_6.dangerous.staticdata.arff");
+        allInstancesLabelDangerousity.setClassIndex(allInstancesLabelDangerousity.numAttributes()-1);
+//        Instances allInstancesLabelDangerousity = labelSiteDangerousity.getSiteReputationRecord();
+//        Instances allInstancesLabelNormality = labelSiteNormality.getSiteReputationRecord();
 //
         // Extracted vector attributes for Normal / Abnormal Instances
         FastVector instancesAttributesNormality = clusterSiteNormality.getAttributesVector(allInstancesLabelNormality);
@@ -181,7 +181,13 @@ public class SitesHybrid {
 
         int interval = 100;
         int optimumNumCluster = 10;
-        int numNearestNeigbor = 2;
+        int optimumNumClusterKMeans1 = 2;
+        int optimumNumClusterEM1 = 2;
+        int optimumNumClusterHC1 = 2;
+        int optimumNumClusterKMeans2 = 3;
+        int optimumNumClusterEM2 = 4;
+        int optimumNumClusterHC2 = 4;
+        int numNearestNeigbor = 1;
         for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
             statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
 
@@ -238,7 +244,7 @@ public class SitesHybrid {
 
             // Build Normal / Abnormal Cluster (Algoritma KMeans)
 //            Instances hybridInstancesAbnormal = new Instances("hybrid_normality_cluster", instancesAttributesNormality, 0);
-            Clusterer clusterNormality = clusterSiteNormality.buildKmeansReputationModel(classifiedNormalityInstances, optimumNumCluster);
+            Clusterer clusterNormality = clusterSiteNormality.buildKmeansReputationModel(classifiedNormalityInstances, optimumNumClusterKMeans1);
             ClusterEvaluation evalClusterNormality = clusterSiteNormality.evaluateClusterReputationModel(trainingRecordSitesNormality, clusterNormality);
 //            try {
 //                // Find cluster with label / class Abnormal
@@ -268,7 +274,7 @@ public class SitesHybrid {
             EksternalFile.saveClustererToExternalModel(clusterNormality, normalPathKmeansStageI);
 
             // Build Normal / Abnormal Cluster (Algoritma EM)
-            Clusterer clusterNormality2 = clusterSiteNormality.buildEMReputationModel(classifiedNormalityInstances, optimumNumCluster);
+            Clusterer clusterNormality2 = clusterSiteNormality.buildEMReputationModel(classifiedNormalityInstances, optimumNumClusterEM1);
             ClusterEvaluation evalClusterNormality2 = clusterSiteNormality.evaluateClusterReputationModel(trainingRecordSitesNormality, clusterNormality2);
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (EM) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterNormality2, trainingRecordSitesNormality) + "\n");
             // Save Clusterer (Algoritma EM) Stage I
@@ -277,7 +283,7 @@ public class SitesHybrid {
             EksternalFile.saveClustererToExternalModel(clusterNormality2, normalPathEMStageI);
 
             // Build Normal / Abnormal Cluster (Algoritma Hierarchical)
-            Clusterer clusterNormality3 = clusterSiteNormality.buildHCReputationModel(classifiedNormalityInstances, optimumNumCluster);
+            Clusterer clusterNormality3 = clusterSiteNormality.buildHCReputationModel(classifiedNormalityInstances, optimumNumClusterHC1);
             ClusterEvaluation evalClusterNormality3 = clusterSiteNormality.evaluateClusterReputationModel(trainingRecordSitesNormality, clusterNormality3);
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (HC) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterNormality3,trainingRecordSitesNormality) + "\n");
             // Save Clusterer (Algoritma KMeans) Stage I
@@ -311,7 +317,7 @@ public class SitesHybrid {
             EksternalFile.saveClassifierToExternalModel(dangerousClassifier,pathClassifierKNN);
 
             // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition) --> Algoritma KMeans
-            Clusterer clusterDangerousity = clusterSiteDangerousity.buildKmeansReputationModel(classifiedDangerousityInstances, optimumNumCluster);
+            Clusterer clusterDangerousity = clusterSiteDangerousity.buildKmeansReputationModel(classifiedDangerousityInstances, optimumNumClusterKMeans2);
             ClusterEvaluation evalClusterDangerousity = clusterSiteDangerousity.evaluateClusterReputationModel(trainingRecordSitesDangerousity, clusterDangerousity);
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (KMeans) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterDangerousity, trainingRecordSitesDangerousity) + "\n");
             // Save Clusterer (Algoritma KMeans) Stage II
@@ -320,7 +326,7 @@ public class SitesHybrid {
             EksternalFile.saveClustererToExternalModel(clusterDangerousity, normalPathKmeansStageII);
 
             // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition) --> Algoritma EM
-            Clusterer clusterDangerousity2 = clusterSiteDangerousity.buildEMReputationModel(classifiedDangerousityInstances, optimumNumCluster);
+            Clusterer clusterDangerousity2 = clusterSiteDangerousity.buildEMReputationModel(classifiedDangerousityInstances, optimumNumClusterEM2);
             ClusterEvaluation evalClusterDangerousity2 = clusterSiteDangerousity.evaluateClusterReputationModel(trainingRecordSitesDangerousity, clusterDangerousity2);
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (EM) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterDangerousity2, trainingRecordSitesDangerousity) + "\n");
             // Save Clusterer (Algoritma EM) Stage II
@@ -329,7 +335,7 @@ public class SitesHybrid {
             EksternalFile.saveClustererToExternalModel(clusterDangerousity2, normalPathEMStageII);
 
             // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition) --> Algoritma Hierarchical
-            Clusterer clusterDangerousity3 = clusterSiteDangerousity.buildHCReputationModel(classifiedDangerousityInstances, optimumNumCluster);
+            Clusterer clusterDangerousity3 = clusterSiteDangerousity.buildHCReputationModel(classifiedDangerousityInstances, optimumNumClusterHC2);
             ClusterEvaluation evalClusterDangerousity3 = clusterSiteDangerousity.evaluateClusterReputationModel(trainingRecordSitesDangerousity, clusterDangerousity3);
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (HC) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterDangerousity3, trainingRecordSitesDangerousity) + "\n");
             // Save Clusterer (Algoritma Hierarchical) Stage II
