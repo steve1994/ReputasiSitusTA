@@ -129,7 +129,7 @@ public class SitesLabeler extends SitesMLProcessor {
 
     public static void main(String[] args) {
         // Labeled sites dengan tipe reputasi 3
-        int typeReputation = 3;
+        int typeReputation = 7;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
@@ -151,7 +151,7 @@ public class SitesLabeler extends SitesMLProcessor {
 //        List<Long> listTimeTrust = new ArrayList<Long>();
 
         // Iterate for malware, phishing, and spamming sites list
-        int numSitesEachType = 100;
+        int numSitesEachType = 1000;
         for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
             List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
             for (int i = 0; i < numSitesEachType; i++) {
