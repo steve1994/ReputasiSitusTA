@@ -47,7 +47,11 @@ public class RIPE_API_Loader {
                 JSONObject ASNDataArg = mainResponse.getJSONObject("data");
                 if (!ASNDataArg.isNull("prefixes")) {
                     JSONArray listPrefixesArg = ASNDataArg.getJSONArray("prefixes");
-                    for (int i=0;i<listPrefixesArg.length();i++) {
+                    int size = listPrefixesArg.length();
+                    if (listPrefixesArg.length() > 100) {
+                        size = 100;
+                    }
+                    for (int i=0;i<size;i++) {
                         JSONObject element = listPrefixesArg.getJSONObject(i);
                         String prefix = element.getString("prefix");
                         String IPAddressFromPrefix = prefix.substring(0,prefix.length()-3);
