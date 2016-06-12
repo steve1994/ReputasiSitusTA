@@ -211,10 +211,10 @@ public class SitesHybrid {
 
             // Save both mixed instances training data (normality and dangerousity)
             String fileNameNormal = "num_" + i + ".type_" + typeReputation + ".normality_category.hybrid.arff";
-            String pathNameNormal = "database/weka/data/" + fileNameNormal;
+            String pathNameNormal = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data\\" + fileNameNormal;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesNormality, pathNameNormal);
             String fileNameDangerous = "num_" + i + ".type_" + typeReputation + ".dangerous_category.hybrid.arff";
-            String pathNameDangerous = "database/weka/data/" + fileNameDangerous;
+            String pathNameDangerous = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data\\" + fileNameDangerous;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesDangerousity, pathNameDangerous);
 
             // STAGE 1
@@ -239,7 +239,7 @@ public class SitesHybrid {
 
             // Save Classifier SVM (Normality) Stage I
             String nameClassifierSVM = "num_" + i + ".type_" + typeReputation + ".normalitySVM.hybrid.model";
-            String pathClassifierSVM = "database/weka/model/" + nameClassifierSVM;
+            String pathClassifierSVM = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + nameClassifierSVM;
             EksternalFile.saveClassifierToExternalModel(normalClassifier,pathClassifierSVM);
 
             // Build Normal / Abnormal Cluster (Algoritma KMeans)
@@ -270,7 +270,7 @@ public class SitesHybrid {
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (KMeans) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterNormality, trainingRecordSitesNormality) + "\n");
             // Save Clusterer (Algoritma KMeans) Stage I
             String normalFileKmeansStageI = "num_" + i + ".type_" + typeReputation + ".normalityKmeansStageI.hybrid.model";
-            String normalPathKmeansStageI = "database/weka/model/" + normalFileKmeansStageI;
+            String normalPathKmeansStageI = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileKmeansStageI;
             EksternalFile.saveClustererToExternalModel(clusterNormality, normalPathKmeansStageI);
 
             // Build Normal / Abnormal Cluster (Algoritma EM)
@@ -279,7 +279,7 @@ public class SitesHybrid {
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (EM) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterNormality2, trainingRecordSitesNormality) + "\n");
             // Save Clusterer (Algoritma EM) Stage I
             String normalFileEMStageI = "num_" + i + ".type_" + typeReputation + ".normalityEMStageI.hybrid.model";
-            String normalPathEMStageI = "database/weka/model/" + normalFileEMStageI;
+            String normalPathEMStageI = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileEMStageI;
             EksternalFile.saveClustererToExternalModel(clusterNormality2, normalPathEMStageI);
 
             // Build Normal / Abnormal Cluster (Algoritma Hierarchical)
@@ -288,7 +288,7 @@ public class SitesHybrid {
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (HC) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterNormality3,trainingRecordSitesNormality) + "\n");
             // Save Clusterer (Algoritma KMeans) Stage I
             String normalFileHCStageI = "num_" + i + ".type_" + typeReputation + ".normalityHCStageI.hybrid.model";
-            String normalPathHCStageI = "database/weka/model/" + normalFileHCStageI;
+            String normalPathHCStageI = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileHCStageI;
             EksternalFile.saveClustererToExternalModel(clusterNormality3, normalPathHCStageI);
 
             // STAGE 2
@@ -313,7 +313,7 @@ public class SitesHybrid {
 
             // Save Classifier SVM (Normality) Stage I
             String nameClassifierKNN = "num_" + i + ".type_" + typeReputation + ".dangerousityKNN.hybrid.model";
-            String pathClassifierKNN = "database/weka/model/" + nameClassifierKNN;
+            String pathClassifierKNN = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + nameClassifierKNN;
             EksternalFile.saveClassifierToExternalModel(dangerousClassifier,pathClassifierKNN);
 
             // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition) --> Algoritma KMeans
@@ -322,7 +322,7 @@ public class SitesHybrid {
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (KMeans) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterDangerousity, trainingRecordSitesDangerousity) + "\n");
             // Save Clusterer (Algoritma KMeans) Stage II
             String normalFileKmeansStageII = "num_" + i + ".type_" + typeReputation + ".dangerousityKmeansStageII.hybrid.model";
-            String normalPathKmeansStageII = "database/weka/model/" + normalFileKmeansStageII;
+            String normalPathKmeansStageII = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileKmeansStageII;
             EksternalFile.saveClustererToExternalModel(clusterDangerousity, normalPathKmeansStageII);
 
             // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition) --> Algoritma EM
@@ -331,7 +331,7 @@ public class SitesHybrid {
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (EM) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterDangerousity2, trainingRecordSitesDangerousity) + "\n");
             // Save Clusterer (Algoritma EM) Stage II
             String normalFileEMStageII = "num_" + i + ".type_" + typeReputation + ".dangerousityEMStageII.hybrid.model";
-            String normalPathEMStageII = "database/weka/model/" + normalFileEMStageII;
+            String normalPathEMStageII = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileEMStageII;
             EksternalFile.saveClustererToExternalModel(clusterDangerousity2, normalPathEMStageII);
 
             // Build Malware / Phishing / Spamming Cluster (Abnormal Type Composition) --> Algoritma Hierarchical
@@ -340,13 +340,13 @@ public class SitesHybrid {
             statisticEvaluationReport.append("\nIncorrectly Clustered Instance (HC) : " + SitesClusterer.getIncorrectlyClassifiedInstance(evalClusterDangerousity3, trainingRecordSitesDangerousity) + "\n");
             // Save Clusterer (Algoritma Hierarchical) Stage II
             String normalFileHCStageII = "num_" + i + ".type_" + typeReputation + ".dangerousityHCStageII.hybrid.model";
-            String normalPathHCStageII = "database/weka/model/" + normalFileHCStageII;
+            String normalPathHCStageII = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileHCStageII;
             EksternalFile.saveClustererToExternalModel(clusterDangerousity3, normalPathHCStageII);
         }
 
         // Write evaluation statistic result
         String fileNameEvaluation = "evaluationStatisticHybrid.type_" + typeReputation + ".txt";
-        String pathNameEvaluation = "database/weka/statistic/" + fileNameEvaluation;
+        String pathNameEvaluation = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\statistic\\" + fileNameEvaluation;
         EksternalFile.saveRawContentToEksternalFile(statisticEvaluationReport.toString(), pathNameEvaluation);
     }
 }
