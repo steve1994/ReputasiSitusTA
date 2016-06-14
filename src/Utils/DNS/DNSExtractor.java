@@ -172,9 +172,7 @@ public class DNSExtractor {
                 System.out.println("IPPrefix : " + IPPrefix);
                 List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
                 for (String ip : resolvedIPAddress) {
-                    System.out.println("Resolved IP Address : " + ip);
                     String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
-                    uniqueNameServers.add(nameServerConverted);
                     System.out.println("Name Server : " + nameServerConverted);
                     // Cek apakah bisa dikonversi ke canonical name
                     if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
@@ -197,6 +195,11 @@ public class DNSExtractor {
                             }
                         }
                     }
+                    String[] nameServerConvertedToken = nameServerConverted.split("\\.");
+                    String nameServerConvertedUnique = nameServerConvertedToken[nameServerConvertedToken.length-2] + "." + nameServerConvertedToken[nameServerConvertedToken.length-1];
+                    System.out.println("Name Server Unique : " + nameServerConvertedUnique);
+                    uniqueNameServers.add(nameServerConvertedUnique);
+
                     numNameServersTotal++;
                 }
             }
@@ -312,7 +315,7 @@ public class DNSExtractor {
       //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
         // Rasio 5 top populer TLD AS
 
-        String hostName = "roks.ua";
+        String hostName = "facebook.com";
         List<Object> fiturs = new ArrayList<Object>();
 
         long before = System.currentTimeMillis();
