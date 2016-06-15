@@ -173,6 +173,7 @@ public class DNSExtractor {
                 List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
                 for (String ip : resolvedIPAddress) {
                     String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
+                    uniqueNameServers.add(nameServerConverted);
                     System.out.println("Name Server : " + nameServerConverted);
                     // Cek apakah bisa dikonversi ke canonical name
                     if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
@@ -195,10 +196,10 @@ public class DNSExtractor {
                             }
                         }
                     }
-                    String[] nameServerConvertedToken = nameServerConverted.split("\\.");
-                    String nameServerConvertedUnique = nameServerConvertedToken[nameServerConvertedToken.length-2] + "." + nameServerConvertedToken[nameServerConvertedToken.length-1];
-                    System.out.println("Name Server Unique : " + nameServerConvertedUnique);
-                    uniqueNameServers.add(nameServerConvertedUnique);
+//                    String[] nameServerConvertedToken = nameServerConverted.split("\\.");
+//                    String nameServerConvertedUnique = nameServerConvertedToken[nameServerConvertedToken.length-2] + "." + nameServerConvertedToken[nameServerConvertedToken.length-1];
+//                    System.out.println("Name Server Unique : " + nameServerConvertedUnique);
+//                    uniqueNameServers.add(nameServerConvertedUnique);
 
                     numNameServersTotal++;
                 }
