@@ -218,6 +218,11 @@ public class SitesLabeler extends SitesMLProcessor {
         String pathNameStatic2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\" + fileNameStatic2;
         EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,pathNameStatic2);
 
+//        Instances allInstancesRecordSite2 = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_5.normal.staticdata.arff");
+//        allInstancesRecordSite2.setClassIndex(allInstancesRecordSite2.numAttributes()-1);
+//        Instances allInstancesRecordSite = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_5.dangerous.staticdata.arff");
+//        allInstancesRecordSite.setClassIndex(allInstancesRecordSite.numAttributes()-1);
+
         // Extract attributes from allInstancesRecordSite 1 (abnormal only (malware / phishing / spamming))
         FastVector instancesAttributes = new FastVector();
         Enumeration attributesRecordSite = allInstancesRecordSite.enumerateAttributes();
