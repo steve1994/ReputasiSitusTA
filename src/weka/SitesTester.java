@@ -20,7 +20,7 @@ import java.util.Random;
 public class SitesTester {
     public static void main(String[] args) {
 //        for (int l=1;l<=7;l++) {
-            int typeReputation = 5;
+            int typeReputation = 7;
             SitesLabeler labeledSiteDangerous = new SitesLabeler(typeReputation);
             labeledSiteDangerous.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
             SitesLabeler labeledSiteNormal = new SitesLabeler(typeReputation);
@@ -143,6 +143,23 @@ public class SitesTester {
             Clusterer clusterNormalityEMStageI = clusteredSiteNormal.buildEMReputationModel(classifiedNormalityInstances,optimumClusterEMStageI);
             ClusterEvaluation clusterNormalityEval = clusteredSiteNormal.evaluateClusterReputationModel(instancesNormalType2,clusterNormalityEMStageI);
             System.out.println("AKURASI STAGE I (EM) HYBRID TYPE 5 : " + SitesClusterer.getIncorrectlyClassifiedInstance(clusterNormalityEval,instancesNormalType2));
+
+            // TESTING VARIABLE BEBAS STAGE II
+            int optimumTrainingKNN = 400;
+            int optimumNumKNN = 9;
+            String pathInstancesDangerousType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
+            Instances instancesDangerousType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousType2);
+            instancesDangerousType2.setClassIndex(instancesDangerousType2.numAttributes()-1);
+            String pathClassifierDangerousType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\num_" + optimumTrainingKNN + ".type_" + typeReputation + ".dangerousityKNN_" + optimumNumKNN + ".model";
+            Classifier supervisedClassifierDangerousType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousType2);
+
+            try {
+                Evaluation evalDangerousType2 = new Evaluation(instancesDangerousType2);
+                evalDangerousType2.crossValidateModel(supervisedClassifierDangerousType2,instancesDangerousType2,10,new Random(1));
+                System.out.println("Correctly Classified Instances Type 7 Stage 2 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalDangerousType2,instancesDangerousType2));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 //        }
 
         // CREATE STATIC DATA BY REMOVING UNUSED ATTRIBUTES
