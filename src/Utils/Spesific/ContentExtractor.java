@@ -86,7 +86,8 @@ public class ContentExtractor {
                 default:
                 case 1:
                     try {
-                        if (doc.toString().contains("About ")) {
+                        System.out.println(doc.toString());
+                        if (!doc.toString().contains("<div class=\"sd\" id=\"resultStats\"></div>")) {
                             Element numResults1 = doc.getElementById("resultStats");
                             String[] tokenResults1 = numResults1.text().split(" ");
                             inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
@@ -269,7 +270,7 @@ public class ContentExtractor {
 
         // SPESIFIC FEATURES
         List<Object> fiturs = new ArrayList<Object>();
-        String hostName = "facebook.com";
+        String hostName = "cutscenes.net";
 
         long before = System.currentTimeMillis();
         // Token Count URL
@@ -333,5 +334,6 @@ public class ContentExtractor {
         System.out.println("Waktu eksekusi SLD ratio : " + (afterSLDRatio-afterAvgToken));
         System.out.println("Waktu eksekusi Inbound Link : " + (afterInboundLink-afterSLDRatio));
         System.out.println("Waktu eksekusi Lookup Time : " + (afterLookup-afterInboundLink));
+        // About 330,000999999999999999,999999999999999999 results
     }
 }
