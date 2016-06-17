@@ -392,9 +392,9 @@ public class SitesClusterer extends SitesMLProcessor{
 //        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
 //        Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
 //        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
-        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_6.normal.staticdata.arff");
+        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_6.normal.staticdata.arff");
         allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
-        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_6.dangerous.staticdata.arff");
+        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_6.dangerous.staticdata.arff");
         allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)
@@ -466,11 +466,11 @@ public class SitesClusterer extends SitesMLProcessor{
 
             // Tulis instance di eksternal file
             String fileName = "num_" + i + ".type_" + typeReputation + ".normality_category.unsupervised.arff";
-            String pathName = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data\\" + fileName;
+            String pathName = "database/weka/data/" + fileName;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesNormality, pathName);
 
             String fileName2 = "num_" + i + ".type_" + typeReputation + ".dangerous_category.unsupervised.arff";
-            String pathName2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data\\" + fileName2;
+            String pathName2 = "database/weka/data/" + fileName2;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesDangerousity, pathName2);
 
             // Find Optimum Cluster for KMeans Algorithm
@@ -562,10 +562,10 @@ public class SitesClusterer extends SitesMLProcessor{
 
             // Save both training data (normality and dangerousity)
             String fileNameNormal = "num_" + i + ".type_" + typeReputation + ".normality_category.unsupervised.arff";
-            String pathNameNormal = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data\\" + fileNameNormal;
+            String pathNameNormal = "database/weka/data/" + fileNameNormal;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesNormality, pathNameNormal);
             String fileNameDangerous = "num_" + i + ".type_" + typeReputation + ".dangerous_category.unsupervised.arff";
-            String pathNameDangerous = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data\\" + fileNameDangerous;
+            String pathNameDangerous = "database/weka/data/" + fileNameDangerous;
             EksternalFile.saveInstanceWekaToExternalARFF(trainingRecordSitesDangerousity, pathNameDangerous);
 
             // Build cluster KMeans
@@ -575,10 +575,10 @@ public class SitesClusterer extends SitesMLProcessor{
             ClusterEvaluation evalKMeans2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity, clusterKMeansDangerous);
             // Save clusterer KMeans
             String normalFileKmeansNormal = "num_" + i + ".type_" + typeReputation + ".normalityKmeans.model";
-            String normalPathKmeansNormal = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileKmeansNormal;
+            String normalPathKmeansNormal = "database/weka/model/" + normalFileKmeansNormal;
             EksternalFile.saveClustererToExternalModel(clusterKMeansNormal, normalPathKmeansNormal);
             String normalFileKmeansDangerous = "num_" + i + ".type_" + typeReputation + ".dangerousityKmeans.model";
-            String normalPathKmeansDangerous = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileKmeansDangerous;
+            String normalPathKmeansDangerous = "database/weka/model/" + normalFileKmeansDangerous;
             EksternalFile.saveClustererToExternalModel(clusterKMeansDangerous,normalPathKmeansDangerous);
 
             // Build cluster EM
@@ -588,10 +588,10 @@ public class SitesClusterer extends SitesMLProcessor{
             ClusterEvaluation evalEM2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterEMDangerous);
             // Save clusterer EM
             String normalFileEMNormal = "num_" + i + ".type_" + typeReputation + ".normalityEM.model";
-            String normalPathEMNormal = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileEMNormal;
+            String normalPathEMNormal = "database/weka/model/" + normalFileEMNormal;
             EksternalFile.saveClustererToExternalModel(clusterEMNormal, normalPathEMNormal);
             String normalFileEMDangerous = "num_" + i + ".type_" + typeReputation + ".dangerousityEM.model";
-            String normalPathEMDangerous = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileEMDangerous;
+            String normalPathEMDangerous = "database/weka/model/" + normalFileEMDangerous;
             EksternalFile.saveClustererToExternalModel(clusterEMDangerous,normalPathEMDangerous);
 
             // Build cluster Hierarchical Clustering
@@ -601,10 +601,10 @@ public class SitesClusterer extends SitesMLProcessor{
             ClusterEvaluation evalHC2 = dangerousityClusterSite.evaluateClusterReputationModel(trainingRecordSitesDangerousity,clusterHCDangerous);
             // Save clusterer Hierarchical Clustering
             String normalFileHCNormal = "num_" + i + ".type_" + typeReputation + ".normalityHC.model";
-            String normalPathHCNormal = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileHCNormal;
+            String normalPathHCNormal = "database/weka/model/" + normalFileHCNormal;
             EksternalFile.saveClustererToExternalModel(clusterHCNormal, normalPathHCNormal);
             String normalFileHCDangerous = "num_" + i + ".type_" + typeReputation + ".dangerousityHC.model";
-            String normalPathHCDangerous = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\" + normalFileHCDangerous;
+            String normalPathHCDangerous = "database/weka/model/" + normalFileHCDangerous;
             EksternalFile.saveClustererToExternalModel(clusterHCDangerous,normalPathHCDangerous);
 
             // Write Statistic About Error Statistic
@@ -618,7 +618,7 @@ public class SitesClusterer extends SitesMLProcessor{
 
         // Write evaluation statistic result
         String fileNameEvaluation = "evaluationStatisticUnsupervisedLearning.type_" + typeReputation + ".txt";
-        String pathNameEvaluation = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\statistic\\" + fileNameEvaluation;
+        String pathNameEvaluation = "database/weka/statistic/" + fileNameEvaluation;
         EksternalFile.saveRawContentToEksternalFile(statisticEvaluationReport.toString(), pathNameEvaluation);
     }
 }

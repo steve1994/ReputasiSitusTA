@@ -73,20 +73,20 @@ public class SitesTester {
 
 //            Instances instancesNormalThisType = labeledSiteNormal.getSiteReputationRecord();
 //            String fileNameStaticNormal = "numsites_" + numSitesEachType + ".type_" + typeReputation + ".normal.testdata.arff";
-//            String pathNameStaticNormal = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\" + fileNameStaticNormal;
+//            String pathNameStaticNormal = "database/weka/test/" + fileNameStaticNormal;
 //            EksternalFile.saveInstanceWekaToExternalARFF(instancesNormalThisType,pathNameStaticNormal);
 //
 //            Instances instancesDangerousThisType = labeledSiteDangerous.getSiteReputationRecord();
 //            String fileNameStaticDangerous = "numsites_" + numSitesEachType + ".type_" + typeReputation + ".dangerous.testdata.arff";
-//            String pathNameStaticDangerous = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\" + fileNameStaticDangerous;
+//            String pathNameStaticDangerous = "database/weka/test/" + fileNameStaticDangerous;
 //            EksternalFile.saveInstanceWekaToExternalARFF(instancesDangerousThisType,pathNameStaticDangerous);
 
             // TESTING VARIABLE CONTROL
 //            int optimumNumTrainingNormalType2 = 100;
-//            String pathInstancesNormalType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\numsites_100.type_" + typeReputation + ".normal.testdata.arff";
+//            String pathInstancesNormalType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".normal.testdata.arff";
 //            Instances instancesNormalType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesNormalType2);
 //            instancesNormalType2.setClassIndex(instancesNormalType2.numAttributes()-1);
-//            String pathClassifierNormalType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\num_" + optimumNumTrainingNormalType2 + ".type_" + typeReputation + ".normalitySVM.model";
+//            String pathClassifierNormalType2 = "database/weka/model/num_" + optimumNumTrainingNormalType2 + ".type_" + typeReputation + ".normalitySVM.model";
 //            Classifier supervisedClassifierNormalType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierNormalType2);
 //
 //            try {
@@ -99,10 +99,10 @@ public class SitesTester {
 //
 //            int optimumNumTrainingDangerousType2 = 400;
 //            int optimumKNNType2 = 7;
-//            String pathInstancesDangerousType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
+//            String pathInstancesDangerousType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
 //            Instances instancesDangerousType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousType2);
 //            instancesDangerousType2.setClassIndex(instancesDangerousType2.numAttributes()-1);
-//            String pathClassifierDangerousType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\num_" + optimumNumTrainingDangerousType2 + ".type_" + typeReputation + ".dangerousityKNN_" + optimumKNNType2 + ".model";
+//            String pathClassifierDangerousType2 = "database/weka/model/num_" + optimumNumTrainingDangerousType2 + ".type_" + typeReputation + ".dangerousityKNN_" + optimumKNNType2 + ".model";
 //            Classifier supervisedClassifierDangerousType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousType2);
 //
 //            try {
@@ -115,10 +115,10 @@ public class SitesTester {
 
             // TESTING VARIABLE BEBAS STAGE I
             int optimumTrainingSVMType2 = 300;
-            String pathInstancesNormalType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\numsites_100.type_" + typeReputation + ".normal.testdata.arff";
+            String pathInstancesNormalType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".normal.testdata.arff";
             Instances instancesNormalType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesNormalType2);
             instancesNormalType2.setClassIndex(instancesNormalType2.numAttributes()-1);
-            String pathClassifierNormalType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\num_" + optimumTrainingSVMType2 + ".type_" + typeReputation + ".normalitySVM.hybrid.model";
+            String pathClassifierNormalType2 = "database/weka/model/num_" + optimumTrainingSVMType2 + ".type_" + typeReputation + ".normalitySVM.hybrid.model";
             Classifier supervisedClassifierNormalType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierNormalType2);
 
             // Classification (SVM)
@@ -147,10 +147,10 @@ public class SitesTester {
             // TESTING VARIABLE BEBAS STAGE II
             int optimumTrainingKNN = 400;
             int optimumNumKNN = 9;
-            String pathInstancesDangerousType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\test\\numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
+            String pathInstancesDangerousType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
             Instances instancesDangerousType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousType2);
             instancesDangerousType2.setClassIndex(instancesDangerousType2.numAttributes()-1);
-            String pathClassifierDangerousType2 = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\model\\num_" + optimumTrainingKNN + ".type_" + typeReputation + ".dangerousityKNN_" + optimumNumKNN + ".model";
+            String pathClassifierDangerousType2 = "database/weka/model/num_" + optimumTrainingKNN + ".type_" + typeReputation + ".dangerousityKNN_" + optimumNumKNN + ".model";
             Classifier supervisedClassifierDangerousType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousType2);
 
             try {
@@ -163,9 +163,9 @@ public class SitesTester {
 //        }
 
         // CREATE STATIC DATA BY REMOVING UNUSED ATTRIBUTES
-//        Instances instancesNormalType4 = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_7.normal.staticdata.arff");
+//        Instances instancesNormalType4 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_7.normal.staticdata.arff");
 //        instancesNormalType4.setClassIndex(instancesNormalType4.numAttributes()-1);
-//        Instances instancesDangerousType4 = EksternalFile.loadInstanceWekaFromExternalARFF("D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_7.dangerous.staticdata.arff");
+//        Instances instancesDangerousType4 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_7.dangerous.staticdata.arff");
 //        instancesDangerousType4.setClassIndex(instancesDangerousType4.numAttributes()-1);
 //
 //        for (int i=0;i<9;i++) {
@@ -173,7 +173,7 @@ public class SitesTester {
 //            instancesDangerousType4.deleteAttributeAt(instancesDangerousType4.numAttributes()-14);
 //        }
 //
-//        EksternalFile.saveInstanceWekaToExternalARFF(instancesNormalType4,"D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_5.normal.staticdata.arff");
-//        EksternalFile.saveInstanceWekaToExternalARFF(instancesDangerousType4,"D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\weka\\data_static\\numsites_1000.ratio_3111.type_5.dangerous.staticdata.arff");
+//        EksternalFile.saveInstanceWekaToExternalARFF(instancesNormalType4,"database/weka/data_static/numsites_1000.ratio_3111.type_5.normal.staticdata.arff");
+//        EksternalFile.saveInstanceWekaToExternalARFF(instancesDangerousType4,"database/weka/data_static/numsites_1000.ratio_3111.type_5.dangerous.staticdata.arff");
     }
 }
