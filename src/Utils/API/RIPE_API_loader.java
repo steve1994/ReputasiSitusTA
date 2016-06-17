@@ -1,5 +1,6 @@
 package Utils.API;
 
+import Utils.Converter;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -171,7 +172,7 @@ public class RIPE_API_Loader {
 //        }
 
         long begin = System.currentTimeMillis();
-        System.out.println("Is Domain Name Available? " + RIPE_API_Loader.checkDomainNameResolved("facebook.com.tar.gz.werewfdsfdsfd"));
+        System.out.println(RIPE_API_Loader.loadASNFromRIPEAPI(26415));
         long end = System.currentTimeMillis();
 
         System.out.println("Waktu eksekusi : " + (end-begin));
