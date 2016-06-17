@@ -1,6 +1,7 @@
 package sample;
 
 import Utils.API.WOT_API_Loader;
+import Utils.Converter;
 import Utils.DNS.DNSExtractor;
 import Utils.Database.EksternalFile;
 import Utils.Spesific.ContentExtractor;
@@ -35,7 +36,6 @@ public class StatistikController implements Initializable{
     @FXML private TextArea responseTimeStat;
     @FXML private TextArea percentageNullStat;
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
         SitesClusterer clusterSite = new SitesClusterer(StaticVars.reputationType);
@@ -79,8 +79,9 @@ public class StatistikController implements Initializable{
 
                 // Hit AS Ratio (malware, phishing, spamming)
                 Double[] HitRatioList = new Double[3];
+                int thisSiteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(StaticVars.listSitesTraining.get(i)));
                 for (int j = 0; j < 3; j++) {
-                    HitRatioList[j] = DNSExtractor.getHitASRatio(StaticVars.listSitesTraining.get(i), j + 1);
+                    HitRatioList[j] = DNSExtractor.getHitASRatio(thisSiteASN, j + 1);
                 }
                 fiturDNS.setHitASRatio(HitRatioList);
                 System.out.println("Hit AS Ratio");

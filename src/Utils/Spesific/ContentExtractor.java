@@ -86,7 +86,6 @@ public class ContentExtractor {
                 default:
                 case 1:
                     try {
-                        System.out.println(doc.toString());
                         if (!doc.toString().contains("<div class=\"sd\" id=\"resultStats\"></div>")) {
                             Element numResults1 = doc.getElementById("resultStats");
                             String[] tokenResults1 = numResults1.text().split(" ");

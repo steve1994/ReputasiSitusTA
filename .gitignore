@@ -17,6 +17,7 @@ database/weka/data/*
 database/weka/data_static/*
 database/weka/model/*
 database/weka/statistic/*
+database/weka/test/*
 
 src/sample/history/*
 

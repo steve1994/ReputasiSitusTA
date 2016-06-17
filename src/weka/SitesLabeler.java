@@ -129,7 +129,7 @@ public class SitesLabeler extends SitesMLProcessor {
 
     public static void main(String[] args) {
         // Labeled sites dengan tipe reputasi 3
-        int typeReputation = 3;
+        int typeReputation = 5;
         SitesLabeler labeledSite = new SitesLabeler(typeReputation);
         labeledSite.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
@@ -217,6 +217,11 @@ public class SitesLabeler extends SitesMLProcessor {
         String fileNameStatic2 = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".normal.staticdata.arff";
         String pathNameStatic2 = "database/weka/data_static/" + fileNameStatic2;
         EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,pathNameStatic2);
+
+//        Instances allInstancesRecordSite2 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_5.normal.staticdata.arff");
+//        allInstancesRecordSite2.setClassIndex(allInstancesRecordSite2.numAttributes()-1);
+//        Instances allInstancesRecordSite = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_5.dangerous.staticdata.arff");
+//        allInstancesRecordSite.setClassIndex(allInstancesRecordSite.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite 1 (abnormal only (malware / phishing / spamming))
         FastVector instancesAttributes = new FastVector();

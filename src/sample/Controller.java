@@ -65,7 +65,6 @@ public class Controller implements Initializable {
         numberTrainingChoiceBox = new ChoiceBox();
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
         supervisedRadioButton.setToggleGroup(methodRadioButton);
         unsupervisedRadioButton.setToggleGroup(methodRadioButton);
