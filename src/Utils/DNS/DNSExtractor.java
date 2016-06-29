@@ -317,21 +317,7 @@ public class DNSExtractor {
     }
 
     public static void main(String[] args) {
-       /* List<String> ipAddressSitesList = DNSExtractor.getDNSRecords("cap2zen.com");
-        System.out.println(ipAddressSitesList);
-        for (int i=0;i<ipAddressSitesList.size();i++) {
-            int ASNNumber = Converter.convertIPAddressIntoASN(ipAddressSitesList.get(i));
-            System.out.println(ASNNumber);
-        }*/
-        // Rasio Distribusi NS dari AS
-        //System.out.println(DNSExtractor.getDistributionNSFromAS("cutscenes.net"));
-        // Rasio Distribusi TLD dari AS
-       /* Sextet<Float,Float,Float,Float,Float,Float> sixRatio = DNSExtractor.getTLDDistributionFromAS("cutscenes.net");
-        System.out.println("The six ratio : " + sixRatio.getValue0() + " ; " + sixRatio.getValue1() + " ; " + sixRatio.getValue2() + " ; " + sixRatio.getValue3() + " ; " + sixRatio.getValue4() + " ; " + sixRatio.getValue5());*/
-        // Rasio Hit AS certain list
-        //  System.out.println("AS hit ratio : " + DNSExtractor.getHitASRatio("facebook.com",2));
-        // Rasio 5 top populer TLD AS
-
+        
         String hostName = "facebook.com";
         List<Object> fiturs = new ArrayList<Object>();
 
@@ -374,7 +360,6 @@ public class DNSExtractor {
         long afterHitRatio = System.currentTimeMillis();
 
         // Name server distribution AS
-//        double distributionNS = DNSExtractor.getDistributionNSFromAS(hostName);
         double distributionNS = pairDistAndTLDRatio.getValue0();
         fiturs.add(distributionNS);
         System.out.println("Name Server Distribution AS : " + distributionNS);
@@ -420,15 +405,5 @@ public class DNSExtractor {
         System.out.println("Waktu eksekusi NS count : " + (afterNSCount - afterNSDist));
         System.out.println("Waktu eksekusi TTL NS : " + (afterTTLNS - afterNSCount));
         System.out.println("Waktu eksekusi TTL IP : " + (afterTTLIP - afterTTLNS));
-
-        System.out.println("\n\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n");
-
-        //        long start = System.currentTimeMillis();
-//        int thisASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress("mista.eu"));
-//        for (int i=1;i<=3;i++) {
-//            DNSExtractor.getHitASRatio(thisASN, i);
-//        }
-//        long finish = System.currentTimeMillis();
-//        System.out.println("TIME : " + (finish-start));
     }
 }
