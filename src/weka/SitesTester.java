@@ -20,7 +20,7 @@ import java.util.Random;
 public class SitesTester {
     public static void main(String[] args) {
 //        for (int l=1;l<=7;l++) {
-            int typeReputation = 7;
+            int typeReputation = 5;
             SitesLabeler labeledSiteDangerous = new SitesLabeler(typeReputation);
             labeledSiteDangerous.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
             SitesLabeler labeledSiteNormal = new SitesLabeler(typeReputation);
