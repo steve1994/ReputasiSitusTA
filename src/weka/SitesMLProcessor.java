@@ -143,7 +143,7 @@ public class SitesMLProcessor {
             Attribute ratioSLDPhishing = new Attribute("SLD_URL_phis"); overallInstanceVector.add(ratioSLDPhishing);
             Attribute ratioSLDSpamming = new Attribute("SLD_URL_spam"); overallInstanceVector.add(ratioSLDSpamming);
             // Inbound link approximation from 3 search engine (Google, Yahoo, Bing)
-            Attribute inboundLinkGoogle = new Attribute("inbound_link_google"); overallInstanceVector.add(inboundLinkGoogle);
+//            Attribute inboundLinkGoogle = new Attribute("inbound_link_google"); overallInstanceVector.add(inboundLinkGoogle);
             Attribute inboundLinkYahoo = new Attribute("inbound_link_yahoo"); overallInstanceVector.add(inboundLinkYahoo);
             Attribute inboundLinkBing = new Attribute("inbound_link_bing"); overallInstanceVector.add(inboundLinkBing);
             // Lookup time to access site
@@ -341,9 +341,9 @@ public class SitesMLProcessor {
             System.out.println("SLD Ratio List");
 
             // Inbound link Approximation (Google, Yahoo, Bing)
-            double[] inboundLinkAppr = new double[3];
-            for (int j = 0; j < 3; j++) {
-                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(domainName, j + 1);
+            double[] inboundLinkAppr = new double[2];
+            for (int j = 0; j < 2; j++) {
+                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(domainName, (j + 2));
             }
             fiturSpesific.setInboundLink(inboundLinkAppr);
             System.out.println("Inbound Link Approximation");
