@@ -49,8 +49,8 @@ public class RIPE_API_Loader {
                 if (!ASNDataArg.isNull("prefixes")) {
                     JSONArray listPrefixesArg = ASNDataArg.getJSONArray("prefixes");
                     int size = listPrefixesArg.length();
-                    if (listPrefixesArg.length() > 100) {
-                        size = 100;
+                    if (listPrefixesArg.length() > 50) {
+                        size = 50;
                     }
                     for (int i=0;i<size;i++) {
                         JSONObject element = listPrefixesArg.getJSONObject(i);
