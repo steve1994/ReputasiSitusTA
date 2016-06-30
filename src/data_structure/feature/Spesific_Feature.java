@@ -7,7 +7,7 @@ public class Spesific_Feature {
     private int tokenCountURL;
     private double averageTokenLengthURL;
     private double[] SLDRatio;
-    private int[] inboundLink;
+    private double[] inboundLink;
     private float lookupTime;
 
     public int getTokenCountURL() {
@@ -26,11 +26,11 @@ public class Spesific_Feature {
         this.lookupTime = lookupTime;
     }
 
-    public int[] getInboundLink() {
+    public double[] getInboundLink() {
         return inboundLink;
     }
 
-    public void setInboundLink(int[] inboundLink) {
+    public void setInboundLink(double[] inboundLink) {
         this.inboundLink = inboundLink;
     }
 
@@ -54,7 +54,7 @@ public class Spesific_Feature {
         tokenCountURL = 0;
         averageTokenLengthURL = 0;
         SLDRatio = new double[3];           // malware, spamming, phishing
-        inboundLink = new int[3];           // Google, Yahoo, Bing
+        inboundLink = new double[3];           // Google, Yahoo, Bing
         lookupTime = 0;
     }
 }

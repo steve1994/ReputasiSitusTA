@@ -204,8 +204,8 @@ public class SitesMLProcessor {
                 instanceValues.add(sld);
             }
             // Inbound link Approximation (Google, Yahoo, Bing)
-            int[] inboundLink = recordReputation.getSpesificRecordFeature().getInboundLink();
-            for (int link : inboundLink) {
+            double[] inboundLink = recordReputation.getSpesificRecordFeature().getInboundLink();
+            for (double link : inboundLink) {
                 instanceValues.add(link);
             }
             // Lookup time to access site
@@ -341,7 +341,7 @@ public class SitesMLProcessor {
             System.out.println("SLD Ratio List");
 
             // Inbound link Approximation (Google, Yahoo, Bing)
-            int[] inboundLinkAppr = new int[3];
+            double[] inboundLinkAppr = new double[3];
             for (int j = 0; j < 3; j++) {
                 inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(domainName, j + 1);
             }

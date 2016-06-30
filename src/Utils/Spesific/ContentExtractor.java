@@ -66,16 +66,16 @@ public class ContentExtractor {
      * @param type
      * @return
      */
-    public static int getInboundLinkFromSearchResults(String domainNameURL, int type) {
+    public static double getInboundLinkFromSearchResults(String domainNameURL, int type) {
         String queryURL = null;
         switch (type) {
             default :
-            case 1  :   queryURL = "https://www.google.com/search?q=" + domainNameURL; break;
+//            case 1  :   queryURL = "https://www.google.com/search?q=" + domainNameURL; break;
             case 2  :   queryURL = "https://id.search.yahoo.com/search?p=" + domainNameURL; break;
             case 3  :   queryURL = "http://www.bing.com/search?q=" + domainNameURL; break;
         }
 
-        int inboundLink = 0;
+        double inboundLink = 0;
         try {
             Document doc = Jsoup
                     .connect(queryURL)
@@ -84,25 +84,26 @@ public class ContentExtractor {
 
             switch (type) {
                 default:
-                case 1:
-                    try {
-                        if (!doc.toString().contains("<div class=\"sd\" id=\"resultStats\"></div>")) {
-                            Element numResults1 = doc.getElementById("resultStats");
-                            String[] tokenResults1 = numResults1.text().split(" ");
-                            inboundLink = Integer.parseInt(tokenResults1[1].replace(",", ""));
-                            System.out.println("GOOGLE");
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println(e.getMessage());
-                    } catch (NullPointerException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+//                case 1:
+//                    try {
+//                        System.out.println(doc.toString());
+//                        if (!doc.toString().contains("<div class=\"sd\" id=\"resultStats\"></div>")) {
+//                            Element numResults1 = doc.getElementById("resultStats");
+//                            String[] tokenResults1 = numResults1.text().split(" ");
+//                            inboundLink = Integer.parseInt(tokenResults1[1].replace(",", "")) / (double) 1000000000;
+//                            System.out.println("GOOGLE");
+//                        }
+//                    } catch (NumberFormatException e) {
+//                        System.out.println(e.getMessage());
+//                    } catch (NullPointerException e) {
+//                        System.out.println(e.getMessage());
+//                    }
+//                    break;
                 case 2:
                     try {
                         if (doc.toString().contains("compPagination")) {
                             Element numResults2 = doc.getElementsByClass("compPagination").tagName("span").last();
-                            inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya", "").replace(" hasil", "").replace(",", ""));
+                            inboundLink = Integer.parseInt(numResults2.text().replace("12345Berikutnya", "").replace(" hasil", "").replace(",", ""))  / (double) 1000000000;
                             System.out.println("YAHOO");
                         }
                     } catch (NumberFormatException e) {
@@ -116,7 +117,7 @@ public class ContentExtractor {
                         if (doc.toString().contains("<span class=\"sb_count\">")) {
                             Elements numResults4 = doc.getElementsByClass("sb_count");
                             String[] tokenResults4 = numResults4.text().split(" ");
-                            inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""));
+                            inboundLink = Integer.parseInt(tokenResults4[0].replace(".", ""))  / (double) 1000000000;
                             System.out.println("BING");
                         }
                     } catch (NumberFormatException e) {
@@ -251,88 +252,72 @@ public class ContentExtractor {
     }
 
     public static void main(String[] args) {
-      /*  List<String> link = ContentExtractor.getListLinksContainInURL("http://www.ligaindonesia.co.id/assets/collections/pojok_media/files/551e0c0185557.pdf");
-        for (String l : link) {
-            System.out.println(l);
-        }*/
-       // System.out.println(ContentExtractor.getInboundLinkFromSearchResults("nasibungkus",4));
-       // System.out.println(ContentExtractor.getOutboundLinkFromJSOUP("ligaindonesia.co.id"));
-       /* try {
-            String host = new URL("http://facebook.com/").getHost();
-            System.out.println(host);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }*/
-        /*for (int i=0;i<20;i++) {
-            System.out.println(ContentExtractor.getDomainLookupTimeSite("pornhub.com"));
-        }*/
+        List<String> listSites = EksternalFile.loadSitesTrainingList(1).getKey();
+        for (int k=0;k<100;k++) {
+            String hostName = listSites.get(k);
 
-        // SPESIFIC FEATURES
-        List<Object> fiturs = new ArrayList<Object>();
-        String hostName = "cutscenes.net";
+            List<Object> fiturs = new ArrayList<Object>();
 
-        long before = System.currentTimeMillis();
-        // Token Count URL
-        int tokenCount = ContentExtractor.getDomainTokenCountURL(hostName);
-        fiturs.add(tokenCount);
-        System.out.println("Token Count : " + tokenCount);
+            long before = System.currentTimeMillis();
+            // Token Count URL
+            int tokenCount = ContentExtractor.getDomainTokenCountURL(hostName);
+            fiturs.add(tokenCount);
+            System.out.println("Token Count");
 
-        long afterTokenCount = System.currentTimeMillis();
+            long afterTokenCount = System.currentTimeMillis();
 
-        // Average Token Length URL
-        double avgTokenCount = ContentExtractor.getAverageDomainTokenLengthURL(hostName);
-        fiturs.add(avgTokenCount);
-        System.out.println("Average Token Count : " + avgTokenCount);
+            // Average Token Length URL
+            double avgTokenCount = ContentExtractor.getAverageDomainTokenLengthURL(hostName);
+            fiturs.add(avgTokenCount);
+            System.out.println("Average Token Count");
 
-        long afterAvgToken = System.currentTimeMillis();
+            long afterAvgToken = System.currentTimeMillis();
 
-        // SLD ratio from URL (malware, phishing, spamming)
-        double[] SLDRatioList = new double[3];
-        System.out.println("SLD Ratio List : ");
-        for (int j=0;j<3;j++) {
-            SLDRatioList[j] = ContentExtractor.getSLDHitRatio(hostName,j+1);
-            System.out.println(SLDRatioList[j]);
-            fiturs.add(SLDRatioList[j]);
+            // SLD ratio from URL (malware, phishing, spamming)
+            double[] SLDRatioList = new double[3];
+            for (int j = 0; j < 3; j++) {
+                SLDRatioList[j] = ContentExtractor.getSLDHitRatio(hostName, j + 1);
+                fiturs.add(SLDRatioList[j]);
+            }
+            System.out.println("SLD Ratio List : ");
+
+            long afterSLDRatio = System.currentTimeMillis();
+
+            // Inbound link Approximation (Google, Yahoo, Bing)
+            double[] inboundLinkAppr = new double[3];
+            for (int j = 0; j < 3; j++) {
+                inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(hostName, j + 1);
+                fiturs.add(inboundLinkAppr[j]);
+            }
+            System.out.println("Inbound Link Approximation");
+
+            long afterInboundLink = System.currentTimeMillis();
+
+            // Lookup time to access site
+            long lookupTime = ContentExtractor.getDomainLookupTimeSite(hostName);
+            fiturs.add(lookupTime);
+            System.out.println("Lookup Time");
+
+            long afterLookup = System.currentTimeMillis();
+
+            // TES ISI FITUR KE INSTANCE WEKA
+            double[] values = new double[fiturs.size()];
+            for (int i = 0; i < fiturs.size(); i++) {
+                values[i] = new Double(fiturs.get(i).toString());
+            }
+            System.out.println("LIST VALUES SITE-" + (k + 1));
+            for (double d : values) {
+                System.out.println(d);
+            }
+            long after = System.currentTimeMillis();
+
+            System.out.println("Waktu eksekusi : " + (after - before));
+            System.out.println("Waktu eksekusi token count : " + (afterTokenCount - before));
+            System.out.println("Waktu eksekusi average token count : " + (afterAvgToken - afterTokenCount));
+            System.out.println("Waktu eksekusi SLD ratio : " + (afterSLDRatio - afterAvgToken));
+            System.out.println("Waktu eksekusi Inbound Link : " + (afterInboundLink - afterSLDRatio));
+            System.out.println("Waktu eksekusi Lookup Time : " + (afterLookup - afterInboundLink));
+            System.out.println("==========================================================================");
         }
-
-        long afterSLDRatio = System.currentTimeMillis();
-
-        // Inbound link Approximation (Google, Yahoo, Bing)
-        int[] inboundLinkAppr = new int[3];
-        System.out.println("Inbound Link Approximation : ");
-        for (int j=0;j<3;j++) {
-            inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(hostName,j+1);
-            System.out.println(inboundLinkAppr[j]);
-            fiturs.add(inboundLinkAppr[j]);
-        }
-
-        long afterInboundLink = System.currentTimeMillis();
-
-        // Lookup time to access site
-        long lookupTime = ContentExtractor.getDomainLookupTimeSite(hostName);
-        fiturs.add(lookupTime);
-        System.out.println("Lookup Time : " + lookupTime);
-
-        long afterLookup = System.currentTimeMillis();
-
-        System.out.println("==========================================================================");
-
-        // TES ISI FITUR KE INSTANCE WEKA
-        double[] values = new double[fiturs.size()];
-        for (int i=0;i<fiturs.size();i++) {
-            values[i] = new Double(fiturs.get(i).toString());
-        }
-        for (double d : values) {
-            System.out.println(d);
-        }
-        long after = System.currentTimeMillis();
-
-        System.out.println("Waktu eksekusi : " + (after-before));
-        System.out.println("Waktu eksekusi token count : " + (afterTokenCount-before));
-        System.out.println("Waktu eksekusi average token count : " + (afterAvgToken-afterTokenCount));
-        System.out.println("Waktu eksekusi SLD ratio : " + (afterSLDRatio-afterAvgToken));
-        System.out.println("Waktu eksekusi Inbound Link : " + (afterInboundLink-afterSLDRatio));
-        System.out.println("Waktu eksekusi Lookup Time : " + (afterLookup-afterInboundLink));
-        // About 330,000999999999999999,999999999999999999 results
     }
 }

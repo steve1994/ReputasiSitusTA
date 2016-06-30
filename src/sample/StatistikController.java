@@ -151,7 +151,7 @@ public class StatistikController implements Initializable{
                 long afterSLDRatio = System.currentTimeMillis();
 
                 // Inbound link Approximation (Google, Yahoo, Bing)
-                int[] inboundLinkAppr = new int[3];
+                double[] inboundLinkAppr = new double[3];
                 for (int j = 0; j < 3; j++) {
                     inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(StaticVars.listSitesTraining.get(i), j + 1);
                 }
