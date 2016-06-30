@@ -119,8 +119,8 @@ public class Converter {
 
         if (IPAddress != "") {
             Runtime rt = Runtime.getRuntime();
-//            String commandExec = "D:\\steve\\Library\\curl\\curl.exe ipinfo.io/" + IPAddress + "/org";
-            String commandExec = "curl ipinfo.io/" + IPAddress + "/org";
+            String commandExec = "D:\\steve\\Library\\curl\\curl.exe ipinfo.io/" + IPAddress + "/org";
+//            String commandExec = "curl ipinfo.io/" + IPAddress + "/org";
             try {
                 Process pr = rt.exec(commandExec);
                 BufferedReader commandReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
