@@ -323,7 +323,7 @@ public class Controller implements Initializable {
                     trainingNormalKmeans.add(convertedFeature.instance(0));
 
                     // STAGE 1 (Classify Cluster Member LibSVM)
-                    Instance classifiedConvertedFeature = new Instance(convertedFeature.instance(0));
+                    Instance classifiedConvertedFeature = convertedFeature.instance(0);
                     Instances classifiedNormalityInstances = new Instances("normal_sites_classified_hybrid",sitesClusterer.getAttributesVector(trainingNormalKmeans),0);
                     classifiedNormalityInstances.setClassIndex(classifiedNormalityInstances.numAttributes()-1);
                     Enumeration normalityInstances = trainingNormalKmeans.enumerateInstances();
@@ -389,7 +389,7 @@ public class Controller implements Initializable {
                                 trainingDangerousKmeans.add(dangerousConvertedFeature.instance(0));
 
                                 // STAGE 2 (Classify Cluster Member kNN)
-                                Instance classifiedDangerousConvertedFeature = new Instance(dangerousConvertedFeature.instance(0));
+                                Instance classifiedDangerousConvertedFeature = dangerousConvertedFeature.instance(0);
                                 Instances classifiedDangerousityInstances = new Instances("dangerous_sites_classified_hybrid",sitesClusterer.getAttributesVector(trainingDangerousKmeans),0);
                                 classifiedDangerousityInstances.setClassIndex(classifiedDangerousityInstances.numAttributes()-1);
                                 Enumeration dangerousityInstances = trainingDangerousKmeans.enumerateInstances();
