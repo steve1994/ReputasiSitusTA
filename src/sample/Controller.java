@@ -146,19 +146,19 @@ public class Controller implements Initializable {
                                 double classValueDangerousity = optimumSupervisedClassifier2.classifyInstance(dangerousConvertedFeature.instance(0));
                                 labelDomainNameResult = dangerousConvertedFeature.classAttribute().value((int) classValueDangerousity);
 
-                                // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
-                                String pathTrainingClassifierKNN = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerous_category.supervised.arff";
-                                Instances trainingClassifierKNN = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingClassifierKNN);
-                                if (trainingClassifierKNN != null) {
-                                    trainingClassifierKNN.setClassIndex(trainingClassifierKNN.numAttributes() - 1);
-                                    convertedFeature.instance(0).setClassValue(classValueDangerousity);
-                                    trainingClassifierKNN.add(convertedFeature.instance(0));
-                                    EksternalFile.saveInstanceWekaToExternalARFF(trainingClassifierKNN, pathTrainingClassifierKNN);
-                                    // REBUILD CLASSIFIER KNN AGAIN AND SAVE AGAIN TO FILE
-                                    Classifier updatedClassifierKNN = new IBk(optimumKNN);
-                                    updatedClassifierKNN.buildClassifier(trainingClassifierKNN);
-                                    EksternalFile.saveClassifierToExternalModel(updatedClassifierKNN, pathClassifier2);
-                                }
+//                                // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
+//                                String pathTrainingClassifierKNN = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".dangerous_category.supervised.arff";
+//                                Instances trainingClassifierKNN = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingClassifierKNN);
+//                                if (trainingClassifierKNN != null) {
+//                                    trainingClassifierKNN.setClassIndex(trainingClassifierKNN.numAttributes() - 1);
+//                                    convertedFeature.instance(0).setClassValue(classValueDangerousity);
+//                                    trainingClassifierKNN.add(convertedFeature.instance(0));
+//                                    EksternalFile.saveInstanceWekaToExternalARFF(trainingClassifierKNN, pathTrainingClassifierKNN);
+//                                    // REBUILD CLASSIFIER KNN AGAIN AND SAVE AGAIN TO FILE
+//                                    Classifier updatedClassifierKNN = new IBk(optimumKNN);
+//                                    updatedClassifierKNN.buildClassifier(trainingClassifierKNN);
+//                                    EksternalFile.saveClassifierToExternalModel(updatedClassifierKNN, pathClassifier2);
+//                                }
                             } else {
                                 dataEmpty = true;
                             }
@@ -174,18 +174,18 @@ public class Controller implements Initializable {
                     String pathTrainingClassifierSVM = "database/weka/data/num_" + numTrainingSites + ".type_" + StaticVars.reputationType + ".normality_category.supervised.arff";
                     Instances trainingClassifierSVM = EksternalFile.loadInstanceWekaFromExternalARFF(pathTrainingClassifierSVM);
                     if (trainingClassifierSVM != null) {
-                        trainingClassifierSVM.setClassIndex(trainingClassifierSVM.numAttributes() - 1);
-                        convertedFeature.instance(0).setClassValue(classValue);
-                        trainingClassifierSVM.add(convertedFeature.instance(0));
-                        EksternalFile.saveInstanceWekaToExternalARFF(trainingClassifierSVM, pathTrainingClassifierSVM);
-                        // REBUILD CLASSIFIER SVM AND SAVE AGAIN TO FILE
-                        Classifier updatedClassifierSVM = new LibSVM();
-                        try {
-                            updatedClassifierSVM.buildClassifier(trainingClassifierSVM);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        EksternalFile.saveClassifierToExternalModel(updatedClassifierSVM, pathClassifier1);
+//                        trainingClassifierSVM.setClassIndex(trainingClassifierSVM.numAttributes() - 1);
+//                        convertedFeature.instance(0).setClassValue(classValue);
+//                        trainingClassifierSVM.add(convertedFeature.instance(0));
+//                        EksternalFile.saveInstanceWekaToExternalARFF(trainingClassifierSVM, pathTrainingClassifierSVM);
+//                        // REBUILD CLASSIFIER SVM AND SAVE AGAIN TO FILE
+//                        Classifier updatedClassifierSVM = new LibSVM();
+//                        try {
+//                            updatedClassifierSVM.buildClassifier(trainingClassifierSVM);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        EksternalFile.saveClassifierToExternalModel(updatedClassifierSVM, pathClassifier1);
                     } else {
                         dataEmpty = true;
                     }
@@ -265,18 +265,18 @@ public class Controller implements Initializable {
                                 compositionDangerousity = SitesHybrid.getClusterPercentageDangerousity(evalDangerousKmeans, trainingDangerousKmeans).get((int) clusterNumber);
 
                                 if (!labelDomainNameResult.equals("malicious (unknown type)")) {
-                                    // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
-                                    trainingDangerousKmeans.delete(trainingDangerousKmeans.numInstances() - 1);
-                                    convertedFeatureDangerous.instance(0).setClassValue(classValueClusterDangerous);
-                                    trainingDangerousKmeans.add(convertedFeatureDangerous.instance(0));
-                                    EksternalFile.saveInstanceWekaToExternalARFF(trainingDangerousKmeans, pathTrainingDangerousKmeans);
-                                    // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
-                                    try {
-                                        Clusterer updatedClustererDangerousity = sitesClusterer.buildKmeansReputationModel(trainingDangerousKmeans, KmeansDangerousClusterer.numberOfClusters());
-                                        EksternalFile.saveClustererToExternalModel(updatedClustererDangerousity, pathClustererDangerousKmeans);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+//                                    // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
+//                                    trainingDangerousKmeans.delete(trainingDangerousKmeans.numInstances() - 1);
+//                                    convertedFeatureDangerous.instance(0).setClassValue(classValueClusterDangerous);
+//                                    trainingDangerousKmeans.add(convertedFeatureDangerous.instance(0));
+//                                    EksternalFile.saveInstanceWekaToExternalARFF(trainingDangerousKmeans, pathTrainingDangerousKmeans);
+//                                    // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
+//                                    try {
+//                                        Clusterer updatedClustererDangerousity = sitesClusterer.buildKmeansReputationModel(trainingDangerousKmeans, KmeansDangerousClusterer.numberOfClusters());
+//                                        EksternalFile.saveClustererToExternalModel(updatedClustererDangerousity, pathClustererDangerousKmeans);
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
                                 }
 
                             } catch (Exception e) {
@@ -288,18 +288,18 @@ public class Controller implements Initializable {
                     }
 
                     if (!labelDomainNameResult.equals("unknown") && !labelDomainNameResult.equals("malicious (unknown type)")) {
-                        // UPDATE CURRENT TRAINING INSTANCES (NORMALITY)
-                        trainingNormalKmeans.delete(trainingNormalKmeans.numInstances() - 1);
-                        convertedFeature.instance(0).setClassValue(classValueCluster);
-                        trainingNormalKmeans.add(convertedFeature.instance(0));
-                        EksternalFile.saveInstanceWekaToExternalARFF(trainingNormalKmeans, pathTrainingNormalKmeans);
-                        // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
-                        try {
-                            Clusterer updatedClustererNormality = sitesClusterer.buildKmeansReputationModel(trainingNormalKmeans, KmeansNormalClusterer.numberOfClusters());
-                            EksternalFile.saveClustererToExternalModel(updatedClustererNormality, pathClustererNormalKmeans);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+//                        // UPDATE CURRENT TRAINING INSTANCES (NORMALITY)
+//                        trainingNormalKmeans.delete(trainingNormalKmeans.numInstances() - 1);
+//                        convertedFeature.instance(0).setClassValue(classValueCluster);
+//                        trainingNormalKmeans.add(convertedFeature.instance(0));
+//                        EksternalFile.saveInstanceWekaToExternalARFF(trainingNormalKmeans, pathTrainingNormalKmeans);
+//                        // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
+//                        try {
+//                            Clusterer updatedClustererNormality = sitesClusterer.buildKmeansReputationModel(trainingNormalKmeans, KmeansNormalClusterer.numberOfClusters());
+//                            EksternalFile.saveClustererToExternalModel(updatedClustererNormality, pathClustererNormalKmeans);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 } else {
                     dataEmpty = true;
@@ -433,26 +433,26 @@ public class Controller implements Initializable {
                                         compositionDangerousity = SitesHybrid.getClusterPercentageDangerousity(evalDangerousKmeans, classifiedDangerousityInstances).get((int) clusterNumber);
 
                                         if (!labelDomainNameResult.equals("malicious (unknown type)")) {
-                                            // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
-                                            trainingDangerousKmeans.delete(trainingDangerousKmeans.numInstances() - 1);
-                                            dangerousConvertedFeature.instance(0).setClassValue(classValueClusterDangerous);
-                                            trainingDangerousKmeans.add(dangerousConvertedFeature.instance(0));
-                                            EksternalFile.saveInstanceWekaToExternalARFF(trainingDangerousKmeans, pathTrainingDangerousKmeans);
-                                            // REBUILD CLASSIFIER AND SAVE TO EKSTERNAL FILE
-                                            Classifier updatedClassifierKNN = new IBk(optimumKNN);
-                                            try {
-                                                updatedClassifierKNN.buildClassifier(trainingDangerousKmeans);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                            EksternalFile.saveClassifierToExternalModel(updatedClassifierKNN, pathClassifier2);
-                                            // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
-                                            try {
-                                                Clusterer updatedClustererDangerousity = sitesClusterer.buildKmeansReputationModel(trainingDangerousKmeans, KmeansDangerousClusterer.numberOfClusters());
-                                                EksternalFile.saveClustererToExternalModel(updatedClustererDangerousity, pathClustererDangerousKmeans);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
+//                                            // UPDATE CURRENT TRAINING INSTANCES (DANGEROUSITY)
+//                                            trainingDangerousKmeans.delete(trainingDangerousKmeans.numInstances() - 1);
+//                                            dangerousConvertedFeature.instance(0).setClassValue(classValueClusterDangerous);
+//                                            trainingDangerousKmeans.add(dangerousConvertedFeature.instance(0));
+//                                            EksternalFile.saveInstanceWekaToExternalARFF(trainingDangerousKmeans, pathTrainingDangerousKmeans);
+//                                            // REBUILD CLASSIFIER AND SAVE TO EKSTERNAL FILE
+//                                            Classifier updatedClassifierKNN = new IBk(optimumKNN);
+//                                            try {
+//                                                updatedClassifierKNN.buildClassifier(trainingDangerousKmeans);
+//                                            } catch (Exception e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                            EksternalFile.saveClassifierToExternalModel(updatedClassifierKNN, pathClassifier2);
+//                                            // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
+//                                            try {
+//                                                Clusterer updatedClustererDangerousity = sitesClusterer.buildKmeansReputationModel(trainingDangerousKmeans, KmeansDangerousClusterer.numberOfClusters());
+//                                                EksternalFile.saveClustererToExternalModel(updatedClustererDangerousity, pathClustererDangerousKmeans);
+//                                            } catch (Exception e) {
+//                                                e.printStackTrace();
+//                                            }
                                         }
 
                                     } catch (Exception e) {
@@ -467,26 +467,26 @@ public class Controller implements Initializable {
                         }
 
                         if (!labelDomainNameResult.equals("unknown") && !labelDomainNameResult.equals("malicious (unknown type)")) {
-                            // UPDATE CURRENT TRAINING INSTANCES (NORMALITY)
-                            trainingNormalKmeans.delete(trainingNormalKmeans.numInstances() - 1);
-                            convertedFeature.instance(0).setClassValue(classValueCluster);
-                            trainingNormalKmeans.add(convertedFeature.instance(0));
-                            EksternalFile.saveInstanceWekaToExternalARFF(trainingNormalKmeans, pathTrainingNormalKmeans);
-                            // REBUILD CLASSIFIER AND SAVE TO EKSTERNAL FILE
-                            Classifier updatedClassifierSVM = new LibSVM();
-                            try {
-                                updatedClassifierSVM.buildClassifier(trainingNormalKmeans);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            EksternalFile.saveClassifierToExternalModel(updatedClassifierSVM, pathClassifier1);
-                            // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
-                            try {
-                                Clusterer updatedClustererNormality = sitesClusterer.buildKmeansReputationModel(trainingNormalKmeans, KmeansNormalClusterer.numberOfClusters());
-                                EksternalFile.saveClustererToExternalModel(updatedClustererNormality, pathClustererNormalKmeans);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+//                            // UPDATE CURRENT TRAINING INSTANCES (NORMALITY)
+//                            trainingNormalKmeans.delete(trainingNormalKmeans.numInstances() - 1);
+//                            convertedFeature.instance(0).setClassValue(classValueCluster);
+//                            trainingNormalKmeans.add(convertedFeature.instance(0));
+//                            EksternalFile.saveInstanceWekaToExternalARFF(trainingNormalKmeans, pathTrainingNormalKmeans);
+//                            // REBUILD CLASSIFIER AND SAVE TO EKSTERNAL FILE
+//                            Classifier updatedClassifierSVM = new LibSVM();
+//                            try {
+//                                updatedClassifierSVM.buildClassifier(trainingNormalKmeans);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            EksternalFile.saveClassifierToExternalModel(updatedClassifierSVM, pathClassifier1);
+//                            // REBUILD CLUSTERER AND SAVE TO EKSTERNAL FILE
+//                            try {
+//                                Clusterer updatedClustererNormality = sitesClusterer.buildKmeansReputationModel(trainingNormalKmeans, KmeansNormalClusterer.numberOfClusters());
+//                                EksternalFile.saveClustererToExternalModel(updatedClustererNormality, pathClustererNormalKmeans);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                         }
                     } else {
                         dataEmpty = true;
