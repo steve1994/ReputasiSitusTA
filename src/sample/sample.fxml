@@ -9,18 +9,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane prefHeight="457.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane prefHeight="568.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
           <Label layoutX="26.0" layoutY="79.0" text="Sites Domain Name :" />
           <TextField fx:id="domainSitesTextField" layoutX="158.0" layoutY="75.0" prefHeight="25.0" prefWidth="327.0" />
           <Label layoutX="25.0" layoutY="122.0" text="Reputation Features :" />
-          <Button layoutX="158.0" layoutY="405.0" mnemonicParsing="false" onAction="#handleDiagnoseButton" text="DIAGNOSE" />
+          <Button layoutX="159.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleDiagnoseButton" text="DIAGNOSE" />
       <Label layoutX="79.0" layoutY="21.0" text="WEBSITE REPUTATION SYSTEM">
          <font>
             <Font name="Calibri" size="29.0" />
          </font>
       </Label>
-      <Button layoutX="290.0" layoutY="405.0" mnemonicParsing="false" onAction="#handleHistoryButton" text="HISTORY" />
+      <Button layoutX="291.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleHistoryButton" text="HISTORY" />
       <Label layoutX="338.0" layoutY="122.0" text="Method :" />
       <RadioButton fx:id="supervisedRadioButton" layoutX="338.0" layoutY="148.0" mnemonicParsing="false" text="Supervised" />
       <RadioButton fx:id="unsupervisedRadioButton" layoutX="338.0" layoutY="176.0" mnemonicParsing="false" text="Unsupervised" />
@@ -32,17 +32,25 @@
       <RadioButton fx:id="dnsTrustRadioButton" layoutX="27.0" layoutY="261.0" mnemonicParsing="false" text="DNS + Trust Collaborative" />
       <RadioButton fx:id="spesificTrustRadioButton" layoutX="27.0" layoutY="290.0" mnemonicParsing="false" text="Site's Spesific Info + Trust Collaborative" />
       <RadioButton fx:id="dnsSpesificTrustRadioButton" layoutX="28.0" layoutY="318.0" mnemonicParsing="false" text="DNS + Site's Spesific Info + Trust Collaborative" />
-      <Label layoutX="28.0" layoutY="357.0" text="Number Training Data : " />
-      <ChoiceBox fx:id="numberTrainingChoiceBox" layoutX="163.0" layoutY="353.0" prefHeight="25.0" prefWidth="327.0" />
-      <Label fx:id="keterangan" layoutX="308.0" layoutY="286.0" text="Label" textFill="#e11111">
+      <Label layoutX="28.0" layoutY="357.0" text="Training Data (Supervised) : " />
+      <ChoiceBox fx:id="numberTrainingChoiceBox" layoutX="206.0" layoutY="353.0" prefHeight="25.0" prefWidth="284.0" />
+      <Label fx:id="keterangan" layoutX="143.0" layoutY="475.0" text="Label" textFill="#e11111">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="keterangan1" layoutX="308.0" layoutY="257.0" text="Keterangan :" textFill="#1e1d1d">
+      <Label fx:id="keterangan1" layoutX="31.0" layoutY="475.0" text="Keterangan :" textFill="#1e1d1d">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
+      <ChoiceBox id="numberTrainingChoiceBoxUnsupervised" fx:id="numberTrainingChoiceBoxUnsupervised" layoutX="207.0" layoutY="394.0" prefHeight="25.0" prefWidth="284.0" />
+      <Label layoutX="28.0" layoutY="398.0" text="Training Data (Unsupervised) : " />
+      <Label layoutX="338.0" layoutY="233.0" text="Clustering Algorithm :" />
+      <RadioButton fx:id="KMeansRadioButton" layoutX="339.0" layoutY="261.0" mnemonicParsing="false" text="KMeans" />
+      <RadioButton fx:id="HCRadioButton" layoutX="339.0" layoutY="318.0" mnemonicParsing="false" text="Hierarchical Clustering" />
+      <RadioButton fx:id="EMRadioButton" layoutX="339.0" layoutY="290.0" mnemonicParsing="false" text="Expectation Maximization" />
+      <Label layoutX="30.0" layoutY="438.0" text="Num Nearest Neighbor  :" />
+      <ChoiceBox fx:id="numKNNChoiceBox" layoutX="208.0" layoutY="434.0" prefHeight="25.0" prefWidth="284.0" />
     </children>
 </AnchorPane>
