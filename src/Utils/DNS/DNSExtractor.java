@@ -7,7 +7,9 @@ import Utils.Converter;
 import Utils.Database.EksternalFile;
 import com.google.common.net.InternetDomainName;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import org.javatuples.Octet;
 import org.javatuples.Pair;
+import org.javatuples.Octet;
 import org.javatuples.Sextet;
 import org.xbill.DNS.*;
 
@@ -19,6 +21,7 @@ import javax.naming.directory.InitialDirContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by steve on 11/03/2016.
@@ -184,16 +187,210 @@ public class DNSExtractor {
         int ASNumberThisURL = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
         System.out.println("AS NUMBER : " + ASNumberThisURL);
         if (ASNumberThisURL > 0) {
+            // Load IP Prefix and determine partition
             List<String> listIPPrefixes = RIPE_API_Loader.loadASNFromRIPEAPI(ASNumberThisURL);
-            for (String IPPrefix : listIPPrefixes) {
-                System.out.println("IPPrefix : " + IPPrefix);
-                List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
-                for (String ip : resolvedIPAddress) {
-                    String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
-                    System.out.println("Name Server Converted : " + nameServerConverted);
-//                    uniqueNameServers.add(nameServerConverted);
-//                    System.out.println("Name Server : " + nameServerConverted);
+            int numPartitionIPPrefixes = 50;
+            if (numPartitionIPPrefixes > listIPPrefixes.size()) {
+                numPartitionIPPrefixes = listIPPrefixes.size();
+            }
 
+            // Split list ip prefixes into ten parts
+            List<List<String>> listIPPrefixesPartition = new ArrayList<List<String>>();
+            for (int j=0;j<numPartitionIPPrefixes;j++) {
+                listIPPrefixesPartition.add(new ArrayList<String>());
+            }
+            int offSetPartition = 0;
+            for (int j=0;j<listIPPrefixes.size();j++) {
+                listIPPrefixesPartition.get(offSetPartition).add(listIPPrefixes.get(j));
+                offSetPartition++;
+                if (offSetPartition == numPartitionIPPrefixes) {
+                    offSetPartition = 0;
+                }
+            }
+
+            // Thread TLD Execution (using Callable)
+            ExecutorService executorService = Executors.newFixedThreadPool(numPartitionIPPrefixes);
+            List<Callable<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>>> listCallable =
+                    new ArrayList<Callable<Octet<HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, Integer>>>();
+            for (int j=0;j<listIPPrefixesPartition.size();j++) {
+                listCallable.add(new TLDDistributionASThread(listIPPrefixesPartition.get(j)));
+            }
+            try {
+                List<Future<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>>> tasksCallable = executorService.invokeAll(listCallable);
+                for (Future<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>> task : tasksCallable) {
+                    Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer> thread = null;
+                    try {
+                        thread = task.get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    // .com Top Level Domain
+                    HashSet<String> comTLDThisThread = thread.getValue0();
+                    Iterator iteratorCom = comTLDThisThread.iterator();
+                    while (iteratorCom.hasNext()) {
+                        String TLD = (String) iteratorCom.next();
+                        comTLDRetrieved.add(TLD);
+                    }
+                    // .org Top Level Domain
+                    HashSet<String> orgTLDThisThread = thread.getValue1();
+                    Iterator iteratorOrg = orgTLDThisThread.iterator();
+                    while (iteratorOrg.hasNext()) {
+                        String TLD = (String) iteratorOrg.next();
+                        orgTLDRetrieved.add(TLD);
+                    }
+                    // .edu Top Level Domain
+                    HashSet<String> eduTLDThisThread = thread.getValue2();
+                    Iterator iteratorEdu = eduTLDThisThread.iterator();
+                    while (iteratorEdu.hasNext()) {
+                        String TLD = (String) iteratorEdu.next();
+                        eduTLDRetrieved.add(TLD);
+                    }
+                    // .gov Top Level Domain
+                    HashSet<String> govTLDThisThread = thread.getValue3();
+                    Iterator iteratorGov = govTLDThisThread.iterator();
+                    while (iteratorGov.hasNext()) {
+                        String TLD = (String) iteratorGov.next();
+                        govTLDRetrieved.add(TLD);
+                    }
+                    // .uk Top Level Domain
+                    HashSet<String> ukTLDThisThread = thread.getValue4();
+                    Iterator iteratorUk = ukTLDThisThread.iterator();
+                    while (iteratorUk.hasNext()) {
+                        String TLD = (String) iteratorUk.next();
+                        ukTLDRetrieved.add(TLD);
+                    }
+                    // .com Top Level Domain
+                    HashSet<String> npTLDThisThread = thread.getValue5();
+                    Iterator iteratorNp = npTLDThisThread.iterator();
+                    while (iteratorNp.hasNext()) {
+                        String TLD = (String) iteratorNp.next();
+                        nonPopularTLDRetrieved.add(TLD);
+                    }
+                    // Num Name Server Unique
+                    HashSet<String> uniqueNSThisThread = thread.getValue6();
+                    Iterator iteratorUnique = uniqueNSThisThread.iterator();
+                    while (iteratorUnique.hasNext()) {
+                        String TLD = (String) iteratorUnique.next();
+                        uniqueNameServers.add(TLD);
+                    }
+                    // Update num name server total
+                    numNameServersTotal += thread.getValue7();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            executorService.shutdown();
+
+//            for (String IPPrefix : listIPPrefixes) {
+//                System.out.println("IPPrefix : " + IPPrefix);
+//                List<String> resolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(IPPrefix);
+//                for (String ip : resolvedIPAddress) {
+//                    String nameServerConverted = Converter.convertIPAddressIntoHostName(ip);
+//                    System.out.println("Name Server Converted : " + nameServerConverted);
+//
+//                    if (nameServerConverted != "") {
+//                        // Cek apakah bisa dikonversi ke canonical name
+//                        if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
+//                            InternetDomainName idn = InternetDomainName.from(nameServerConverted);
+//                            if (idn.hasPublicSuffix()) {
+//                                List<String> parts = idn.parts();
+//                                String TLD = parts.get(parts.size() - 1);
+//                                if (TLD.equals("com")) {
+//                                    comTLDRetrieved.add(nameServerConverted);
+//                                } else if (TLD.equals("org")) {
+//                                    orgTLDRetrieved.add(nameServerConverted);
+//                                } else if (TLD.equals("edu")) {
+//                                    eduTLDRetrieved.add(nameServerConverted);
+//                                } else if (TLD.equals("gov")) {
+//                                    govTLDRetrieved.add(nameServerConverted);
+//                                } else if (TLD.equals("uk")) {
+//                                    ukTLDRetrieved.add(nameServerConverted);
+//                                } else {
+//                                    nonPopularTLDRetrieved.add(nameServerConverted);
+//                                }
+//                            }
+//                        }
+//                        String[] nameServerConvertedToken = nameServerConverted.split("\\.");
+//                        String nameServerConvertedUnique = "";
+//                        for (int l=1;l<nameServerConvertedToken.length;l++) {
+//                            nameServerConvertedUnique += nameServerConvertedToken[l];
+//                            if (l < (nameServerConvertedToken.length-1)) {
+//                                nameServerConvertedUnique += ".";
+//                            }
+//                        }
+//                        System.out.println("Name Server Unique : " + nameServerConvertedUnique);
+//                        uniqueNameServers.add(nameServerConvertedUnique);
+//
+//                        numNameServersTotal++;
+//                    }
+//                }
+//            }
+        }
+        System.out.println("TOTAL COM : " + comTLDRetrieved.size());
+        System.out.println("TOTAL ORG : " + orgTLDRetrieved.size());
+        System.out.println("TOTAL GOV : " + govTLDRetrieved.size());
+        System.out.println("TOTAL EDU : " + eduTLDRetrieved.size());
+        System.out.println("TOTAL UK : " + ukTLDRetrieved.size());
+        System.out.println("TOTAL Non popular : " + nonPopularTLDRetrieved.size());
+        System.out.println("TOTAL Unique : " + uniqueNameServers.size());
+        System.out.println("TOTAL NUM SERVER : " + numNameServersTotal);
+
+        // Hitung rasio keenam TLD
+        double comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio;
+        if (numNameServersTotal > 0) {
+            comRatio = (double) comTLDRetrieved.size() / (double) numNameServersTotal;
+            orgRatio = (double) orgTLDRetrieved.size() / (double) numNameServersTotal;
+            eduRatio = (double) eduTLDRetrieved.size() / (double) numNameServersTotal;
+            govRatio = (double) govTLDRetrieved.size() / (double) numNameServersTotal;
+            ukRatio = (double) ukTLDRetrieved.size() / (double) numNameServersTotal;
+            nonPopularRatio = (double) nonPopularTLDRetrieved.size() / (double) numNameServersTotal;
+        } else {
+            comRatio = orgRatio = eduRatio = govRatio = ukRatio = nonPopularRatio = 0.0;
+        }
+        // Hitung distribusi name server unik AS
+        double uniqueNSDistributionAS;
+        if (numNameServersTotal > 0) {
+            uniqueNSDistributionAS = (double) uniqueNameServers.size() / (double) numNameServersTotal;
+        } else {
+            uniqueNSDistributionAS = 0.0;
+        }
+
+        Sextet<Double, Double, Double, Double, Double, Double> sixRatioRetrieved = new Sextet<Double, Double, Double, Double, Double, Double>(comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio);
+        return new Pair<Double, Sextet<Double, Double, Double, Double, Double, Double>>(uniqueNSDistributionAS, sixRatioRetrieved);
+    }
+
+    /**
+     * Thread to improve TLD Distribution Performance
+     */
+    private static class TLDDistributionASThread implements Callable {
+        private List<String> listIPPrefixes;
+        private HashSet<String> comTLDRetrieved;
+        private HashSet<String> orgTLDRetrieved;
+        private HashSet<String> eduTLDRetrieved;
+        private HashSet<String> govTLDRetrieved;
+        private HashSet<String> ukTLDRetrieved;
+        private HashSet<String> nonPopularTLDRetrieved;
+        private HashSet<String> uniqueNameServers;
+        private int numNameServerTotal;
+
+        public TLDDistributionASThread(List<String> listIPPrefixes) {
+            this.listIPPrefixes = listIPPrefixes;
+            comTLDRetrieved = new HashSet<String>();
+            orgTLDRetrieved = new HashSet<String>();
+            eduTLDRetrieved = new HashSet<String>();
+            govTLDRetrieved = new HashSet<String>();
+            ukTLDRetrieved = new HashSet<String>();
+            nonPopularTLDRetrieved = new HashSet<String>();
+            uniqueNameServers = new HashSet<String>();
+            numNameServerTotal = 0;
+        }
+
+        public Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer> getTLDDistAS() {
+            for (String ipPrefix : listIPPrefixes) {
+                List<String> listResolvedIPAddress = RIPE_API_Loader.loadNameServersFromIPPrefix(ipPrefix);
+                for (String ipAddress : listResolvedIPAddress) {
+                    String nameServerConverted = Converter.convertIPAddressIntoHostName(ipAddress);
                     if (nameServerConverted != "") {
                         // Cek apakah bisa dikonversi ke canonical name
                         if ((!InetAddressValidator.getInstance().isValidInet4Address(nameServerConverted)) && (!nameServerConverted.isEmpty())) {
@@ -226,35 +423,19 @@ public class DNSExtractor {
                         }
                         System.out.println("Name Server Unique : " + nameServerConvertedUnique);
                         uniqueNameServers.add(nameServerConvertedUnique);
-
-                        numNameServersTotal++;
+                        
+                        numNameServerTotal++;
                     }
                 }
             }
+
+            return new Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>
+                    (comTLDRetrieved,orgTLDRetrieved,eduTLDRetrieved,govTLDRetrieved,ukTLDRetrieved,nonPopularTLDRetrieved,uniqueNameServers,numNameServerTotal);
         }
 
-        // Hitung rasio keenam TLD
-        double comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio;
-        if (numNameServersTotal > 0) {
-            comRatio = (double) comTLDRetrieved.size() / (double) numNameServersTotal;
-            orgRatio = (double) orgTLDRetrieved.size() / (double) numNameServersTotal;
-            eduRatio = (double) eduTLDRetrieved.size() / (double) numNameServersTotal;
-            govRatio = (double) govTLDRetrieved.size() / (double) numNameServersTotal;
-            ukRatio = (double) ukTLDRetrieved.size() / (double) numNameServersTotal;
-            nonPopularRatio = (double) nonPopularTLDRetrieved.size() / (double) numNameServersTotal;
-        } else {
-            comRatio = orgRatio = eduRatio = govRatio = ukRatio = nonPopularRatio = 0.0;
+        public Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer> call() throws Exception {
+            return getTLDDistAS();
         }
-        // Hitung distribusi name server unik AS
-        double uniqueNSDistributionAS;
-        if (numNameServersTotal > 0) {
-            uniqueNSDistributionAS = (double) uniqueNameServers.size() / (double) numNameServersTotal;
-        } else {
-            uniqueNSDistributionAS = 0.0;
-        }
-
-        Sextet<Double, Double, Double, Double, Double, Double> sixRatioRetrieved = new Sextet<Double, Double, Double, Double, Double, Double>(comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio);
-        return new Pair<Double, Sextet<Double, Double, Double, Double, Double, Double>>(uniqueNSDistributionAS, sixRatioRetrieved);
     }
 
     /**
@@ -352,7 +533,7 @@ public class DNSExtractor {
 
     public static void main(String[] args) {
         List<String> listSites = EksternalFile.loadSitesTrainingList(1).getKey();
-//        for (int k=0;k<100;k++) {
+        for (int k=0;k<1;k++) {
             String hostName = listSites.get(3);
 
             List<Object> fiturs = new ArrayList<Object>();
@@ -435,6 +616,6 @@ public class DNSExtractor {
             System.out.println("Waktu eksekusi TTL NS : " + (afterTTLNS - afterNSCount));
             System.out.println("Waktu eksekusi TTL IP : " + (afterTTLIP - afterTTLNS));
             System.out.println("==================================================================================");
-//        }
+        }
     }
 }
