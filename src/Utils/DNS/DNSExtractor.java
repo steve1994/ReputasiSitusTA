@@ -145,13 +145,16 @@ public class DNSExtractor {
         switch (typeSites) {
             default:
             case 1:
-                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListMalware.txt");
+//                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListMalware.txt");
+                rawContent = EksternalFile.getRawFileContent("D:\\steve\\TA_Project\\ReputasiSitusTA\\src\\Utils\\DNS\\database\\ASNumberListMalware.txt");
                 break;
             case 2:
-                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListPhishing.txt");
+//                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListPhishing.txt");
+                rawContent = EksternalFile.getRawFileContent("D:\\steve\\TA_Project\\ReputasiSitusTA\\src\\Utils\\DNS\\database\\ASNumberListPhishing.txt");
                 break;
             case 3:
-                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListSpamming.txt");
+//                rawContent = EksternalFile.getRawFileContent("src/Utils/DNS/database/ASNumberListSpamming.txt");
+                rawContent = EksternalFile.getRawFileContent("D:\\steve\\TA_Project\\ReputasiSitusTA\\src\\Utils\\DNS\\database\\ASNumberListSpamming.txt");
                 break;
         }
         List<Integer> listASNThisSites = new ArrayList<Integer>();
@@ -430,7 +433,6 @@ public class DNSExtractor {
                     (comTLDRetrieved,orgTLDRetrieved,eduTLDRetrieved,govTLDRetrieved,ukTLDRetrieved,nonPopularTLDRetrieved,uniqueNameServers,numNameServerTotal);
         }
 
-        @Override
         public Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer> call() throws Exception {
             return getTLDDistAS();
         }
@@ -600,7 +602,7 @@ public class DNSExtractor {
             for (int i = 0; i < fiturs.size(); i++) {
                 values[i] = new Double(fiturs.get(i).toString());
             }
-            System.out.println("LIST VALUES SITE-" + (k+1));
+//            System.out.println("LIST VALUES SITE-" + (k+1));
             for (double d : values) {
                 System.out.println(d);
             }
