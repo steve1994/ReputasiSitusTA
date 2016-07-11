@@ -352,8 +352,8 @@ public class DNSExtractor {
 
     public static void main(String[] args) {
         List<String> listSites = EksternalFile.loadSitesTrainingList(1).getKey();
-        for (int k=0;k<100;k++) {
-            String hostName = listSites.get(k);
+//        for (int k=0;k<100;k++) {
+            String hostName = listSites.get(3);
 
             List<Object> fiturs = new ArrayList<Object>();
 
@@ -421,7 +421,7 @@ public class DNSExtractor {
             for (int i = 0; i < fiturs.size(); i++) {
                 values[i] = new Double(fiturs.get(i).toString());
             }
-            System.out.println("LIST VALUES SITE-" + (k+1));
+//            System.out.println("LIST VALUES SITE-" + (k+1));
             for (double d : values) {
                 System.out.println(d);
             }
@@ -435,6 +435,6 @@ public class DNSExtractor {
             System.out.println("Waktu eksekusi TTL NS : " + (afterTTLNS - afterNSCount));
             System.out.println("Waktu eksekusi TTL IP : " + (afterTTLIP - afterTTLNS));
             System.out.println("==================================================================================");
-        }
+//        }
     }
 }
