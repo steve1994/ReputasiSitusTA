@@ -9,6 +9,7 @@ import data_structure.feature.Spesific_Feature;
 import data_structure.feature.Trust_Feature;
 import data_structure.instance_ML.SiteRecordReputation;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import sample.StaticVars;
 import weka.core.Attribute;
@@ -115,8 +116,6 @@ public class SitesMLProcessor {
             // Popular TLD ratio in AS
             Attribute ratioTLDAsCom = new Attribute("TLD_AS_com"); overallInstanceVector.add(ratioTLDAsCom);
             Attribute ratioTLDAsOrg = new Attribute("TLD_AS_org"); overallInstanceVector.add(ratioTLDAsOrg);
-            Attribute ratioTLDAsEdu = new Attribute("TLD_AS_edu"); overallInstanceVector.add(ratioTLDAsEdu);
-            Attribute ratioTLDAsGov = new Attribute("TLD_AS_gov"); overallInstanceVector.add(ratioTLDAsGov);
             Attribute ratioTLDAsUk = new Attribute("TLD_AS_uk"); overallInstanceVector.add(ratioTLDAsUk);
             Attribute ratioTLDAsRest = new Attribute("TLD_AS_rest"); overallInstanceVector.add(ratioTLDAsRest);
             // Hit AS ratio in malware / phishing / spamming
@@ -282,14 +281,12 @@ public class SitesMLProcessor {
         // DNS FEATURES
         if (Arrays.asList(1, 4, 5, 7).contains(typeReputation)) {
             // TLD ratio
-            Pair<Double,Sextet<Double, Double, Double, Double, Double, Double>> TLDRatio = DNSExtractor.getTLDDistributionFromAS(domainName);
-            Double[] TLDRatioList = new Double[6];
+            Pair<Double,Quartet<Double, Double, Double, Double>> TLDRatio = DNSExtractor.getTLDDistributionFromAS(domainName);
+            Double[] TLDRatioList = new Double[4];
             TLDRatioList[0] = TLDRatio.getValue1().getValue0();
             TLDRatioList[1] = TLDRatio.getValue1().getValue1();
             TLDRatioList[2] = TLDRatio.getValue1().getValue2();
             TLDRatioList[3] = TLDRatio.getValue1().getValue3();
-            TLDRatioList[4] = TLDRatio.getValue1().getValue4();
-            TLDRatioList[5] = TLDRatio.getValue1().getValue5();
             fiturDNS.setPopularTLDRatio(TLDRatioList);
             System.out.println("TLD Ratio");
 
