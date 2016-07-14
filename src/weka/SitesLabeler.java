@@ -218,10 +218,20 @@ public class SitesLabeler extends SitesMLProcessor {
         String pathNameStatic2 = "database/weka/data_static/" + fileNameStatic2;
         EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,pathNameStatic2);
 
-//        Instances allInstancesRecordSite2 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_5.normal.staticdata.arff");
+//        Instances allInstancesRecordSite2 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff");
 //        allInstancesRecordSite2.setClassIndex(allInstancesRecordSite2.numAttributes()-1);
-//        Instances allInstancesRecordSite = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_5.dangerous.staticdata.arff");
+//        Instances allInstancesRecordSite = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff");
 //        allInstancesRecordSite.setClassIndex(allInstancesRecordSite.numAttributes()-1);
+//
+//        for (int i=0;i<2;i++) {
+//            allInstancesRecordSite.deleteAttributeAt(2);
+//            allInstancesRecordSite2.deleteAttributeAt(2);
+//        }
+//        allInstancesRecordSite.deleteAttributeAt(allInstancesRecordSite.numAttributes()-3);
+//        allInstancesRecordSite2.deleteAttributeAt(allInstancesRecordSite2.numAttributes()-3);
+//
+//        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,"database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff");
+//        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite,"database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff");
 
         // Extract attributes from allInstancesRecordSite 1 (abnormal only (malware / phishing / spamming))
         FastVector instancesAttributes = new FastVector();

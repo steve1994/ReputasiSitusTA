@@ -211,14 +211,14 @@ public class DNSExtractor {
             // Thread TLD Execution (using Callable)
             ExecutorService executorService = Executors.newFixedThreadPool(numPartitionIPPrefixes);
             List<Callable<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>>> listCallable =
-                    new ArrayList<Callable<Octet<HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, Integer>>>();
-            for (int j=0;j<listIPPrefixesPartition.size();j++) {
+                    new ArrayList<Callable<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>>>();
+            for (int j = 0; j < listIPPrefixesPartition.size(); j++) {
                 listCallable.add(new TLDDistributionASThread(listIPPrefixesPartition.get(j)));
             }
             try {
                 List<Future<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>>> tasksCallable = executorService.invokeAll(listCallable);
                 for (Future<Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer>> task : tasksCallable) {
-                    Octet<HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,HashSet<String>,Integer> thread = null;
+                    Octet<HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, HashSet<String>, Integer> thread = null;
                     try {
                         thread = task.get();
                     } catch (ExecutionException e) {
@@ -423,7 +423,7 @@ public class DNSExtractor {
                         }
                         System.out.println("Name Server Unique : " + nameServerConvertedUnique);
                         uniqueNameServers.add(nameServerConvertedUnique);
-                        
+
                         numNameServerTotal++;
                     }
                 }
