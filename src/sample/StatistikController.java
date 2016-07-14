@@ -20,8 +20,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import weka.SitesClusterer;
+import weka.SitesMLProcessor;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,142 +59,8 @@ public class StatistikController implements Initializable{
         List<Long> listTimeTrust = new ArrayList<Long>();
 
         for (int i=0;i<StaticVars.numSitesTraining;i++) {
-            // DNS FEATURES
-            DNS_Feature fiturDNS = new DNS_Feature();
-
-            if ((StaticVars.reputationType == 1) || (StaticVars.reputationType == 4) || (StaticVars.reputationType == 5) || (StaticVars.reputationType == 7)) {
-                long beforeDNS = System.currentTimeMillis();
-
-                // TLD ratio
-                Pair<Double,Sextet<Double, Double, Double, Double, Double, Double>> TLDRatio = DNSExtractor.getTLDDistributionFromAS(StaticVars.listSitesTraining.get(i));
-                Double[] TLDRatioList = new Double[6];
-                TLDRatioList[0] = TLDRatio.getValue1().getValue0();
-                TLDRatioList[1] = TLDRatio.getValue1().getValue1();
-                TLDRatioList[2] = TLDRatio.getValue1().getValue2();
-                TLDRatioList[3] = TLDRatio.getValue1().getValue3();
-                TLDRatioList[4] = TLDRatio.getValue1().getValue4();
-                TLDRatioList[5] = TLDRatio.getValue1().getValue5();
-                fiturDNS.setPopularTLDRatio(TLDRatioList);
-                System.out.println("TLD Ratio");
-
-                long afterTLDRatio = System.currentTimeMillis();
-
-                // Hit AS Ratio (malware, phishing, spamming)
-                Double[] HitRatioList = new Double[3];
-                int thisSiteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(StaticVars.listSitesTraining.get(i)));
-                for (int j = 0; j < 3; j++) {
-                    HitRatioList[j] = DNSExtractor.getHitASRatio(thisSiteASN, j + 1);
-                }
-                fiturDNS.setHitASRatio(HitRatioList);
-                System.out.println("Hit AS Ratio");
-
-                long afterHitRatio = System.currentTimeMillis();
-
-                // Name server distribution AS
-//                fiturDNS.setDistributionNSAS(DNSExtractor.getDistributionNSFromAS(StaticVars.listSitesTraining.get(i)));
-                fiturDNS.setDistributionNSAS(TLDRatio.getValue0());
-                System.out.println("Name Server Distribution AS");
-
-                long afterNSDist = System.currentTimeMillis();
-
-                // Name server count
-                fiturDNS.setNumNameServer(DNSExtractor.getNumNameServers(StaticVars.listSitesTraining.get(i)));
-                System.out.println("Name Server Count");
-
-                long afterNSCount = System.currentTimeMillis();
-
-                // TTL Name Servers
-                fiturDNS.setListNSTTL(DNSExtractor.getNameServerTimeToLive(StaticVars.listSitesTraining.get(i)));
-                System.out.println("TTL Name Servers");
-
-                long afterTTLNS = System.currentTimeMillis();
-
-                // TTL DNS A Records
-                fiturDNS.setListDNSRecordTTL(DNSExtractor.getDNSRecordTimeToLive(StaticVars.listSitesTraining.get(i)));
-                System.out.println("TTL DNS Record");
-
-                long afterTTLIP = System.currentTimeMillis();
-
-                // TIME LOGGER SET
-                listTimeTLDRatioAS.add(afterTLDRatio-beforeDNS);
-                listTimeHitRatioAS.add(afterHitRatio-afterTLDRatio);
-                listTimeNSDistAS.add(afterNSDist-afterHitRatio);
-                listTimeNSCount.add(afterNSCount-afterNSDist);
-                listTimeTTLNS.add(afterTTLNS-afterNSCount);
-                listTimeTTLIP.add(afterTTLIP-afterTTLNS);
-            }
-
-            // SPESIFIC FEATURES
-            Spesific_Feature fiturSpesific = new Spesific_Feature();
-
-            if ((StaticVars.reputationType == 2) || (StaticVars.reputationType == 4) || (StaticVars.reputationType == 6) || (StaticVars.reputationType == 7)) {
-                long beforeSpesific = System.currentTimeMillis();
-
-                // Token Count URL
-                fiturSpesific.setTokenCountURL(ContentExtractor.getDomainTokenCountURL(StaticVars.listSitesTraining.get(i)));
-                System.out.println("Token Count URL");
-
-                long afterTokenCount = System.currentTimeMillis();
-
-                // Average Token Length URL
-                fiturSpesific.setAverageTokenLengthURL(ContentExtractor.getAverageDomainTokenLengthURL(StaticVars.listSitesTraining.get(i)));
-                System.out.println("Average Token Length URL");
-
-                long afterAvgToken = System.currentTimeMillis();
-
-                // SLD ratio from URL (malware, phishing, spamming)
-                double[] SLDRatioList = new double[3];
-                for (int j = 0; j < 3; j++) {
-                    SLDRatioList[j] = ContentExtractor.getSLDHitRatio(StaticVars.listSitesTraining.get(i), j + 1);
-                }
-                fiturSpesific.setSLDRatio(SLDRatioList);
-                System.out.println("SLD Ratio List");
-
-                long afterSLDRatio = System.currentTimeMillis();
-
-                // Inbound link Approximation (Google, Yahoo, Bing)
-                double[] inboundLinkAppr = new double[3];
-                for (int j = 0; j < 3; j++) {
-                    inboundLinkAppr[j] = ContentExtractor.getInboundLinkFromSearchResults(StaticVars.listSitesTraining.get(i), j + 1);
-                }
-                fiturSpesific.setInboundLink(inboundLinkAppr);
-                System.out.println("Inbound Link Approximation");
-
-                long afterInboundLink = System.currentTimeMillis();
-
-                // Lookup time to access site
-                fiturSpesific.setLookupTime(ContentExtractor.getDomainLookupTimeSite(StaticVars.listSitesTraining.get(i)));
-                System.out.println("Lookup Time");
-
-                long afterLookupTime = System.currentTimeMillis();
-
-                // SET TIME LOGGER
-                listTimeTokenCount.add(afterTokenCount-beforeSpesific);
-                listTimeAvgToken.add(afterAvgToken-afterTokenCount);
-                listTimeSLDRatio.add(afterSLDRatio-afterAvgToken);
-                listTimeInboundLink.add(afterInboundLink-afterSLDRatio);
-                listTimeLookupTime.add(afterLookupTime-afterInboundLink);
-            }
-
-            // TRUST FEATURES
-            Trust_Feature fiturTrust = new Trust_Feature();
-            if ((StaticVars.reputationType == 3) || (StaticVars.reputationType == 5) || (StaticVars.reputationType == 6) || (StaticVars.reputationType == 7)) {
-                long beforeTrust = System.currentTimeMillis();
-
-                fiturTrust = WOT_API_Loader.loadAPIWOTForSite(StaticVars.listSitesTraining.get(i));
-                System.out.println("Trust WOT");
-
-                long afterTrust = System.currentTimeMillis();
-
-                // SET TIME LOGGER
-                listTimeTrust.add(afterTrust - beforeTrust);
-            }
-
             // SET RECORD INSTANCE DATA STRUCTURE
-            SiteRecordReputation recordML = new SiteRecordReputation();
-            recordML.setDNSRecordFeature(fiturDNS);
-            recordML.setSpesificRecordFeature(fiturSpesific);
-            recordML.setTrustRecordFeature(fiturTrust);
+            SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(StaticVars.listSitesTraining.get(i),StaticVars.reputationType);
             clusterSite.fillDataIntoInstanceRecord(recordML,"normal");
 
             System.out.println("Situs ke-" + (i+1));
