@@ -18,8 +18,8 @@ public class Trust_Feature {
         for (int i=0;i<4;i++) {
             categoryEstimateValues[i] = 0;
         }
-        blacklistIncluded = new Integer[4];
-        for (int i=0;i<4;i++) {
+        blacklistIncluded = new Integer[3];
+        for (int i=0;i<3;i++) {
             blacklistIncluded[i] = 0;
         }
     }
