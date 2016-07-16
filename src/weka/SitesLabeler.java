@@ -152,76 +152,76 @@ public class SitesLabeler extends SitesMLProcessor {
 
         // Iterate for malware, phishing, and spamming sites list
         int numSitesEachType = 1000;
-        for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
-            List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
-            for (int i = 0; i < numSitesEachType; i++) {
+//        for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
+//            List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
+//            for (int i = 0; i < numSitesEachType; i++) {
+//
+//                // TIME LOGGER SET
+////                listTimeTLDRatioAS.add(afterTLDRatio - beforeDNS);
+////                listTimeHitRatioAS.add(afterHitRatio - afterTLDRatio);
+////                listTimeNSDistAS.add(afterNSDist - afterHitRatio);
+////                listTimeNSCount.add(afterNSCount - afterNSDist);
+////                listTimeTTLNS.add(afterTTLNS - afterNSCount);
+////                listTimeTTLIP.add(afterTTLIP - afterTTLNS);
+////                listTimeTokenCount.add(afterTokenCount - beforeSpesific);
+////                listTimeAvgToken.add(afterAvgToken - afterTokenCount);
+////                listTimeSLDRatio.add(afterSLDRatio - afterAvgToken);
+////                listTimeInboundLink.add(afterInboundLink - afterSLDRatio);
+////                listTimeLookupTime.add(afterLookupTime - afterInboundLink);
+////                listTimeTrust.add(afterTrust - beforeTrust);
+//
+//                // SET RECORD INSTANCE DATA STRUCTURE
+//                SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),typeReputation);
+//
+//                if (k < 3) {
+//                    String classLabel = "";
+//                    switch (k) {
+//                        default:
+//                        case 0:
+//                            classLabel = "malware";
+//                            break;
+//                        case 1:
+//                            classLabel = "phishing";
+//                            break;
+//                        case 2:
+//                            classLabel = "spamming";
+//                            break;
+//                    }
+//                    labeledSite.fillDataIntoInstanceRecord(recordML, classLabel);
+//                }
+//                String classLabel2 = "";
+//                switch (k) {
+//                    case 0:
+//                    case 1:
+//                    case 2:
+//                        classLabel2 = "abnormal";
+//                        break;
+//                    default:
+//                    case 3:
+//                        classLabel2 = "normal";
+//                        break;
+//                }
+//                labeledSite2.fillDataIntoInstanceRecord(recordML, classLabel2);
+//
+//                System.out.println("Situs ke-" + (i+1));
+//            }
+//        }
+//
+//        // Pisahkan instances ke dalam golongan malware / phishing / spamming / normal
+//        Instances allInstancesRecordSite = labeledSite.getSiteReputationRecord();
+//        String fileNameStatic = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff";
+//        String pathNameStatic = "database/weka/data_static/" + fileNameStatic;
+//        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite,pathNameStatic);
+//
+//        Instances allInstancesRecordSite2 = labeledSite2.getSiteReputationRecord();
+//        String fileNameStatic2 = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".normal.staticdata.arff";
+//        String pathNameStatic2 = "database/weka/data_static/" + fileNameStatic2;
+//        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,pathNameStatic2);
 
-                // TIME LOGGER SET
-//                listTimeTLDRatioAS.add(afterTLDRatio - beforeDNS);
-//                listTimeHitRatioAS.add(afterHitRatio - afterTLDRatio);
-//                listTimeNSDistAS.add(afterNSDist - afterHitRatio);
-//                listTimeNSCount.add(afterNSCount - afterNSDist);
-//                listTimeTTLNS.add(afterTTLNS - afterNSCount);
-//                listTimeTTLIP.add(afterTTLIP - afterTTLNS);
-//                listTimeTokenCount.add(afterTokenCount - beforeSpesific);
-//                listTimeAvgToken.add(afterAvgToken - afterTokenCount);
-//                listTimeSLDRatio.add(afterSLDRatio - afterAvgToken);
-//                listTimeInboundLink.add(afterInboundLink - afterSLDRatio);
-//                listTimeLookupTime.add(afterLookupTime - afterInboundLink);
-//                listTimeTrust.add(afterTrust - beforeTrust);
-
-                // SET RECORD INSTANCE DATA STRUCTURE
-                SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),typeReputation);
-
-                if (k < 3) {
-                    String classLabel = "";
-                    switch (k) {
-                        default:
-                        case 0:
-                            classLabel = "malware";
-                            break;
-                        case 1:
-                            classLabel = "phishing";
-                            break;
-                        case 2:
-                            classLabel = "spamming";
-                            break;
-                    }
-                    labeledSite.fillDataIntoInstanceRecord(recordML, classLabel);
-                }
-                String classLabel2 = "";
-                switch (k) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        classLabel2 = "abnormal";
-                        break;
-                    default:
-                    case 3:
-                        classLabel2 = "normal";
-                        break;
-                }
-                labeledSite2.fillDataIntoInstanceRecord(recordML, classLabel2);
-
-                System.out.println("Situs ke-" + (i+1));
-            }
-        }
-
-        // Pisahkan instances ke dalam golongan malware / phishing / spamming / normal
-        Instances allInstancesRecordSite = labeledSite.getSiteReputationRecord();
-        String fileNameStatic = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff";
-        String pathNameStatic = "database/weka/data_static/" + fileNameStatic;
-        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite,pathNameStatic);
-
-        Instances allInstancesRecordSite2 = labeledSite2.getSiteReputationRecord();
-        String fileNameStatic2 = "numsites_" + numSitesEachType + ".ratio_3111.type_" + typeReputation + ".normal.staticdata.arff";
-        String pathNameStatic2 = "database/weka/data_static/" + fileNameStatic2;
-        EksternalFile.saveInstanceWekaToExternalARFF(allInstancesRecordSite2,pathNameStatic2);
-
-//        Instances allInstancesRecordSite2 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_5.normal.staticdata.arff");
-//        allInstancesRecordSite2.setClassIndex(allInstancesRecordSite2.numAttributes()-1);
-//        Instances allInstancesRecordSite = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_5.dangerous.staticdata.arff");
-//        allInstancesRecordSite.setClassIndex(allInstancesRecordSite.numAttributes()-1);
+        Instances allInstancesRecordSite2 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff");
+        allInstancesRecordSite2.setClassIndex(allInstancesRecordSite2.numAttributes()-1);
+        Instances allInstancesRecordSite = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff");
+        allInstancesRecordSite.setClassIndex(allInstancesRecordSite.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite 1 (abnormal only (malware / phishing / spamming))
         FastVector instancesAttributes = new FastVector();
