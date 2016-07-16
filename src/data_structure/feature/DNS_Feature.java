@@ -63,7 +63,7 @@ public class DNS_Feature {
     }
 
     public DNS_Feature() {
-        popularTLDRatio = new Double[6];         // com, org, edu, gov, uk, rest
+        popularTLDRatio = new Double[4];         // com, org, uk, rest
         hitASRatio = new Double[3];            // malware, phishing, spamming
         distributionNSAS = 0.0;
         numNameServer = 0;

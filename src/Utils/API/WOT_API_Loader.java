@@ -50,8 +50,8 @@ public class WOT_API_Loader {
     }
 
     private static Integer[] valueOfBlacklistBooleanWOT(HashSet<String> listTypes) {
-        Integer[] listTypeBlacklists = new Integer[4];
-        for (int i=0;i<4;i++) {
+        Integer[] listTypeBlacklists = new Integer[3];
+        for (int i=0;i<3;i++) {
             listTypeBlacklists[i] = 0;
         }
         for (String type : listTypes) {
@@ -59,10 +59,8 @@ public class WOT_API_Loader {
                 listTypeBlacklists[0] = 1;
             } else if (type.equals("phishing")) {
                 listTypeBlacklists[1] = 1;
-            } else if (type.equals("scam")) {
-                listTypeBlacklists[2] = 1;
             } else if (type.equals("spam")) {
-                listTypeBlacklists[3] = 1;
+                listTypeBlacklists[2] = 1;
             }
         }
         return listTypeBlacklists;
@@ -160,7 +158,7 @@ public class WOT_API_Loader {
             trustFeature.add(model.getCategoryEstimateValues()[i]);
         }
         System.out.println("BLACKLISTS");
-        for (int i=0;i<4;i++) {
+        for (int i=0;i<3;i++) {
             System.out.println(model.getBlacklistIncluded()[i]);
             trustFeature.add(model.getBlacklistIncluded()[i]);
         }
