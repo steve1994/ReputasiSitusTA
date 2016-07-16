@@ -28,6 +28,61 @@ public class SitesTester {
         clusteredSiteNormal.configARFFInstance(new String[]{"normal", "abnormal"});
         System.out.println("Config ARFF Done");
 
+        // CREATE TESTING DATA 
+        for (int l=1;l<=7;l++) {
+            int type = l;
+            int numSitesEachType = 100;
+            for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
+                List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
+                int border = listSites.size() - numSitesEachType;
+                for (int i = (listSites.size() - 1); i >= border; i--) {
+                    // SET RECORD INSTANCE DATA STRUCTURE
+                    SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),type);
+
+                    if (k < 3) {
+                        String classLabel = "";
+                        switch (k) {
+                            default:
+                            case 0:
+                                classLabel = "malware";
+                                break;
+                            case 1:
+                                classLabel = "phishing";
+                                break;
+                            case 2:
+                                classLabel = "spamming";
+                                break;
+                        }
+                        labeledSiteDangerous.fillDataIntoInstanceRecord(recordML, classLabel);
+                    }
+                    String classLabel2 = "";
+                    switch (k) {
+                        case 0:
+                        case 1:
+                        case 2:
+                            classLabel2 = "abnormal";
+                            break;
+                        default:
+                        case 3:
+                            classLabel2 = "normal";
+                            break;
+                    }
+                    labeledSiteNormal.fillDataIntoInstanceRecord(recordML, classLabel2);
+                    System.out.println("Situs ke-" + (i + 1));
+                }
+            }
+
+            Instances instancesNormalThisType = labeledSiteNormal.getSiteReputationRecord();
+            String fileNameStaticNormal = "numsites_" + numSitesEachType + ".type_" + type + ".normal.testdata.arff";
+            String pathNameStaticNormal = "database/weka/test/" + fileNameStaticNormal;
+            EksternalFile.saveInstanceWekaToExternalARFF(instancesNormalThisType, pathNameStaticNormal);
+
+            Instances instancesDangerousThisType = labeledSiteDangerous.getSiteReputationRecord();
+            String fileNameStaticDangerous = "numsites_" + numSitesEachType + ".type_" + type + ".dangerous.testdata.arff";
+            String pathNameStaticDangerous = "database/weka/test/" + fileNameStaticDangerous;
+            EksternalFile.saveInstanceWekaToExternalARFF(instancesDangerousThisType, pathNameStaticDangerous);
+        }
+
         // TESTING VARIABLE CONTROL
         int optimumNumTrainingNormalType2 = 100;
         String pathInstancesNormalControl = "database/weka/test/numsites_100.type_" + typeReputation + ".normal.testdata.arff";
