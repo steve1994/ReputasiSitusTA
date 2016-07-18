@@ -284,10 +284,6 @@ public class DNSExtractor {
 //                                    comTLDRetrieved.add(nameServerConverted);
 //                                } else if (TLD.equals("org")) {
 //                                    orgTLDRetrieved.add(nameServerConverted);
-//                                } else if (TLD.equals("edu")) {
-//                                    eduTLDRetrieved.add(nameServerConverted);
-//                                } else if (TLD.equals("gov")) {
-//                                    govTLDRetrieved.add(nameServerConverted);
 //                                } else if (TLD.equals("uk")) {
 //                                    ukTLDRetrieved.add(nameServerConverted);
 //                                } else {
@@ -319,7 +315,7 @@ public class DNSExtractor {
         System.out.println("TOTAL NUM SERVER : " + numNameServersTotal);
 
         // Hitung rasio keenam TLD
-        double comRatio, orgRatio, eduRatio, govRatio, ukRatio, nonPopularRatio;
+        double comRatio, orgRatio, ukRatio, nonPopularRatio;
         if (numNameServersTotal > 0) {
             comRatio = (double) comTLDRetrieved.size() / (double) numNameServersTotal;
             orgRatio = (double) orgTLDRetrieved.size() / (double) numNameServersTotal;
