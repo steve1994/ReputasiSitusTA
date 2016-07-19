@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class SitesTester {
     public static void main(String[] args) {
-        int typeReputation = 5;
+        int typeReputation = 3;
         SitesLabeler labeledSiteDangerous = new SitesLabeler(typeReputation);
         labeledSiteDangerous.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
         SitesLabeler labeledSiteNormal = new SitesLabeler(typeReputation);
@@ -29,139 +29,145 @@ public class SitesTester {
         System.out.println("Config ARFF Done");
 
         // CREATE TESTING DATA 
-        for (int l=1;l<=7;l++) {
-            int type = l;
-            int numSitesEachType = 100;
-            for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
-                List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
-                int border = listSites.size() - numSitesEachType;
-                for (int i = (listSites.size() - 1); i >= border; i--) {
-                    // SET RECORD INSTANCE DATA STRUCTURE
-                    SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),type);
+//        for (int l=1;l<=7;l++) {
+//            int type = l;
+//            int numSitesEachType = 100;
+//            for (int k = 0; k < 4; k++) {     // Phishing, Malware, Spamming, Normal
+//                List<String> listSites = EksternalFile.loadSitesTrainingList(k + 1).getKey();
+//                int border = listSites.size() - numSitesEachType;
+//                for (int i = (listSites.size() - 1); i >= border; i--) {
+//                    // SET RECORD INSTANCE DATA STRUCTURE
+//                    SiteRecordReputation recordML = SitesMLProcessor.extractFeaturesFromDomain(listSites.get(i),type);
+//
+//                    if (k < 3) {
+//                        String classLabel = "";
+//                        switch (k) {
+//                            default:
+//                            case 0:
+//                                classLabel = "malware";
+//                                break;
+//                            case 1:
+//                                classLabel = "phishing";
+//                                break;
+//                            case 2:
+//                                classLabel = "spamming";
+//                                break;
+//                        }
+//                        labeledSiteDangerous.fillDataIntoInstanceRecord(recordML, classLabel);
+//                    }
+//                    String classLabel2 = "";
+//                    switch (k) {
+//                        case 0:
+//                        case 1:
+//                        case 2:
+//                            classLabel2 = "abnormal";
+//                            break;
+//                        default:
+//                        case 3:
+//                            classLabel2 = "normal";
+//                            break;
+//                    }
+//                    labeledSiteNormal.fillDataIntoInstanceRecord(recordML, classLabel2);
+//                    System.out.println("Situs ke-" + (i + 1));
+//                }
+//            }
+//
+//            Instances instancesNormalThisType = labeledSiteNormal.getSiteReputationRecord();
+//            String fileNameStaticNormal = "numsites_" + numSitesEachType + ".type_" + type + ".normal.testdata.arff";
+//            String pathNameStaticNormal = "database/weka/test/" + fileNameStaticNormal;
+//            EksternalFile.saveInstanceWekaToExternalARFF(instancesNormalThisType, pathNameStaticNormal);
+//
+//            Instances instancesDangerousThisType = labeledSiteDangerous.getSiteReputationRecord();
+//            String fileNameStaticDangerous = "numsites_" + numSitesEachType + ".type_" + type + ".dangerous.testdata.arff";
+//            String pathNameStaticDangerous = "database/weka/test/" + fileNameStaticDangerous;
+//            EksternalFile.saveInstanceWekaToExternalARFF(instancesDangerousThisType, pathNameStaticDangerous);
+//        }
 
-                    if (k < 3) {
-                        String classLabel = "";
-                        switch (k) {
-                            default:
-                            case 0:
-                                classLabel = "malware";
-                                break;
-                            case 1:
-                                classLabel = "phishing";
-                                break;
-                            case 2:
-                                classLabel = "spamming";
-                                break;
-                        }
-                        labeledSiteDangerous.fillDataIntoInstanceRecord(recordML, classLabel);
-                    }
-                    String classLabel2 = "";
-                    switch (k) {
-                        case 0:
-                        case 1:
-                        case 2:
-                            classLabel2 = "abnormal";
-                            break;
-                        default:
-                        case 3:
-                            classLabel2 = "normal";
-                            break;
-                    }
-                    labeledSiteNormal.fillDataIntoInstanceRecord(recordML, classLabel2);
-                    System.out.println("Situs ke-" + (i + 1));
+        // TESTING VARIABLE CONTROL
+//        int optimumNumTrainingNormalType2 = 100;
+//        String pathInstancesNormalControl = "database/weka/test/numsites_100.type_" + typeReputation + ".normal.testdata.arff";
+//        Instances instancesNormalControl = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesNormalControl);
+//        instancesNormalControl.setClassIndex(instancesNormalControl.numAttributes()-1);
+//        String pathClassifierNormalControl = "database/weka/model/num_" + optimumNumTrainingNormalType2 + ".type_" + typeReputation + ".normalitySVM.model";
+//        Classifier supervisedClassifierNormalControl = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierNormalControl);
+//
+//        try {
+//            Evaluation evalNormalType2 = new Evaluation(instancesNormalControl);
+//            evalNormalType2.crossValidateModel(supervisedClassifierNormalControl,instancesNormalControl,10,new Random(1));
+//            System.out.println("Correctly Classified Instances Type 2 Stage 1 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalNormalType2,instancesNormalControl));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        int optimumNumTrainingDangerousType2 = 400;
+//        int optimumKNNType2 = 7;
+//        String pathInstancesDangerousControl2 = "database/weka/test/numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
+//        Instances instancesDangerousControl2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousControl2);
+//        instancesDangerousControl2.setClassIndex(instancesDangerousControl2.numAttributes()-1);
+//        String pathClassifierDangerousControl2 = "database/weka/model/num_" + optimumNumTrainingDangerousType2 + ".type_" + typeReputation + ".dangerousityKNN_" + optimumKNNType2 + ".model";
+//        Classifier supervisedClassifierDangerousControl2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousControl2);
+//
+//        try {
+//            Evaluation evalDangerousType2 = new Evaluation(instancesDangerousControl2);
+//            evalDangerousType2.crossValidateModel(supervisedClassifierDangerousControl2,instancesDangerousControl2,10,new Random(1));
+//            System.out.println("Correctly Classified Instances Type 2 Stage 2 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalDangerousType2,instancesDangerousControl2));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        // TESTING VARIABLE BEBAS STAGE I
+        for (int numTest=100;numTest<=500;numTest=numTest+100) {
+            int optimumTrainingSVMType2 = 100;
+            String pathInstancesNormalType2 = "database/weka/test/numsites_" + numTest + ".type_" + typeReputation + ".normal.testdata.arff";
+//            String pathInstancesNormalType2 = "database/weka/test/numsites_" + numTest + ".type_" + typeReputation + ".dangerous.testdata.arff";
+            Instances instancesNormalType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesNormalType2);
+            instancesNormalType2.setClassIndex(instancesNormalType2.numAttributes() - 1);
+            int numOptimumKNN = 3;
+            String pathClassifierNormalType2 = "database/weka/model/num_" + optimumTrainingSVMType2 + ".type_" + typeReputation + ".normalitySVM.hybrid.model";
+//            String pathClassifierNormalType2 = "database/weka/model/num_" + optimumTrainingSVMType2 + ".type_" + typeReputation + ".dangerousityKNN.hybrid.model";
+//            String pathClassifierNormalType2 = "database/weka/model/num_" + optimumTrainingSVMType2 + ".type_" + typeReputation + ".dangerousityKNN_" + numOptimumKNN + ".model";
+            Classifier supervisedClassifierNormalType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierNormalType2);
+
+            // Classification (SVM)
+            FastVector instancesAttributesNormality = SitesMLProcessor.getAttributesVector(instancesNormalType2);
+            Instances classifiedNormalityInstances = new Instances("normal_sites_supervised", instancesAttributesNormality, 0);
+            classifiedNormalityInstances.setClassIndex(classifiedNormalityInstances.numAttributes() - 1);
+
+            Enumeration normalityInstances = instancesNormalType2.enumerateInstances();
+            while (normalityInstances.hasMoreElements()) {
+                Instance thisInstanceNormality = (Instance) normalityInstances.nextElement();
+                try {
+                    double classValue = supervisedClassifierNormalType2.classifyInstance(thisInstanceNormality);
+                    thisInstanceNormality.setClassValue(classValue);
+                    classifiedNormalityInstances.add(thisInstanceNormality);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
-            Instances instancesNormalThisType = labeledSiteNormal.getSiteReputationRecord();
-            String fileNameStaticNormal = "numsites_" + numSitesEachType + ".type_" + type + ".normal.testdata.arff";
-            String pathNameStaticNormal = "database/weka/test/" + fileNameStaticNormal;
-            EksternalFile.saveInstanceWekaToExternalARFF(instancesNormalThisType, pathNameStaticNormal);
-
-            Instances instancesDangerousThisType = labeledSiteDangerous.getSiteReputationRecord();
-            String fileNameStaticDangerous = "numsites_" + numSitesEachType + ".type_" + type + ".dangerous.testdata.arff";
-            String pathNameStaticDangerous = "database/weka/test/" + fileNameStaticDangerous;
-            EksternalFile.saveInstanceWekaToExternalARFF(instancesDangerousThisType, pathNameStaticDangerous);
+            // Clustering (EM)
+            int optimumClusterEMStageI = 2;
+            Clusterer clusterNormalityEMStageI = clusteredSiteNormal.buildEMReputationModel(classifiedNormalityInstances, optimumClusterEMStageI);
+            ClusterEvaluation clusterNormalityEval = clusteredSiteNormal.evaluateClusterReputationModel(instancesNormalType2, clusterNormalityEMStageI);
+            System.out.println("AKURASI STAGE I WITH NUM TESTING " + numTest + " : " + SitesClusterer.getIncorrectlyClassifiedInstance(clusterNormalityEval, instancesNormalType2));
         }
-
-        // TESTING VARIABLE CONTROL
-        int optimumNumTrainingNormalType2 = 100;
-        String pathInstancesNormalControl = "database/weka/test/numsites_100.type_" + typeReputation + ".normal.testdata.arff";
-        Instances instancesNormalControl = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesNormalControl);
-        instancesNormalControl.setClassIndex(instancesNormalControl.numAttributes()-1);
-        String pathClassifierNormalControl = "database/weka/model/num_" + optimumNumTrainingNormalType2 + ".type_" + typeReputation + ".normalitySVM.model";
-        Classifier supervisedClassifierNormalControl = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierNormalControl);
-
-        try {
-            Evaluation evalNormalType2 = new Evaluation(instancesNormalControl);
-            evalNormalType2.crossValidateModel(supervisedClassifierNormalControl,instancesNormalControl,10,new Random(1));
-            System.out.println("Correctly Classified Instances Type 2 Stage 1 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalNormalType2,instancesNormalControl));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        int optimumNumTrainingDangerousType2 = 400;
-        int optimumKNNType2 = 7;
-        String pathInstancesDangerousControl2 = "database/weka/test/numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
-        Instances instancesDangerousControl2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousControl2);
-        instancesDangerousControl2.setClassIndex(instancesDangerousControl2.numAttributes()-1);
-        String pathClassifierDangerousControl2 = "database/weka/model/num_" + optimumNumTrainingDangerousType2 + ".type_" + typeReputation + ".dangerousityKNN_" + optimumKNNType2 + ".model";
-        Classifier supervisedClassifierDangerousControl2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousControl2);
-
-        try {
-            Evaluation evalDangerousType2 = new Evaluation(instancesDangerousControl2);
-            evalDangerousType2.crossValidateModel(supervisedClassifierDangerousControl2,instancesDangerousControl2,10,new Random(1));
-            System.out.println("Correctly Classified Instances Type 2 Stage 2 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalDangerousType2,instancesDangerousControl2));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // TESTING VARIABLE BEBAS STAGE I
-        int optimumTrainingSVMType2 = 300;
-        String pathInstancesNormalType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".normal.testdata.arff";
-        Instances instancesNormalType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesNormalType2);
-        instancesNormalType2.setClassIndex(instancesNormalType2.numAttributes()-1);
-        String pathClassifierNormalType2 = "database/weka/model/num_" + optimumTrainingSVMType2 + ".type_" + typeReputation + ".normalitySVM.hybrid.model";
-        Classifier supervisedClassifierNormalType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierNormalType2);
-
-        // Classification (SVM)
-        FastVector instancesAttributesNormality = SitesMLProcessor.getAttributesVector(instancesNormalType2);
-        Instances classifiedNormalityInstances = new Instances("normal_sites_supervised", instancesAttributesNormality, 0);
-        classifiedNormalityInstances.setClassIndex(classifiedNormalityInstances.numAttributes() - 1);
-
-        Enumeration normalityInstances = instancesNormalType2.enumerateInstances();
-        while (normalityInstances.hasMoreElements()) {
-            Instance thisInstanceNormality = (Instance) normalityInstances.nextElement();
-            try {
-                double classValue = supervisedClassifierNormalType2.classifyInstance(thisInstanceNormality);
-                thisInstanceNormality.setClassValue(classValue);
-                classifiedNormalityInstances.add(thisInstanceNormality);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Clustering (EM)
-        int optimumClusterEMStageI = 2;
-        Clusterer clusterNormalityEMStageI = clusteredSiteNormal.buildEMReputationModel(classifiedNormalityInstances,optimumClusterEMStageI);
-        ClusterEvaluation clusterNormalityEval = clusteredSiteNormal.evaluateClusterReputationModel(instancesNormalType2,clusterNormalityEMStageI);
-        System.out.println("AKURASI STAGE I (EM) HYBRID TYPE 5 : " + SitesClusterer.getIncorrectlyClassifiedInstance(clusterNormalityEval,instancesNormalType2));
 
         // TESTING VARIABLE BEBAS STAGE II
-        int optimumTrainingKNN = 400;
-        int optimumNumKNN = 9;
-        String pathInstancesDangerousType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
-        Instances instancesDangerousType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousType2);
-        instancesDangerousType2.setClassIndex(instancesDangerousType2.numAttributes()-1);
-        String pathClassifierDangerousType2 = "database/weka/model/num_" + optimumTrainingKNN + ".type_" + typeReputation + ".dangerousityKNN_" + optimumNumKNN + ".model";
-        Classifier supervisedClassifierDangerousType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousType2);
-
-        try {
-            Evaluation evalDangerousType2 = new Evaluation(instancesDangerousType2);
-            evalDangerousType2.crossValidateModel(supervisedClassifierDangerousType2,instancesDangerousType2,10,new Random(1));
-            System.out.println("Correctly Classified Instances Type 7 Stage 2 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalDangerousType2,instancesDangerousType2));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        int optimumTrainingKNN = 200;
+//        int optimumNumKNN = 3;
+//        String pathInstancesDangerousType2 = "database/weka/test/numsites_100.type_" + typeReputation + ".dangerous.testdata.arff";
+//        Instances instancesDangerousType2 = EksternalFile.loadInstanceWekaFromExternalARFF(pathInstancesDangerousType2);
+//        instancesDangerousType2.setClassIndex(instancesDangerousType2.numAttributes()-1);
+//        String pathClassifierDangerousType2 = "database/weka/model/num_" + optimumTrainingKNN + ".type_" + typeReputation + ".dangerousityKNN.hybrid.model";
+//        Classifier supervisedClassifierDangerousType2 = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifierDangerousType2);
+//
+//        try {
+//            Evaluation evalDangerousType2 = new Evaluation(instancesDangerousType2);
+//            evalDangerousType2.crossValidateModel(supervisedClassifierDangerousType2,instancesDangerousType2,10,new Random(1));
+//            System.out.println("Correctly Classified Instances Type 7 Stage 2 : " + SitesLabeler.getCorrectlyClassifiedInstances(evalDangerousType2,instancesDangerousType2));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         // CREATE STATIC DATA BY REMOVING UNUSED ATTRIBUTES
 //        Instances instancesNormalType4 = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_7.normal.staticdata.arff");
