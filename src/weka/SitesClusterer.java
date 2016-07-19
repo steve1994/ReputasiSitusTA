@@ -293,7 +293,7 @@ public class SitesClusterer extends SitesMLProcessor{
 
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
-        int typeReputation = 3;
+        int typeReputation = 7;
         SitesClusterer normalityClusterSite = new SitesClusterer(typeReputation);
         normalityClusterSite.configARFFInstance(new String[]{"normal","abnormal"});
         SitesClusterer dangerousityClusterSite = new SitesClusterer(typeReputation);
@@ -392,9 +392,10 @@ public class SitesClusterer extends SitesMLProcessor{
 //        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
 //        Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
 //        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
-        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.normal.staticdata.arff");
+
+        Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff");
         allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
-        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.dangerous.staticdata.arff");
+        Instances allInstancesDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff");
         allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
 
         // Extract attributes from allInstancesRecordSite (malware / phishing / spamming / normal)

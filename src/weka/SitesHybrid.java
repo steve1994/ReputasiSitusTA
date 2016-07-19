@@ -76,7 +76,7 @@ public class SitesHybrid {
     }
     
     public static void main(String[] args) {
-        int typeReputation = 3;
+        int typeReputation = 7;
 
         // Sites Clusterer Consist Of 2 stages (normality and then dangerousity)
         SitesClusterer clusterSiteNormality = new SitesClusterer(typeReputation);
@@ -137,9 +137,9 @@ public class SitesHybrid {
 //        }
 
         // Get extracted instances result from labeler / clusterer
-        Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.normal.staticdata.arff");
+        Instances allInstancesLabelNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff");
         allInstancesLabelNormality.setClassIndex(allInstancesLabelNormality.numAttributes()-1);
-        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_3.dangerous.staticdata.arff");
+        Instances allInstancesLabelDangerousity = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff");
         allInstancesLabelDangerousity.setClassIndex(allInstancesLabelDangerousity.numAttributes()-1);
 //        Instances allInstancesLabelDangerousity = labelSiteDangerousity.getSiteReputationRecord();
 //        Instances allInstancesLabelNormality = labelSiteNormality.getSiteReputationRecord();
@@ -180,14 +180,13 @@ public class SitesHybrid {
         // DO EKSPERIMENT FROM 100 TO 1000 HERE !!!
 
         int interval = 100;
-        int optimumNumCluster = 10;
         int optimumNumClusterKMeans1 = 2;
+        int optimumNumClusterKMeans2 = 4;
         int optimumNumClusterEM1 = 2;
+        int optimumNumClusterEM2 = 3;
         int optimumNumClusterHC1 = 2;
-        int optimumNumClusterKMeans2 = 3;
-        int optimumNumClusterEM2 = 5;
-        int optimumNumClusterHC2 = 5;
-        int numNearestNeigbor = 15;
+        int optimumNumClusterHC2 = 3;
+        int numNearestNeigbor = 1;
         for (int i=interval; i<=numSitesMaxAllocation; i=i+interval) {
             statisticEvaluationReport.append("\n\n===================================================================\n\n NUM SITES TRAINING : " + i + "\n\n");
 
