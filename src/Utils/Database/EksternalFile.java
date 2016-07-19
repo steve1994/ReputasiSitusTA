@@ -14,6 +14,7 @@ import weka.core.converters.ConverterUtils;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -110,6 +111,30 @@ public class EksternalFile {
 
         Pair<List<String>,Integer> SitesListandAmount = new Pair<List<String>, Integer>(SitesTrainingList,numSitesReturn);
         return SitesListandAmount;
+    }
+
+    /**
+     * Generate random list sites of certain types with amount numRandom
+     * Assumption : random list sites generate maximum from 1000 sites
+     * @param type
+     * @param numRandom
+     * @return
+     */
+    public static List<String> loadSitesTrainingListRandom(int type, int numRandom) {
+        List<String> randomizeListSites = new ArrayList<String>();
+
+        List<Integer> indexListSites = new ArrayList<Integer>();
+        for (int i=0;i<1000;i++) {
+            indexListSites.add(i);
+        }
+        Collections.shuffle(indexListSites);
+
+        List<String> fullListSites = loadSitesTrainingList(type).getKey();
+        for (int i=0;i<numRandom;i++) {
+            randomizeListSites.add(fullListSites.get(indexListSites.get(i)));
+        }
+
+        return randomizeListSites;
     }
 
     /**
