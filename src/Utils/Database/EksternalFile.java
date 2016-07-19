@@ -131,7 +131,7 @@ public class EksternalFile {
 
         List<String> fullListSites = loadSitesTrainingList(type).getKey();
         for (int i=0;i<numRandom;i++) {
-            randomizeListSites.add(fullListSites.get(indexListSites.get(i)));
+            randomizeListSites.add(Converter.getBaseHostURL(fullListSites.get(indexListSites.get(i))));
         }
 
         return randomizeListSites;
