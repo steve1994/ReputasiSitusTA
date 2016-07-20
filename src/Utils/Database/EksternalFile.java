@@ -9,6 +9,7 @@ import weka.classifiers.functions.LibSVM;
 import weka.clusterers.Clusterer;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
+import weka.core.converters.CSVSaver;
 import weka.core.converters.ConverterUtils;
 
 import java.io.*;
@@ -22,11 +23,6 @@ import java.util.StringTokenizer;
  * Created by steve on 28/01/2016.
  */
 public class EksternalFile {
-//    private static final String malwarePath = "database/malware_websites/hosts.txt";
-//    private static final String phishingPath = "database/phishing_websites/phishing.txt";
-//    private static final String spammingPath = "database/spamming_websites/spamming.txt";
-//    private static final String popularPath = "database/top_popular_websites/top-1m.csv";
-//    private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
 
     private static final String malwarePath = "database/malware_websites/hosts.txt";
 //    private static final String malwarePath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\malware_websites\\hosts.txt";
@@ -66,24 +62,6 @@ public class EksternalFile {
         }
         return rawFileContent.toString();
     }
-
-    /**
-     * Checking (before load list of URL) if domain can be resolved)
-     * @param url
-     * @return
-     */
-   /* private static Boolean checkDomainResolved(String url) {
-        Boolean isDomainResolved = false;
-        int timeOut = 3000;
-        try {
-            if (InetAddress.getByName(getBaseHostURL(url)).isReachable(timeOut)) {
-                isDomainResolved = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return isDomainResolved;
-    }*/
 
     /**
      * Load List of Training Websites Based on Type and its amount(1 : Malware, 2 : Phishing, 3 : Spamming, 4 : Populer, 5 : Tidak Populer)
@@ -138,7 +116,7 @@ public class EksternalFile {
     }
 
     /**
-     * Save weka instances to external file
+     * Save weka instances to external file (ARFF Format)
      * @param instances
      * @param path
      */
@@ -166,6 +144,26 @@ public class EksternalFile {
         }
         try {
             writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Save weka instances to external file (CSV Format)
+     * @param instances
+     * @param path
+     */
+    public static void saveInstanceWekaToExternalCSV(Instances instances, String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+        }
+        CSVSaver csvSaver = new CSVSaver();
+        csvSaver.setInstances(instances);
+        try {
+            csvSaver.setFile(file);
+            csvSaver.writeBatch();
         } catch (IOException e) {
             e.printStackTrace();
         }
