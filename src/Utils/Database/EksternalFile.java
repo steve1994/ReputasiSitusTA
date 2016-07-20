@@ -98,21 +98,15 @@ public class EksternalFile {
      * @param numRandom
      * @return
      */
-    public static List<String> loadSitesTrainingListRandom(int type, int numRandom) {
-        List<String> randomizeListSites = new ArrayList<String>();
-
+    public static List<Integer> loadSitesTrainingListIndexRandom(int type, int numRandom) {
         List<Integer> indexListSites = new ArrayList<Integer>();
-        for (int i=0;i<1000;i++) {
+        int maxIndexListSites = 1000;
+        for (int i=0;i<maxIndexListSites;i++) {
             indexListSites.add(i);
         }
         Collections.shuffle(indexListSites);
 
-        List<String> fullListSites = loadSitesTrainingList(type).getKey();
-        for (int i=0;i<numRandom;i++) {
-            randomizeListSites.add(Converter.getBaseHostURL(fullListSites.get(indexListSites.get(i))));
-        }
-
-        return randomizeListSites;
+        return indexListSites;
     }
 
     /**
