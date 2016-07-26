@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -58,6 +59,8 @@ public class reputationResultController implements Initializable {
                             new PieChart.Data("Phishing", compositionDangerousity.getValue1()),
                             new PieChart.Data("Spamming", compositionDangerousity.getValue2()));
                     chartCompositionDangerousity.setData(pieChartElements);
+                    chartCompositionDangerousity.setLegendSide(Side.RIGHT);
+                    chartCompositionDangerousity.setLabelLineLength(10);
                 } else {
                     labelSiteComposition.setVisible(false);
                     chartCompositionDangerousity.setVisible(false);
