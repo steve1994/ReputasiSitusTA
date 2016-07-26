@@ -9,18 +9,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane prefHeight="569.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane prefHeight="525.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
           <Label layoutX="26.0" layoutY="79.0" text="Sites Domain Name :" />
           <TextField fx:id="domainSitesTextField" layoutX="158.0" layoutY="75.0" prefHeight="25.0" prefWidth="327.0" />
           <Label layoutX="25.0" layoutY="122.0" text="Reputation Features :" />
-          <Button layoutX="159.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleDiagnoseButton" text="DIAGNOSE" />
+          <Button layoutX="159.0" layoutY="477.0" mnemonicParsing="false" onAction="#handleDiagnoseButton" text="DIAGNOSE" />
       <Label layoutX="79.0" layoutY="21.0" text="WEBSITE REPUTATION SYSTEM">
          <font>
             <Font name="Calibri" size="29.0" />
          </font>
       </Label>
-      <Button layoutX="291.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleHistoryButton" text="HISTORY" />
+      <Button layoutX="291.0" layoutY="477.0" mnemonicParsing="false" onAction="#handleHistoryButton" text="HISTORY" />
       <Label layoutX="338.0" layoutY="122.0" text="Method :" />
       <RadioButton fx:id="supervisedRadioButton" layoutX="338.0" layoutY="148.0" mnemonicParsing="false" text="Supervised" />
       <RadioButton fx:id="unsupervisedRadioButton" layoutX="338.0" layoutY="176.0" mnemonicParsing="false" text="Unsupervised" />
@@ -34,12 +34,12 @@
       <RadioButton fx:id="dnsSpesificTrustRadioButton" layoutX="28.0" layoutY="318.0" mnemonicParsing="false" text="DNS + Site's Spesific Info + Trust Collaborative" />
       <Label layoutX="28.0" layoutY="357.0" text="Number of Training Data : " />
       <ChoiceBox fx:id="numberTrainingChoiceBox" layoutX="206.0" layoutY="353.0" prefHeight="25.0" prefWidth="284.0" />
-      <Label fx:id="keterangan" layoutX="140.0" layoutY="473.0" text="Label" textFill="#e11111">
+      <Label fx:id="keterangan" layoutX="140.0" layoutY="434.0" text="Label" textFill="#e11111">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="keterangan1" layoutX="28.0" layoutY="473.0" text="Keterangan :" textFill="#1e1d1d">
+      <Label fx:id="keterangan1" layoutX="28.0" layoutY="434.0" text="Keterangan :" textFill="#1e1d1d">
          <font>
             <Font size="16.0" />
          </font>
@@ -48,9 +48,7 @@
       <RadioButton fx:id="KMeansRadioButton" layoutX="339.0" layoutY="261.0" mnemonicParsing="false" text="KMeans" />
       <RadioButton fx:id="HCRadioButton" layoutX="339.0" layoutY="318.0" mnemonicParsing="false" text="Hierarchical Clustering" />
       <RadioButton fx:id="EMRadioButton" layoutX="339.0" layoutY="290.0" mnemonicParsing="false" text="Expectation Maximization" />
-      <Label layoutX="28.0" layoutY="399.0" text="Num Nearest Neighbor  :" />
-      <ChoiceBox fx:id="numKNNChoiceBox" layoutX="206.0" layoutY="395.0" prefHeight="25.0" prefWidth="284.0" />
-      <Label layoutX="28.0" layoutY="438.0" text="Update Database :" />
-      <CheckBox fx:id="updateDatabaseCheckBox" layoutX="206.0" layoutY="438.0" mnemonicParsing="false" />
+      <Label layoutX="28.0" layoutY="399.0" text="Update Database :" />
+      <CheckBox fx:id="updateDatabaseCheckBox" layoutX="206.0" layoutY="399.0" mnemonicParsing="false" />
     </children>
 </AnchorPane>

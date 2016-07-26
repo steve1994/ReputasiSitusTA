@@ -64,7 +64,7 @@ public class Controller implements Initializable {
     public RadioButton KMeansRadioButton;
     public RadioButton HCRadioButton;
     public RadioButton EMRadioButton;
-    public ChoiceBox numKNNChoiceBox;
+//    public ChoiceBox numKNNChoiceBox;
     public CheckBox updateDatabaseCheckBox;
 
     public Controller() {
@@ -73,7 +73,7 @@ public class Controller implements Initializable {
         numberTrainingChoiceBox = new ChoiceBox();
         clusteringRadioButton = new ToggleGroup();
 //        numberTrainingChoiceBoxUnsupervised = new ChoiceBox();
-        numKNNChoiceBox = new ChoiceBox();
+//        numKNNChoiceBox = new ChoiceBox();
         updateDatabaseCheckBox = new CheckBox();
     }
 
@@ -95,8 +95,8 @@ public class Controller implements Initializable {
         numberTrainingChoiceBox.getSelectionModel().selectFirst();
 //        numberTrainingChoiceBoxUnsupervised.setItems(FXCollections.observableArrayList(100, 200, 300, 400, 500, 600, 700, 800, 900, 1000));
 //        numberTrainingChoiceBoxUnsupervised.getSelectionModel().selectFirst();
-        numKNNChoiceBox.setItems(FXCollections.observableArrayList(1, 3, 5, 7, 9, 11, 13, 15, 17, 19));
-        numKNNChoiceBox.getSelectionModel().selectFirst();
+//        numKNNChoiceBox.setItems(FXCollections.observableArrayList(1, 3, 5, 7, 9, 11, 13, 15, 17, 19));
+//        numKNNChoiceBox.getSelectionModel().selectFirst();
         keterangan.setVisible(false);
     }
 
@@ -129,13 +129,14 @@ public class Controller implements Initializable {
         Boolean dataEmpty = false;
         keterangan.setVisible(false);
         // Extract Features From Domain Name and Process Based on Its method
-        if (!domainSitesTextField.getText().isEmpty() && !numberTrainingChoiceBox.getSelectionModel().isEmpty() && featuresRadioButton.getSelectedToggle().isSelected() && methodRadioButton.getSelectedToggle().isSelected()
-                && clusteringRadioButton.getSelectedToggle().isSelected() /*&& !numberTrainingChoiceBoxUnsupervised.getSelectionModel().isEmpty()*/ && !numKNNChoiceBox.getSelectionModel().isEmpty()) {
+        if (!domainSitesTextField.getText().isEmpty() && !numberTrainingChoiceBox.getSelectionModel().isEmpty() && (featuresRadioButton.getSelectedToggle() != null) && (methodRadioButton.getSelectedToggle() != null)
+                && (clusteringRadioButton.getSelectedToggle() != null) /*&& !numberTrainingChoiceBoxUnsupervised.getSelectionModel().isEmpty() && !numKNNChoiceBox.getSelectionModel().isEmpty() */) {
 
             String domainName = Converter.getBaseHostURL(domainSitesTextField.getText());
             int numTrainingSites = (Integer) numberTrainingChoiceBox.getSelectionModel().getSelectedItem();
 //            int numTrainingSitesUnsupervised = (Integer) numberTrainingChoiceBoxUnsupervised.getSelectionModel().getSelectedItem();
-            int optimumKNN = (Integer) numKNNChoiceBox.getSelectionModel().getSelectedItem();
+//            int optimumKNN = (Integer) numKNNChoiceBox.getSelectionModel().getSelectedItem();
+            int optimumKNN = (int) Math.sqrt(numTrainingSites);
 
             long startResponseTime = System.currentTimeMillis();
 
