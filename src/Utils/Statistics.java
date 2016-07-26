@@ -142,6 +142,11 @@ public class Statistics {
                 Integer newCounter = mappingValueCounter.get(listElement) + 1;
                 mappingValueCounter.replace(listElement,newCounter);
             }
+            for (Map.Entry mapElement : mappingValueCounter.entrySet()) {
+                Double uniqueValue = (Double) mapElement.getKey();
+                Integer uniqueValueCounter = (Integer) mapElement.getValue();
+                System.out.println("Value : " + uniqueValue + " Counter : " + uniqueValueCounter);
+            }
             Integer maximumCounter = 0;
             for (Map.Entry mapElement : mappingValueCounter.entrySet()) {
                 Double uniqueValue = (Double) mapElement.getKey();
@@ -166,29 +171,61 @@ public class Statistics {
 //        tes.add(2);
 //        tes.add(2);
 //        System.out.println(Statistics.getMostFrequentValueListInteger(tes));
-
-        List<Integer> tes2 = new ArrayList<Integer>();
-        int[] array = new int[] {1
-                ,1
-                ,1, 3
-                ,3, 5
-                ,5, 9
-                ,15, 17
-                ,3, 9
-                ,7, 11
-                ,11, 13
-                ,17, 19
-        };
-        for (int e : array) {
-            tes2.add(e);
-        }
-        System.out.println(Statistics.getMostFrequentValueListInteger(tes2));
-
-//        List<Double> tes2 = new ArrayList<Double>();
-//        double[] array = new double[] {85.79, 85.39, 83.78, 82.48, 82.38, 81.58, 81.48, 81.38, 81.48, 81.08, 80.78, 80.18, 80.88, 81.08, 80.98, 80.78};
-//        for (double e : array) {
+//
+//        List<Integer> tes2 = new ArrayList<Integer>();
+//        int[] array = new int[] {1
+//                ,1
+//                ,1, 3
+//                ,3, 5
+//                ,5, 9
+//                ,15, 17
+//                ,3, 9
+//                ,7, 11
+//                ,11, 13
+//                ,17, 19
+//        };
+//        for (int e : array) {
 //            tes2.add(e);
 //        }
-//        System.out.println(Statistics.getMostFrequentValueListDouble(tes2));
+//        System.out.println(Statistics.getMostFrequentValueListInteger(tes2));
+
+        List<Double> tes2 = new ArrayList<Double>();
+        double[] array = new double[] {
+                89.68968968968969
+                ,84.88488488488488
+                ,85.68568568568568
+                ,82.18218218218219
+                ,82.28228228228228
+                ,81.08108108108108
+                ,82.48248248248248
+                ,81.88188188188188
+                ,82.78278278278279
+                ,81.08108108108108
+                ,81.48148148148148
+                ,80.78078078078079
+                ,80.18018018018019
+                ,79.17917917917919
+                ,78.77877877877879
+                ,77.57757757757757
+                ,77.47747747747748
+                ,77.07707707707708
+                ,76.77677677677679
+                ,77.97797797797797
+                ,77.87787787787788
+                ,78.47847847847848
+                ,78.97897897897897
+                ,78.97897897897897
+                ,78.87887887887888
+                ,78.87887887887888
+                ,79.57957957957959
+                ,79.67967967967968
+                ,79.27927927927928
+                ,79.77977977977979
+                ,79.17917917917919
+        };
+        for (double e : array) {
+            tes2.add(e);
+        }
+        System.out.println(Statistics.getMostFrequentValueListDouble(tes2));
     }
 }
