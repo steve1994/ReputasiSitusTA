@@ -83,24 +83,84 @@ public class DNSExtractor {
      * Return hit AS ratio from certain malicious type (1 : malware, 2 : Phishing, 3 : Spamming)
      * Assumption : AS ratio is measured up to only first 100 certain sites list
      *
-     * @param type
      * @return
      */
-    public static double getHitASRatio(int numberASNURL, int type) {
-        int hitASCounter = 0;
-//        int thisURLASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(url));
-        List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(type);
-        if (numberASNURL > 0) {  // Sites not detected or null
-            for (int i = 0; i < 1000; i++) {
-                if (listASNSitesThisType.get(i) == numberASNURL) {
-                    hitASCounter++;
+    public static Triplet<Double,Double,Double> getHitASRatio(int numberASNURL/*, int type*/) {
+//        int hitASCounter = 0;
+//        List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(type);
+//        if (numberASNURL > 0) {  // Sites not detected or null
+//            for (int i = 0; i < 1000; i++) {
+//                if (listASNSitesThisType.get(i) == numberASNURL) {
+//                    hitASCounter++;
+//                }
+//            }
+//        }
+//        if (listASNSitesThisType.size() > 0) {
+//            return (double) hitASCounter / (double) listASNSitesThisType.size();
+//        } else {
+//            return 0.0;
+//        }
+
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        List<Callable<Double>> listCallable = new ArrayList<Callable<Double>>();
+        for (int typeSite=1;typeSite<=3;typeSite++) {
+            listCallable.add(new hitASRatioThread(typeSite,numberASNURL));
+        }
+        Double hitASRatioType1 = 0.0;
+        Double hitASRatioType2 = 0.0;
+        Double hitASRatioType3 = 0.0;
+        try {
+            List<Future<Double>> tasksCallable = executorService.invokeAll(listCallable);
+            int counterTask = 1;
+            for (Future<Double> task : tasksCallable) {
+                if (counterTask == 1) {
+                    hitASRatioType1 = task.get();
+                } else if (counterTask == 2) {
+                    hitASRatioType2 = task.get();
+                } else if (counterTask == 3) {
+                    hitASRatioType3 = task.get();
+                }
+                counterTask++;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
+
+        return new Triplet(hitASRatioType1,hitASRatioType2,hitASRatioType3);
+    }
+
+    private static class hitASRatioThread implements Callable {
+        private int typeSite;
+        private int ASNumberThisSite;
+
+        public hitASRatioThread(int typeSite, int ASNumberThisSite) {
+            this.typeSite = typeSite;
+            this.ASNumberThisSite = ASNumberThisSite;
+        }
+
+        private double getHitASRatioThisType() {
+            int hitASCounter = 0;
+            List<Integer> listASNSitesThisType = loadASNSitesFromExternalFile(typeSite);
+            if (ASNumberThisSite > 0) {  // Sites not detected or null
+                for (int i = 0; i < 1000; i++) {
+                    if (listASNSitesThisType.get(i) == ASNumberThisSite) {
+                        hitASCounter++;
+                    }
                 }
             }
+            if (listASNSitesThisType.size() > 0) {
+                return (double) hitASCounter / (double) listASNSitesThisType.size();
+            } else {
+                return 0.0;
+            }
         }
-        if (listASNSitesThisType.size() > 0) {
-            return (double) hitASCounter / (double) listASNSitesThisType.size();
-        } else {
-            return 0.0;
+
+        @Override
+        public Object call() throws Exception {
+            return getHitASRatioThisType();
         }
     }
 
@@ -526,12 +586,17 @@ public class DNSExtractor {
             long afterTLD = System.currentTimeMillis();
 
             // Hit AS Ratio (malware, phishing, spamming)
-            Double[] HitRatioList = new Double[3];
             int thisSiteASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(hostName));
-            for (int j = 0; j < 3; j++) {
-                HitRatioList[j] = DNSExtractor.getHitASRatio(thisSiteASN, j + 1);
-                fiturs.add(HitRatioList[j]);
-            }
+//            Double[] HitRatioList = new Double[3];
+//            for (int j = 0; j < 3; j++) {
+//                HitRatioList[j] = DNSExtractor.getHitASRatio(thisSiteASN, j + 1);
+//                fiturs.add(HitRatioList[j]);
+//            }
+            Triplet<Double,Double,Double> hitASRatio = DNSExtractor.getHitASRatio(thisSiteASN);
+            fiturs.add(hitASRatio.getValue0());
+            fiturs.add(hitASRatio.getValue1());
+            fiturs.add(hitASRatio.getValue2());
+
             System.out.println("Hit AS Ratio");
 
             long afterHitRatio = System.currentTimeMillis();

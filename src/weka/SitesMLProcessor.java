@@ -11,6 +11,7 @@ import data_structure.instance_ML.SiteRecordReputation;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Sextet;
+import org.javatuples.Triplet;
 import sample.StaticVars;
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -291,10 +292,15 @@ public class SitesMLProcessor {
             // Hit AS Ratio (malware, phishing, spamming)
             Double[] HitRatioList = new Double[3];
             int sitesASN = Converter.convertIPAddressIntoASN(Converter.convertHostNameIntoIPAddress(domainName));
-            for (int j = 0; j < 3; j++) {
-                HitRatioList[j] = DNSExtractor.getHitASRatio(sitesASN, j + 1);
-            }
+//            for (int j = 0; j < 3; j++) {
+//                HitRatioList[j] = DNSExtractor.getHitASRatio(sitesASN, j + 1);
+//            }
+            Triplet<Double,Double,Double> hitASRatio = DNSExtractor.getHitASRatio(sitesASN);
+            HitRatioList[0] = hitASRatio.getValue0();
+            HitRatioList[1] = hitASRatio.getValue1();
+            HitRatioList[2] = hitASRatio.getValue2();
             fiturDNS.setHitASRatio(HitRatioList);
+
             System.out.println("Hit AS Ratio");
 
             // Name server distribution AS
