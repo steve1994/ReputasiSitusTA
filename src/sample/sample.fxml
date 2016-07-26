@@ -32,7 +32,7 @@
       <RadioButton fx:id="dnsTrustRadioButton" layoutX="27.0" layoutY="261.0" mnemonicParsing="false" text="DNS + Trust Collaborative" />
       <RadioButton fx:id="spesificTrustRadioButton" layoutX="27.0" layoutY="290.0" mnemonicParsing="false" text="Site's Spesific Info + Trust Collaborative" />
       <RadioButton fx:id="dnsSpesificTrustRadioButton" layoutX="28.0" layoutY="318.0" mnemonicParsing="false" text="DNS + Site's Spesific Info + Trust Collaborative" />
-      <Label layoutX="28.0" layoutY="357.0" text="Training Data (Supervised) : " />
+      <Label layoutX="28.0" layoutY="357.0" text="Number of Training Data : " />
       <ChoiceBox fx:id="numberTrainingChoiceBox" layoutX="206.0" layoutY="353.0" prefHeight="25.0" prefWidth="284.0" />
       <Label fx:id="keterangan" layoutX="140.0" layoutY="473.0" text="Label" textFill="#e11111">
          <font>
