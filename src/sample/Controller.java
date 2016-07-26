@@ -291,7 +291,8 @@ public class Controller implements Initializable {
                                         clusterNumber = clusterAssignment2[i];
                                         classValueClusterDangerous = classesToCluster2[(int) clusterNumber];
                                         if (classValueClusterDangerous != -1) {
-                                            labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous);
+//                                            labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous);
+                                            labelDomainNameResult = "malicious (" + trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous) + " detected)";
                                         } else {
                                             labelDomainNameResult = "malicious (unknown type)";
                                         }
@@ -474,7 +475,8 @@ public class Controller implements Initializable {
                                                 clusterNumber = clusterAssignment2[i];
                                                 classValueClusterDangerous = classesToCluster2[(int) clusterNumber];
                                                 if (classValueClusterDangerous != -1) {
-                                                    labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous);
+//                                                    labelDomainNameResult = trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous);
+                                                    labelDomainNameResult = "malicious (" + trainingDangerousKmeans.classAttribute().value(classValueClusterDangerous) + " detected)";
                                                 } else {
                                                     labelDomainNameResult = "malicious (unknown type)";
                                                 }
