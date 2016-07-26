@@ -4,7 +4,9 @@ import Utils.Converter;
 import Utils.Spesific.ContentExtractor;
 import javafx.util.Pair;
 import sample.StaticVars;
+import weka.SitesLabeler;
 import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LibSVM;
 import weka.clusterers.Clusterer;
 import weka.core.Instances;
@@ -14,10 +16,7 @@ import weka.core.converters.ConverterUtils;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Created by steve on 28/01/2016.
@@ -286,23 +285,71 @@ public class EksternalFile {
 //        }
 //        System.out.println("Total Sites : " + numSites);
 
-        String trainingClassifier1 = "database/weka/data/num_200.type_3.normality_category.supervised.arff";
+//        String trainingClassifier1 = "database/weka/data/num_200.type_3.normality_category.supervised.arff";
+//
+////        String pathClassifier1 = "database/weka/model/ffffff.model";
+//        String pathClassifier1 = "database/weka/model/num_100.type_3.normalitySVM.model";
+//        Classifier classifier = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier1);
+//        Instances instances = EksternalFile.loadInstanceWekaFromExternalARFF(trainingClassifier1);
+//
+//        try {
+//            classifier.classifyInstance(instances.instance(0));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (classifier != null) {
+//            System.out.println("SAY, HI!");
+//        } else {
+//            System.out.println("SAY, HELLO!");
+//        }
 
-//        String pathClassifier1 = "database/weka/model/ffffff.model";
-        String pathClassifier1 = "database/weka/model/num_100.type_3.normalitySVM.model";
-        Classifier classifier = EksternalFile.loadClassifierWekaFromEksternalModel(pathClassifier1);
-        Instances instances = EksternalFile.loadInstanceWekaFromExternalARFF(trainingClassifier1);
+        // CREATE ANOTHER STATIC DATA IN CSV FORMAT
+//        for (int typeReputation=1;typeReputation<=7;typeReputation++) {
+//            String pathNormal = "database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff";
+//            Instances normalInstances = EksternalFile.loadInstanceWekaFromExternalARFF(pathNormal);
+//            String pathDangerous = "database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.arff";
+//            Instances dangerousInstances = EksternalFile.loadInstanceWekaFromExternalARFF(pathDangerous);
+//
+//            String pathNormalCSV = "database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.csv";
+//            EksternalFile.saveInstanceWekaToExternalCSV(normalInstances, pathNormalCSV);
+//            String pathDangerousCSV = "database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".dangerous.staticdata.csv";
+//            EksternalFile.saveInstanceWekaToExternalCSV(dangerousInstances, pathDangerousCSV);
+//        }
 
-        try {
-            classifier.classifyInstance(instances.instance(0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int typeReputation = 6;
+        for (int numTraining = 100; numTraining <= 1000; numTraining = numTraining + 100) {
+            // STAGE 1 (SUPERVISED)
+            String pathNormal = "database/weka/data/num_" + numTraining + ".type_" + typeReputation + ".dangerous_category.supervised.arff";
+            Instances normalInstances = EksternalFile.loadInstanceWekaFromExternalARFF(pathNormal);
 
-        if (classifier != null) {
-            System.out.println("SAY, HI!");
-        } else {
-            System.out.println("SAY, HELLO!");
+            // Delete Particular Trust Score
+//            normalInstances.deleteAttributeAt(normalInstances.numAttributes()-11);
+//            normalInstances.deleteAttributeAt(normalInstances.numAttributes()-9);
+            for (int i=0;i<4;i++) {
+                normalInstances.deleteAttributeAt(normalInstances.numAttributes()-9);
+            }
+
+            // Build Classifier using SVM
+            SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
+            labeledSite2.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
+            normalInstances.setClassIndex(normalInstances.numAttributes()-1);
+
+            int maxNearestNeighbor = (int) Math.sqrt(numTraining);
+            StringBuffer arrayOfAccuration = new StringBuffer();
+            for (int j=1;j<=maxNearestNeighbor;j++) {
+                Classifier normalityClassifier = labeledSite2.buildLabelReputationModel(normalInstances, 2, j);
+                try {
+                    // Cross Validation (Situs Normal / Tidak Normal)
+                    Evaluation evalLabeledSiteNormality = new Evaluation(normalInstances);
+                    evalLabeledSiteNormality.crossValidateModel(normalityClassifier, normalInstances, 10, new Random(1));
+                    arrayOfAccuration.append("\n" + SitesLabeler.getCorrectlyClassifiedInstances(evalLabeledSiteNormality, normalInstances) + "\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("\nAccuration with type " + typeReputation + " and number training " + numTraining + " : " + arrayOfAccuration.toString() + "\n");
+
         }
     }
 }
