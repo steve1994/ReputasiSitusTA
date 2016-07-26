@@ -127,6 +127,7 @@ public class Controller implements Initializable {
         }
 
         Boolean dataEmpty = false;
+        keterangan.setVisible(false);
         // Extract Features From Domain Name and Process Based on Its method
         if (!domainSitesTextField.getText().isEmpty() && !numberTrainingChoiceBox.getSelectionModel().isEmpty() && featuresRadioButton.getSelectedToggle().isSelected() && methodRadioButton.getSelectedToggle().isSelected()
                 && clusteringRadioButton.getSelectedToggle().isSelected() /*&& !numberTrainingChoiceBoxUnsupervised.getSelectionModel().isEmpty()*/ && !numKNNChoiceBox.getSelectionModel().isEmpty()) {
