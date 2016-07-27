@@ -11,6 +11,7 @@
       <element id="extracted-dir" path="D:/commons-validator-1.4.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/guava-15.0-rc1.jar/guava-15.0-rc1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../API dan Library/dnsjava-2.1.1.jar/dnsjava-2.1.1.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/database" />
     </root>
   </artifact>
 </component>
