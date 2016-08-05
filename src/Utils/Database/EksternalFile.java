@@ -33,6 +33,10 @@ public class EksternalFile {
 //    private static final String popularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_popular_websites\\top-1m.csv";
     private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
 //    private static final String nonPopularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\DomainJanuary2016\\2016-01-01.txt";
+    private static final String topNewsPathAlexa = "database/top_news_websites_alexa/top_500_news_websites.txt";
+//    private static final String topNewsPathAlexa = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_news_websites_alexa\\top_500_news_websites.txt";
+    private static final String topNewsPathSimilarWebID = "database/top_news_websites_similarweb_id/top_100_news_id.txt";
+//    private static final String nonPopularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_news_websites_similarweb_id\\top_100_news_id.txt";
 
     /**
      * Get raw content of string from external file
@@ -78,6 +82,8 @@ public class EksternalFile {
             case 3  :   rawTrainingList = getRawFileContent(spammingPath); break;
             case 4  :   rawTrainingList = getRawFileContent(popularPath); break;
             case 5  :   rawTrainingList = getRawFileContent(nonPopularPath); break;
+            case 6  :   rawTrainingList = getRawFileContent(topNewsPathAlexa); break;
+            case 7  :   rawTrainingList = getRawFileContent(topNewsPathSimilarWebID); break;
         }
         StringTokenizer token = new StringTokenizer(rawTrainingList.toString(),"\n");
         while (token.hasMoreTokens()) {
@@ -317,39 +323,38 @@ public class EksternalFile {
 //            EksternalFile.saveInstanceWekaToExternalCSV(dangerousInstances, pathDangerousCSV);
 //        }
 
-        int typeReputation = 6;
-        for (int numTraining = 100; numTraining <= 1000; numTraining = numTraining + 100) {
-            // STAGE 1 (SUPERVISED)
-            String pathNormal = "database/weka/data/num_" + numTraining + ".type_" + typeReputation + ".dangerous_category.supervised.arff";
-            Instances normalInstances = EksternalFile.loadInstanceWekaFromExternalARFF(pathNormal);
-
-            // Delete Particular Trust Score
-//            normalInstances.deleteAttributeAt(normalInstances.numAttributes()-11);
-//            normalInstances.deleteAttributeAt(normalInstances.numAttributes()-9);
-            for (int i=0;i<4;i++) {
-                normalInstances.deleteAttributeAt(normalInstances.numAttributes()-9);
-            }
-
-            // Build Classifier using SVM
-            SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
-            labeledSite2.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
-            normalInstances.setClassIndex(normalInstances.numAttributes()-1);
-
-            int maxNearestNeighbor = (int) Math.sqrt(numTraining);
-            StringBuffer arrayOfAccuration = new StringBuffer();
-            for (int j=1;j<=maxNearestNeighbor;j++) {
-                Classifier normalityClassifier = labeledSite2.buildLabelReputationModel(normalInstances, 2, j);
-                try {
-                    // Cross Validation (Situs Normal / Tidak Normal)
-                    Evaluation evalLabeledSiteNormality = new Evaluation(normalInstances);
-                    evalLabeledSiteNormality.crossValidateModel(normalityClassifier, normalInstances, 10, new Random(1));
-                    arrayOfAccuration.append("\n" + SitesLabeler.getCorrectlyClassifiedInstances(evalLabeledSiteNormality, normalInstances) + "\n");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.println("\nAccuration with type " + typeReputation + " and number training " + numTraining + " : " + arrayOfAccuration.toString() + "\n");
-
-        }
+//        int typeReputation = 6;
+//        for (int numTraining = 100; numTraining <= 1000; numTraining = numTraining + 100) {
+//            // STAGE 1 (SUPERVISED)
+//            String pathNormal = "database/weka/data/num_" + numTraining + ".type_" + typeReputation + ".dangerous_category.supervised.arff";
+//            Instances normalInstances = EksternalFile.loadInstanceWekaFromExternalARFF(pathNormal);
+//
+//            // Delete Particular Trust Score
+////            normalInstances.deleteAttributeAt(normalInstances.numAttributes()-11);
+////            normalInstances.deleteAttributeAt(normalInstances.numAttributes()-9);
+//            for (int i=0;i<4;i++) {
+//                normalInstances.deleteAttributeAt(normalInstances.numAttributes()-9);
+//            }
+//
+//            // Build Classifier using SVM
+//            SitesLabeler labeledSite2 = new SitesLabeler(typeReputation);
+//            labeledSite2.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
+//            normalInstances.setClassIndex(normalInstances.numAttributes()-1);
+//
+//            int maxNearestNeighbor = (int) Math.sqrt(numTraining);
+//            StringBuffer arrayOfAccuration = new StringBuffer();
+//            for (int j=1;j<=maxNearestNeighbor;j++) {
+//                Classifier normalityClassifier = labeledSite2.buildLabelReputationModel(normalInstances, 2, j);
+//                try {
+//                    // Cross Validation (Situs Normal / Tidak Normal)
+//                    Evaluation evalLabeledSiteNormality = new Evaluation(normalInstances);
+//                    evalLabeledSiteNormality.crossValidateModel(normalityClassifier, normalInstances, 10, new Random(1));
+//                    arrayOfAccuration.append("\n" + SitesLabeler.getCorrectlyClassifiedInstances(evalLabeledSiteNormality, normalInstances) + "\n");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            System.out.println("\nAccuration with type " + typeReputation + " and number training " + numTraining + " : " + arrayOfAccuration.toString() + "\n");
+//        }
     }
 }
