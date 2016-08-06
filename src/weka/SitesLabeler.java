@@ -118,6 +118,35 @@ public class SitesLabeler extends SitesMLProcessor {
     }
 
     /**
+     * Get incorrectly classified instances given the instances and classifier
+     * @param allInstances
+     * @param classifier
+     * @return
+     */
+    public Pair<Instances,Instances> distinguishingCorrectIncorrectInstances(Instances allInstances, Classifier classifier) {
+        Instances correctlyClassifyInstance = new Instances("correct_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        Instances incorrectlyClassifyInstance = new Instances("incorrect_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        allInstances.setClassIndex(allInstances.numAttributes()-1);
+
+        for (int i=0;i<allInstances.numInstances();i++) {
+            Instance thisInstance = allInstances.instance(i);
+            int actualClassValue = (int) thisInstance.classValue();
+            try {
+                int predictedClassValue = (int) classifier.classifyInstance(thisInstance);
+                if (actualClassValue == predictedClassValue) {
+                    correctlyClassifyInstance.add(thisInstance);
+                } else {
+                    incorrectlyClassifyInstance.add(thisInstance);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new Pair<Instances,Instances>(correctlyClassifyInstance,incorrectlyClassifyInstance);
+    }
+
+    /**
      * Get correctly classified instances from evalClassifier and testSet Instances
      * @param evalClassifier
      * @param testSet
