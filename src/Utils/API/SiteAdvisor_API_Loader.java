@@ -45,8 +45,8 @@ public class SiteAdvisor_API_Loader {
 //        }
 //        EksternalFile.saveRawContentToEksternalFile(sb.toString(),"database/top_popular_websites/top_popular_categories_2.txt");
 
-        List<String> listTopNewsAlexa = EksternalFile.loadSitesTrainingList(8).getKey();
-        List<String> listTopOverallAlexa = EksternalFile.loadSitesTrainingList(6).getKey();
+        List<String> listTopNewsAlexa = EksternalFile.loadSitesTrainingList(6).getKey();
+        List<String> listTopOverallAlexa = EksternalFile.loadSitesTrainingList(7).getKey();
         List<String> intersectedSite = EksternalFile.listIntersectedSites(listTopNewsAlexa,listTopOverallAlexa);
         for (String site : intersectedSite) {
             System.out.println(site);
