@@ -97,6 +97,26 @@ public class EksternalFile {
     }
 
     /**
+     * Looking for intersection between two list sites
+     * @param listSites1
+     * @param listSites2
+     * @return
+     */
+    public static List<String> listIntersectedSites(List<String> listSites1, List<String> listSites2) {
+        List<String> intersectedSites = new ArrayList<String>();
+        for (int i=0;i<listSites1.size();i++) {
+            for (int j=0;j<listSites2.size();j++) {
+                String site1 = Converter.getBaseHostURL(listSites1.get(i));
+                String site2 = Converter.getBaseHostURL(listSites2.get(j));
+                if (site1.equals(site2)) {
+                    intersectedSites.add(site1);
+                }
+            }
+        }
+        return intersectedSites;
+    }
+
+    /**
      * Generate random list sites of certain types with amount numRandom
      * Assumption : random list sites generate maximum from 1000 sites
      * @param type
