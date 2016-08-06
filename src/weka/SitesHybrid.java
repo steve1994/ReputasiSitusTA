@@ -129,7 +129,6 @@ public class SitesHybrid {
         // TESTING DISTINGUISH INSTANCE RECORD
 //        Instances instances = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_800.type_" + typeReputation + ".normality_category.hybrid.arff");
 //        Classifier classifier = EksternalFile.loadClassifierWekaFromEksternalModel("database/weka/model/num_100.type_" + typeReputation + ".normalitySVM.hybrid.model");
-//
 //        // Classification
 //        Instances classifiedAllInstances = new Instances("classified_all_instances",SitesMLProcessor.getAttributesVector(instances),0);
 //        classifiedAllInstances.setClassIndex(classifiedAllInstances.numAttributes()-1);
@@ -143,7 +142,6 @@ public class SitesHybrid {
 //            }
 //            classifiedAllInstances.add(instance);
 //        }
-//
 //        // Clustering
 //        int typeClusterAlgorithm = 1;
 //        int optimumNumberCluster = 2;
@@ -155,7 +153,6 @@ public class SitesHybrid {
 //        } else {                                    // HC
 //            clusterer = clusterSiteNormality.buildHCReputationModel(classifiedAllInstances,optimumNumberCluster);
 //        }
-//
 //        System.out.println("TOTAL: " + instances.numInstances());
 //        Pair<Instances,Instances> distinguishResult = clusterSiteNormality.distinguishingCorrectIncorrectInstances(instances,clusterer);
 //        System.out.println("Correct: " + distinguishResult.getValue0().numInstances());
