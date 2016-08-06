@@ -76,28 +76,15 @@ public class SitesHybrid {
     }
 
     /**
-     * Get incorrectly classified instances given the instances, classifier, and clusterer
+     * Get incorrectly classified instances given the instances and clusterer
      * @param allInstances
-     * @param classifier
-     * @param clusterer
+     * @param clusterer (build with classifiedAllInstances outside this function)
      * @return
      */
-    public static Pair<Instances,Instances> distinguishingCorrectIncorrectInstances(Instances allInstances, Classifier classifier, Clusterer clusterer) {
+    public static Pair<Instances,Instances> distinguishingCorrectIncorrectInstances(Instances allInstances, Clusterer clusterer) {
         Instances correctlyClassifyInstance = new Instances("correct_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
         Instances incorrectlyClassifyInstance = new Instances("incorrect_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
         allInstances.setClassIndex(allInstances.numAttributes()-1);
-
-        Instances classifiedAllInstances = new Instances("classified_all_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
-        for (int i=0;i<allInstances.numInstances();i++) {
-            Instance instance = allInstances.instance(i);
-            try {
-                double predictedClassValue = classifier.classifyInstance(instance);
-                instance.setClassValue(predictedClassValue);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            classifiedAllInstances.add(instance);
-        }
 
         ClusterEvaluation clusterEvaluation = new ClusterEvaluation();
         clusterEvaluation.setClusterer(clusterer);
@@ -138,6 +125,41 @@ public class SitesHybrid {
         labelSiteDangerousity.configARFFInstance(new String[]{"malware", "phishing", "spamming"});
 
         System.out.println("Config ARFF Done");
+
+        // TESTING DISTINGUISH INSTANCE RECORD
+//        Instances instances = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_800.type_" + typeReputation + ".normality_category.hybrid.arff");
+//        Classifier classifier = EksternalFile.loadClassifierWekaFromEksternalModel("database/weka/model/num_100.type_" + typeReputation + ".normalitySVM.hybrid.model");
+//
+//        // Classification
+//        Instances classifiedAllInstances = new Instances("classified_all_instances",SitesMLProcessor.getAttributesVector(instances),0);
+//        classifiedAllInstances.setClassIndex(classifiedAllInstances.numAttributes()-1);
+//        for (int i=0;i<instances.numInstances();i++) {
+//            Instance instance = instances.instance(i);
+//            try {
+//                double predictedClassValue = classifier.classifyInstance(instance);
+//                instance.setClassValue(predictedClassValue);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            classifiedAllInstances.add(instance);
+//        }
+//
+//        // Clustering
+//        int typeClusterAlgorithm = 1;
+//        int optimumNumberCluster = 2;
+//        Clusterer clusterer;
+//        if (typeClusterAlgorithm == 1) {            // KMeans
+//            clusterer = clusterSiteNormality.buildKmeansReputationModel(classifiedAllInstances,optimumNumberCluster);
+//        } else if (typeClusterAlgorithm == 2) {     // EM
+//            clusterer = clusterSiteNormality.buildEMReputationModel(classifiedAllInstances,optimumNumberCluster);
+//        } else {                                    // HC
+//            clusterer = clusterSiteNormality.buildHCReputationModel(classifiedAllInstances,optimumNumberCluster);
+//        }
+//
+//        System.out.println("TOTAL: " + instances.numInstances());
+//        Pair<Instances,Instances> distinguishResult = clusterSiteNormality.distinguishingCorrectIncorrectInstances(instances,clusterer);
+//        System.out.println("Correct: " + distinguishResult.getValue0().numInstances());
+//        System.out.println("Incorrect: " + distinguishResult.getValue1().numInstances());
 
         int numSitesMaxAllocation = 1000;
 //        for (int k=0;k<4;k++) {     // malware, phishing, spamming, normal
