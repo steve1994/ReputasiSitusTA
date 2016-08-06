@@ -45,29 +45,29 @@ public class SiteAdvisor_API_Loader {
 //        }
 //        EksternalFile.saveRawContentToEksternalFile(sb.toString(),"database/top_popular_websites/top_popular_categories_2.txt");
 
-//        List<String> listTopNewsAlexa = EksternalFile.loadSitesTrainingList(6).getKey();
-//        List<String> listTopOverallAlexa = EksternalFile.loadSitesTrainingList(4).getKey();
-//        List<String> intersectedSite = EksternalFile.listIntersectedSites(listTopNewsAlexa,listTopOverallAlexa);
-//        for (String site : intersectedSite) {
-//            System.out.println(site);
-//        }
+        List<String> listTopNewsAlexa = EksternalFile.loadSitesTrainingList(8).getKey();
+        List<String> listTopOverallAlexa = EksternalFile.loadSitesTrainingList(6).getKey();
+        List<String> intersectedSite = EksternalFile.listIntersectedSites(listTopNewsAlexa,listTopOverallAlexa);
+        for (String site : intersectedSite) {
+            System.out.println(site);
+        }
 
-        String rawListCategoriesTopWebsites = EksternalFile.getRawFileContent("database/top_popular_websites/top_popular_categories_2.txt");
-        StringTokenizer token = new StringTokenizer(rawListCategoriesTopWebsites,"\n");
-        List<String> listNewsWebsites = new ArrayList<String>();
-        List<String> listTopWebsites = EksternalFile.loadSitesTrainingList(4).getKey();
-        int listCounter = 0;
-        while (token.hasMoreTokens()) {
-            String oneRow = token.nextToken();
-            if (oneRow.contains("Portal") || oneRow.contains("News")) {
-                listNewsWebsites.add(listTopWebsites.get(listCounter));
-            }
-            listCounter++;
-        }
-        StringBuffer sb = new StringBuffer();
-        for (int i=0;i<listNewsWebsites.size();i++) {
-            sb.append(listNewsWebsites.get(i) + "\n");
-        }
-        EksternalFile.saveRawContentToEksternalFile(sb.toString(),"database/top_popular_websites/top-1m-news.txt");
+//        String rawListCategoriesTopWebsites = EksternalFile.getRawFileContent("database/top_popular_websites/top_popular_categories_2.txt");
+//        StringTokenizer token = new StringTokenizer(rawListCategoriesTopWebsites,"\n");
+//        List<String> listNewsWebsites = new ArrayList<String>();
+//        List<String> listTopWebsites = EksternalFile.loadSitesTrainingList(4).getKey();
+//        int listCounter = 0;
+//        while (token.hasMoreTokens()) {
+//            String oneRow = token.nextToken();
+//            if (oneRow.contains("Portal") || oneRow.contains("News")) {
+//                listNewsWebsites.add(listTopWebsites.get(listCounter));
+//            }
+//            listCounter++;
+//        }
+//        StringBuffer sb = new StringBuffer();
+//        for (int i=0;i<listNewsWebsites.size();i++) {
+//            sb.append(listNewsWebsites.get(i) + "\n");
+//        }
+//        EksternalFile.saveRawContentToEksternalFile(sb.toString(),"database/top_popular_websites/top-1m-news.txt");
     }
 }
