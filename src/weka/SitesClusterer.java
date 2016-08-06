@@ -290,6 +290,33 @@ public class SitesClusterer extends SitesMLProcessor{
         return eval;
     }
 
+    public Pair<Instances,Instances> distinguishingCorrectIncorrectInstances(Instances allInstances, Clusterer clusterer) {
+        Instances correctlyClassifyInstance = new Instances("correct_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        Instances incorrectlyClassifyInstance = new Instances("incorrect_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        allInstances.setClassIndex(allInstances.numAttributes()-1);
+
+        ClusterEvaluation clusterEvaluation = new ClusterEvaluation();
+        clusterEvaluation.setClusterer(clusterer);
+        try {
+            clusterEvaluation.evaluateClusterer(allInstances);
+            double[] clusterEachInstance = clusterEvaluation.getClusterAssignments();
+            int[] classesToCluster = clusterEvaluation.getClassesToClusters();
+            for (int i=0;i<allInstances.numInstances();i++) {
+                Instance instance = allInstances.instance(i);
+                int actualClassValue = (int) instance.classValue();
+                int predictedClassValue = classesToCluster[(int) clusterEachInstance[i]];
+                if (predictedClassValue == actualClassValue) {
+                    correctlyClassifyInstance.add(instance);
+                } else {
+                    incorrectlyClassifyInstance.add(instance);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new Pair<Instances,Instances>(correctlyClassifyInstance,incorrectlyClassifyInstance);
+    }
 
     public static void main(String[] args) {
         // Cluster sites dengan tipe reputasi 7 dan jumlah cluster 4
@@ -392,6 +419,14 @@ public class SitesClusterer extends SitesMLProcessor{
 //        allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
 //        Instances allInstancesDangerousity = dangerousityClusterSite.getSiteReputationRecord();
 //        allInstancesDangerousity.setClassIndex(allInstancesDangerousity.numAttributes()-1);
+
+        // TESTING DISTINGUISH INSTANCES RECORD
+//        Instances instances = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data/num_800.type_" + typeReputation + ".normality_category.unsupervised.arff");
+//        Clusterer clusterer = EksternalFile.loadClustererWekaFromEksternalModel("database/weka/model/num_800.type_" + typeReputation + ".normalityKmeans.model");
+//        System.out.println("TOTAL: " + instances.numInstances());
+//        Pair<Instances,Instances> distinguishResult = normalityClusterSite.distinguishingCorrectIncorrectInstances(instances,clusterer);
+//        System.out.println("Correct: " + distinguishResult.getValue0().numInstances());
+//        System.out.println("Incorrect: " + distinguishResult.getValue1().numInstances());
 
         Instances allInstancesNormality = EksternalFile.loadInstanceWekaFromExternalARFF("database/weka/data_static/numsites_1000.ratio_3111.type_" + typeReputation + ".normal.staticdata.arff");
         allInstancesNormality.setClassIndex(allInstancesNormality.numAttributes()-1);
