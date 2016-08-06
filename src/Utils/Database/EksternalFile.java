@@ -29,7 +29,8 @@ public class EksternalFile {
 //    private static final String phishingPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\phishing_websites\\phishing.txt";
     private static final String spammingPath = "database/spamming_websites/spamming.txt";
 //    private static final String spammingPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\spamming_websites\\spamming.txt";
-    private static final String popularPath = "database/top_popular_websites/top-1m.csv";
+//    private static final String popularPath = "database/top_popular_websites/top-1m.csv";
+    private static final String popularPath = "database/top_popular_websites/top-1m-news.txt";
 //    private static final String popularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_popular_websites\\top-1m.csv";
     private static final String nonPopularPath = "database/DomainJanuary2016/2016-01-01.txt";
 //    private static final String nonPopularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\DomainJanuary2016\\2016-01-01.txt";
@@ -37,7 +38,7 @@ public class EksternalFile {
 //    private static final String topNewsPathAlexa = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_news_websites_alexa\\top_500_news_websites.txt";
     private static final String topNewsPathSimilarWebID = "database/top_news_websites_similarweb_id/top_100_news_id.txt";
 //    private static final String nonPopularPath = "D:\\steve\\TA_Project\\ReputasiSitusTA\\database\\top_news_websites_similarweb_id\\top_100_news_id.txt";
-    private static final String topNewsFromTopMillionAlexa = "database/top_popular_websites/top-1m-news.txt";
+//    private static final String topNewsFromTopMillionAlexa = "database/top_popular_websites/top-1m-news.txt";
 
     /**
      * Get raw content of string from external file
@@ -85,7 +86,6 @@ public class EksternalFile {
             case 5  :   rawTrainingList = getRawFileContent(nonPopularPath); break;
             case 6  :   rawTrainingList = getRawFileContent(topNewsPathAlexa); break;
             case 7  :   rawTrainingList = getRawFileContent(topNewsPathSimilarWebID); break;
-            case 8  :   rawTrainingList = getRawFileContent(topNewsFromTopMillionAlexa); break;
         }
         StringTokenizer token = new StringTokenizer(rawTrainingList.toString(),"\n");
         while (token.hasMoreTokens()) {
