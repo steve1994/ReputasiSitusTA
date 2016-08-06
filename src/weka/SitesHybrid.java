@@ -74,7 +74,54 @@ public class SitesHybrid {
         
         return compositionEachCluster;
     }
-    
+
+    /**
+     * Get incorrectly classified instances given the instances, classifier, and clusterer
+     * @param allInstances
+     * @param classifier
+     * @param clusterer
+     * @return
+     */
+    public static Pair<Instances,Instances> distinguishingCorrectIncorrectInstances(Instances allInstances, Classifier classifier, Clusterer clusterer) {
+        Instances correctlyClassifyInstance = new Instances("correct_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        Instances incorrectlyClassifyInstance = new Instances("incorrect_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        allInstances.setClassIndex(allInstances.numAttributes()-1);
+
+        Instances classifiedAllInstances = new Instances("classified_all_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
+        for (int i=0;i<allInstances.numInstances();i++) {
+            Instance instance = allInstances.instance(i);
+            try {
+                double predictedClassValue = classifier.classifyInstance(instance);
+                instance.setClassValue(predictedClassValue);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            classifiedAllInstances.add(instance);
+        }
+
+        ClusterEvaluation clusterEvaluation = new ClusterEvaluation();
+        clusterEvaluation.setClusterer(clusterer);
+        try {
+            clusterEvaluation.evaluateClusterer(allInstances);
+            double[] clusterEachInstance = clusterEvaluation.getClusterAssignments();
+            int[] classesToCluster = clusterEvaluation.getClassesToClusters();
+            for (int i=0;i<allInstances.numInstances();i++) {
+                Instance instance = allInstances.instance(i);
+                int actualClassValue = (int) instance.classValue();
+                int predictedClassValue = classesToCluster[(int) clusterEachInstance[i]];
+                if (predictedClassValue == actualClassValue) {
+                    correctlyClassifyInstance.add(instance);
+                } else {
+                    incorrectlyClassifyInstance.add(instance);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new Pair<Instances,Instances>(correctlyClassifyInstance,incorrectlyClassifyInstance);
+    }
+
     public static void main(String[] args) {
         int typeReputation = 7;
 
