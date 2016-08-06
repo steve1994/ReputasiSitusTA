@@ -290,6 +290,12 @@ public class SitesClusterer extends SitesMLProcessor{
         return eval;
     }
 
+    /**
+     * Get incorrectly classified instances given the instances and clusterer
+     * @param allInstances
+     * @param clusterer
+     * @return
+     */
     public Pair<Instances,Instances> distinguishingCorrectIncorrectInstances(Instances allInstances, Clusterer clusterer) {
         Instances correctlyClassifyInstance = new Instances("correct_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
         Instances incorrectlyClassifyInstance = new Instances("incorrect_instances",SitesMLProcessor.getAttributesVector(allInstances),0);
